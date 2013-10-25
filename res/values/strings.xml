@@ -1,0 +1,16 @@
+<resources>
+
+    <string name="app_name">WeGo</string>
+
+    <string-array name="left_items_array">
+        <item>Account</item>
+        <item>Setting</item>
+        <item>Logout</item>
+        <item>Exit</item>
+    </string-array>
+
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    <string name="action_websearch">Web search</string>
+
+</resources>
