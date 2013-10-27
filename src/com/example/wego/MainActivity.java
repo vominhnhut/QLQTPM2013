@@ -1,8 +1,9 @@
 package com.example.wego;
 
+import com.example.adapter.LeftDrawerAdapter;
+
 import android.app.Activity;
 import android.content.res.Configuration;
-import android.opengl.Visibility;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
@@ -12,14 +13,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.FrameLayout;
 import android.widget.ListView;
 
 public class MainActivity extends Activity {
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
-	private FrameLayout contentFrame;
 	private CharSequence mDrawerTitle;
 	private CharSequence mTitle;
 
@@ -58,9 +57,7 @@ public class MainActivity extends Activity {
 			}
 		};
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
-		
-		contentFrame = (FrameLayout)findViewById(R.id.content_frame);
-		
+				
 		getFragmentManager().beginTransaction()
 		.replace(R.id.content_frame, WeGoMainFragment.instance())
 		.commit();
@@ -89,16 +86,9 @@ public class MainActivity extends Activity {
 		if (mDrawerToggle.onOptionsItemSelected(item)) {
 			return true;
 		}
-		if (item.getItemId() == R.id.action_edit) {
-			showHideListStatus();
-		}
 		return super.onOptionsItemSelected(item);
 
 	}
-
-	 private void showHideListStatus() {
-		 WeGoMainFragment.instance().showHideListStatus();
-	 }
 
 	private class DrawerItemClickListener implements
 			ListView.OnItemClickListener {
@@ -138,7 +128,7 @@ public class MainActivity extends Activity {
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
-		// Pass any configuration change to the drawer toggls
+		// Pass any configuration change to the drawer toggles
 		mDrawerToggle.onConfigurationChanged(newConfig);
 	}
 

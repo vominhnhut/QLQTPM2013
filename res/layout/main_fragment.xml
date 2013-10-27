@@ -3,7 +3,8 @@
     android:id="@+id/RelativeLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:background="#383838" >
 <fragment
         android:id="@+id/mapView"
         android:layout_width="match_parent"
@@ -16,8 +17,7 @@
         android:layout_height="350dp"
         android:layout_above="@id/mapView"
         android:layout_alignParentBottom="true"
-        android:background="#ffffff"
-        android:padding="5dp"
+        android:background="#383838"
         android:visibility="visible" >
     </ListView>
 </RelativeLayout>

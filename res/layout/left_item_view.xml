@@ -10,18 +10,19 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:src="@drawable/ic_setting"
-        android:contentDescription="@null" />
+        android:contentDescription="@null"
+        android:src="@drawable/close" />
 
     <TextView
         android:id="@+id/txt"
+        style="@style/left_drawer_text_style"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/img"
-        android:layout_marginBottom="18dp"
+        android:layout_alignTop="@+id/img"
         android:layout_marginLeft="16dp"
         android:layout_toRightOf="@+id/img"
         android:drawablePadding="10dp"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
 </RelativeLayout>

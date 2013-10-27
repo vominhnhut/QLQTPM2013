@@ -2,10 +2,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+	android:background="#ffffff"
+	android:paddingLeft="20dp"
+	android:paddingRight="20dp"
     android:padding="10dp" >
 
     <ImageView
-        android:id="@+id/imageView1"
+        android:id="@+id/locationType"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_alignParentLeft="true"
@@ -14,31 +17,31 @@
          />
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/postDateTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/imageView1"
+        android:layout_alignTop="@+id/locationType"
         android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@+id/imageView1"
+        android:layout_toRightOf="@+id/locationType"
         android:text="Phở Việt"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/user_comment_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView1"
+        android:layout_alignLeft="@+id/postDateTxt"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/textView1"
+        android:layout_below="@+id/postDateTxt"
         android:text="373/65/46 Lý Thường Kiệt,Tân Bình" />
 
     <ImageView
         android:id="@+id/imageView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/imageView1"
-        android:layout_alignLeft="@+id/textView2"
+        android:layout_alignBottom="@+id/locationType"
+        android:layout_alignLeft="@+id/user_comment_txt"
         android:src="@drawable/ic_like" />
 
     <TextView

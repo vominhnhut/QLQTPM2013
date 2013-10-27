@@ -1,4 +1,6 @@
-package com.example.wego;
+package com.example.adapter;
+
+import com.example.wego.R;
 
 import android.app.Activity;
 import android.view.LayoutInflater;

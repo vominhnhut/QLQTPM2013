@@ -6,11 +6,6 @@
         android:icon="@android:drawable/ic_input_get"
         android:title="Action Bar Add"/>
     <item
-        android:id="@+id/action_edit"
-        android:icon="@android:drawable/ic_menu_edit"
-        android:showAsAction="always"
-        android:title="Action Bar Edit"/>
-    <item
         android:id="@+id/action_search"
         android:actionViewClass="android.widget.SearchView"
         android:icon="@android:drawable/ic_menu_search"

@@ -1,7 +1,8 @@
-package com.example.wego;
+package com.example.adapter;
 
 import java.util.ArrayList;
 
+import com.example.wego.R;
 import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,10 +26,10 @@ public class LeftDrawerAdapter extends BaseAdapter {
 		mListItems = activity.getResources().getStringArray(
 				R.array.left_items_array);
 		mListIcon = new ArrayList<Integer>();
-		mListIcon.add(R.drawable.ic_user);
-		mListIcon.add(R.drawable.ic_setting);
-		mListIcon.add(R.drawable.ic_logout);
-		mListIcon.add(R.drawable.ic_exit);
+		mListIcon.add(R.drawable.home);
+		mListIcon.add(R.drawable.user);
+		mListIcon.add(R.drawable.setting);
+		mListIcon.add(R.drawable.close);
 	}
 
 	@Override

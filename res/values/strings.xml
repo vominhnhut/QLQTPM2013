@@ -1,16 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
     <string name="app_name">WeGo</string>
 
     <string-array name="left_items_array">
+        <item>Home</item>
         <item>Account</item>
         <item>Setting</item>
-        <item>Logout</item>
         <item>Exit</item>
     </string-array>
 
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string name="action_websearch">Web search</string>
+    <string name="title_activity_location_detail">LocationDetailActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="save_btn_text">Save</string>
+    <string name="like_btn_text">Like</string>
+    <string name="post_buttom_text">Post!</string>
 
 </resources>
