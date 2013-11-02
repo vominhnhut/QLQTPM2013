@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
 
 public class LocationDetailCommentsFragment extends Fragment implements
 		OnClickListener {
@@ -50,14 +49,6 @@ public class LocationDetailCommentsFragment extends Fragment implements
 		postCommentBtn.setOnClickListener(this);
 
 		commentListview = (ListView) view.findViewById(R.id.comments_listView);
-
-		if (commentListview == null) {
-			Toast.makeText(getActivity().getApplicationContext(), "null",
-					Toast.LENGTH_SHORT).show();
-		} else {
-			Toast.makeText(getActivity().getApplicationContext(), "not null",
-					Toast.LENGTH_SHORT).show();
-		}
 		
 		this.commentAdapter = null;
 
@@ -70,7 +61,7 @@ public class LocationDetailCommentsFragment extends Fragment implements
 		
 		 bls.add(newBinhLuan);
 		 }
-		 this.commentAdapter = new CommentListViewAdapter(getActivity(), bls);
+		 this.commentAdapter = new CommentListViewAdapter(getActivity().getApplicationContext(), bls);
 		 commentListview.setAdapter(commentAdapter);
 
 		return view;
@@ -87,11 +78,13 @@ public class LocationDetailCommentsFragment extends Fragment implements
 
 	public void addComment(BinhLuan binhLuan) {
 		if (commentAdapter == null) {
-			commentAdapter = new CommentListViewAdapter(getActivity(),
+			commentAdapter = new CommentListViewAdapter(getActivity().getApplicationContext(),
 					new ArrayList<BinhLuan>());
 		}
 		commentAdapter.addComment(binhLuan);
 		commentAdapter.notifyDataSetChanged();
+		
+		commentListview.smoothScrollToPosition(commentAdapter.getCount()-1);
 	}
 
 	@Override
@@ -100,13 +93,10 @@ public class LocationDetailCommentsFragment extends Fragment implements
 		switch (v.getId()) {
 		case R.id.sned_comment_btn:
 			BinhLuan newBinhLuan = new BinhLuan();
-			newBinhLuan.setNoiDung("This is dumb text of me");
+			newBinhLuan.setNoiDung("This is dumb text of me:" +  commentTxtview.getText());
 			newBinhLuan.setTenNguoiDang("Me");
 			newBinhLuan.setThoiGianDang(Calendar.getInstance().getTime());
 			addComment(newBinhLuan);
-			Toast.makeText(getActivity(),
-					"Comment: " + commentTxtview.getText(), Toast.LENGTH_SHORT)
-					.show();
 			break;
 
 		default:

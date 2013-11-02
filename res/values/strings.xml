@@ -19,5 +19,9 @@
     <string name="save_btn_text">Save</string>
     <string name="like_btn_text">Like</string>
     <string name="post_buttom_text">Post!</string>
+    <string name="rating_text">Rating</string>
+    <string name="description_text">Description</string>
+    <string name="map_view_text">Map view</string>
+    <string name="post_text">Post</string>
 
 </resources>

@@ -26,6 +26,8 @@ public class LocationDetailActivity extends FragmentActivity {
 		pager = (ViewPager) findViewById(R.id.pager);
 		
 		ArrayList<Fragment> fragmentList = new ArrayList<Fragment>();
+		
+		fragmentList.add(LocationDetailFragment.instance());
 		fragmentList.add(LocationDetailCommentsFragment.instance());
 		
 		pagerAdapter = new LocationDetailPagerAdapter(getSupportFragmentManager(), fragmentList);

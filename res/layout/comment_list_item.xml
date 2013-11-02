@@ -15,29 +15,33 @@
 
     <TextView
         android:id="@+id/user_name_txt"
+        style="@style/user_name_text_style"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="15dp"
         android:layout_toRightOf="@+id/user_avata_img"
-        android:text="Medium Text"
+        android:text="@string/app_name"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
         android:id="@+id/user_comment_txt"
+        style="@style/comment_text_style"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/user_name_txt"
         android:layout_below="@+id/user_name_txt"
-        android:text="TextView" />
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/app_name" />
 
     <TextView
         android:id="@+id/postDateTxt"
+        style="@style/post_date_text_style"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/user_avata_img"
         android:layout_alignParentRight="true"
-        android:text="Small Text"
+        android:layout_below="@+id/user_comment_txt"
+        android:text="@string/app_name"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
 </RelativeLayout>

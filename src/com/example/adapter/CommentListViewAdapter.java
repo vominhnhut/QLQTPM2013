@@ -42,14 +42,13 @@ public class CommentListViewAdapter extends BaseAdapter {
 		return binhLuanList.get(arg0);
 	}
 
-	@SuppressWarnings("null")
 	@Override
 	public View getView(int arg0, View arg1, ViewGroup arg2) {
 		// TODO Auto-generated method stub
-		ViewHolder holder = null;
+		ViewHolder holder = new ViewHolder();
 
 		if (arg1 == null) {
-			LayoutInflater inflator = LayoutInflater.from(adapterContext);
+            LayoutInflater inflator = (LayoutInflater) adapterContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			View view = inflator.inflate(R.layout.comment_list_item, null);
 			
 			holder.userAvatar = (ImageView) view.findViewById(R.id.user_avata_img);

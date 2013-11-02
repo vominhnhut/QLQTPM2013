@@ -160,6 +160,9 @@ containing a value of this type.
          */
         public static final int activity_horizontal_margin=0x7f080000;
         public static final int activity_vertical_margin=0x7f080001;
+        public static final int dp10_pading=0x7f080003;
+        public static final int dp20_padding=0x7f080002;
+        public static final int dp3_pading=0x7f080004;
     }
     public static final class drawable {
         public static final int action_search=0x7f020000;
@@ -208,35 +211,38 @@ containing a value of this type.
         public static final int ic_setting=0x7f02002b;
         public static final int ic_user=0x7f02002c;
         public static final int listview_divider_line=0x7f02002d;
-        public static final int location_like=0x7f02002e;
-        public static final int location_save=0x7f02002f;
-        public static final int setting=0x7f020030;
-        public static final int shopping_cart=0x7f020031;
-        public static final int treasure_chest=0x7f020032;
-        public static final int user=0x7f020033;
-        public static final int user_avata=0x7f020034;
+        public static final int listview_divider_line2=0x7f02002e;
+        public static final int location_like=0x7f02002f;
+        public static final int location_save=0x7f020030;
+        public static final int setting=0x7f020031;
+        public static final int shopping_cart=0x7f020032;
+        public static final int treasure_chest=0x7f020033;
+        public static final int user=0x7f020034;
+        public static final int user_avata=0x7f020035;
     }
     public static final class id {
+        public static final int LinearLayout1=0x7f060018;
         public static final int RelativeLayout1=0x7f06000e;
-        public static final int TextView01=0x7f06001d;
-        public static final int action_add=0x7f06001f;
-        public static final int action_search=0x7f060020;
-        public static final int action_settings=0x7f06001e;
+        public static final int TextView01=0x7f060023;
+        public static final int action_add=0x7f060025;
+        public static final int action_search=0x7f060026;
+        public static final int action_settings=0x7f060024;
         public static final int comment_text=0x7f06000f;
         public static final int comments_listView=0x7f060011;
         public static final int content_frame=0x7f06000c;
         public static final int drawer_layout=0x7f06000b;
         public static final int hybrid=0x7f060004;
-        public static final int imageView2=0x7f06001a;
-        public static final int imageView3=0x7f06001c;
+        public static final int imageView2=0x7f060021;
+        public static final int imageView3=0x7f060022;
         public static final int img=0x7f060016;
         public static final int left_drawer=0x7f06000d;
         public static final int likeBtn=0x7f060009;
-        public static final int list_status=0x7f060019;
+        public static final int list_status=0x7f060020;
         public static final int locationAddress=0x7f060007;
         public static final int locationName=0x7f060006;
         public static final int locationType=0x7f060005;
-        public static final int mapView=0x7f060018;
+        public static final int mapView=0x7f06001f;
+        public static final int mapView2=0x7f06001e;
         public static final int none=0x7f060000;
         public static final int normal=0x7f060001;
         public static final int pager=0x7f06000a;
@@ -245,7 +251,11 @@ containing a value of this type.
         public static final int saveBtn=0x7f060008;
         public static final int sned_comment_btn=0x7f060010;
         public static final int terrain=0x7f060003;
+        public static final int textView1=0x7f060019;
+        public static final int textView2=0x7f06001a;
         public static final int textView3=0x7f06001b;
+        public static final int textView4=0x7f06001c;
+        public static final int textView5=0x7f06001d;
         public static final int txt=0x7f060017;
         public static final int user_avata_img=0x7f060012;
         public static final int user_comment_txt=0x7f060014;
@@ -257,9 +267,10 @@ containing a value of this type.
         public static final int comment_list_fragment=0x7f030002;
         public static final int comment_list_item=0x7f030003;
         public static final int left_item_view=0x7f030004;
-        public static final int main_fragment=0x7f030005;
-        public static final int mapview_layout=0x7f030006;
-        public static final int mess_status_item=0x7f030007;
+        public static final int location_detail_fragment=0x7f030005;
+        public static final int main_fragment=0x7f030006;
+        public static final int mapview_layout=0x7f030007;
+        public static final int mess_status_item=0x7f030008;
     }
     public static final class menu {
         public static final int location_detail=0x7f0b0000;
@@ -359,11 +370,15 @@ containing a value of this type.
         /**  Long form sign-in button text [CHAR LIMIT=30] 
          */
         public static final int common_signin_button_text_long=0x7f070012;
+        public static final int description_text=0x7f070024;
         public static final int drawer_close=0x7f07001b;
         public static final int drawer_open=0x7f07001a;
         public static final int hello_world=0x7f07001f;
         public static final int like_btn_text=0x7f070021;
+        public static final int map_view_text=0x7f070025;
         public static final int post_buttom_text=0x7f070022;
+        public static final int post_text=0x7f070026;
+        public static final int rating_text=0x7f070023;
         public static final int save_btn_text=0x7f070020;
         public static final int title_activity_location_detail=0x7f07001d;
     }
@@ -371,11 +386,13 @@ containing a value of this type.
         /** 
         Base application theme, dependent on API level. This theme is replaced
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+
     
 
             Theme customizations available in newer API levels can go in
             res/values-vXX/styles.xml, while customizations related to
             backward-compatibility can go here.
+
         
 
         Base application theme for API 11+. This theme completely replaces
@@ -394,7 +411,10 @@ containing a value of this type.
  All customizations that are NOT specific to a particular API-level can go here. 
          */
         public static final int AppTheme=0x7f0a0001;
+        public static final int comment_text_style=0x7f0a0004;
         public static final int left_drawer_text_style=0x7f0a0002;
+        public static final int post_date_text_style=0x7f0a0005;
+        public static final int user_name_text_style=0x7f0a0003;
     }
     public static final class styleable {
         /** Attributes that can be used with a MapAttrs.
