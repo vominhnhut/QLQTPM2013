@@ -1,8 +1,12 @@
 package com.example.wego;
 
 import com.example.adapter.LeftDrawerAdapter;
+import com.example.ultils.DialogGenerator;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -16,6 +20,11 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 public class MainActivity extends Activity {
+
+	public static final int HOME_ITEM_ID = 0;
+	public static final int ACCOUNT_ITEM_ID = 1;
+	public static final int EXIT_ITEM_ID = 2;
+
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
@@ -57,11 +66,11 @@ public class MainActivity extends Activity {
 			}
 		};
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
-				
+
 		getFragmentManager().beginTransaction()
-		.replace(R.id.content_frame, WeGoMainFragment.instance())
-		.commit();
-		
+				.replace(R.id.content_frame, WeGoMainFragment.instance())
+				.commit();
+
 		if (savedInstanceState == null) {
 			selectItem(0);
 		}
@@ -101,11 +110,24 @@ public class MainActivity extends Activity {
 
 	private void selectItem(int position) {
 		switch (position) {
-		case 0:
+		case HOME_ITEM_ID:
 			mDrawerList.setItemChecked(position, true);
 			mDrawerLayout.closeDrawer(mDrawerList);
 			break;
+		case ACCOUNT_ITEM_ID:
+			break;
+		case EXIT_ITEM_ID:
+			AlertDialog dialog = DialogGenerator.createExitConfirmationDialog(
+					this, new OnClickListener() {
 
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							// TODO Auto-generated method stub
+							System.exit(0);
+						}
+					});
+			dialog.show();
+			break;
 		default:
 			break;
 		}

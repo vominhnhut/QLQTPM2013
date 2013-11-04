@@ -13,8 +13,10 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignTop="@+id/sned_comment_btn"
+        android:layout_marginBottom="@dimen/dp3_pading"
         android:layout_marginLeft="@dimen/dp10_pading"
         android:layout_toLeftOf="@+id/sned_comment_btn"
+        android:background="@drawable/rounded_corner_rect"
         android:ems="10"
         android:inputType="text" >
 
@@ -26,8 +28,11 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
+        android:layout_marginBottom="@dimen/dp3_pading"
+        android:layout_marginLeft="@dimen/dp3_pading"
         android:layout_marginRight="@dimen/dp10_pading"
-        android:drawableLeft="@drawable/ic_send"
+        android:layout_marginTop="@dimen/dp3_pading"
+        android:background="@drawable/post_button_selector"
         android:text="@string/post_text" />
 
     <ListView

@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class LeftDrawerAdapter extends BaseAdapter {
+	
 	private Activity mActivity;
 	private String[] mListItems;
 	private ArrayList<Integer> mListIcon;
@@ -28,7 +29,7 @@ public class LeftDrawerAdapter extends BaseAdapter {
 		mListIcon = new ArrayList<Integer>();
 		mListIcon.add(R.drawable.home);
 		mListIcon.add(R.drawable.user);
-		mListIcon.add(R.drawable.setting);
+//		mListIcon.add(R.drawable.setting);
 		mListIcon.add(R.drawable.close);
 	}
 

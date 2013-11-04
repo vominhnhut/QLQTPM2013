@@ -4,6 +4,7 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="dp20_padding">20dp</dimen>
+    <dimen name="dp15_padding">15dp</dimen>
     <dimen name="dp10_pading">10dp</dimen>
     <dimen name="dp3_pading">3dp</dimen>
 
