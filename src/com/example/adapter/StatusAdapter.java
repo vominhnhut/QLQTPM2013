@@ -1,5 +1,8 @@
 package com.example.adapter;
 
+import java.util.ArrayList;
+
+import com.example.Object.DiaDiem;
 import com.example.wego.R;
 
 import android.app.Activity;
@@ -12,8 +15,11 @@ public class StatusAdapter extends BaseAdapter {
 	private static int N = 5; // hard code
 	private Activity mActivity;
 
-	public StatusAdapter(Activity activity) {
+	private ArrayList<DiaDiem> diaDiemList;
+	
+	public StatusAdapter(Activity activity, ArrayList<DiaDiem> ddList) {
 		mActivity = activity;
+		this.diaDiemList = diaDiemList;
 	}
 
 	@Override

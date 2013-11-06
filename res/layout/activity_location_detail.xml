@@ -3,68 +3,74 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#C8C8C8"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:weightSum="3" >
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_marginBottom="@dimen/dp5_padding"
+        android:layout_weight="2.25"
         android:background="#ffffff" >
 
-        <ImageView
-            android:id="@+id/locationType"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:src="@drawable/shopping_cart" />
+        <fragment
+            android:id="@+id/miniMap"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            class="com.google.android.gms.maps.SupportMapFragment" />
 
-        <TextView
-            android:id="@+id/locationName"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:id="@+id/RelativeLayout1"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
             android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/locationType"
-            android:text="Medium Text"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/locationAddress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/locationType"
-            android:layout_alignLeft="@+id/locationName"
-            android:text="TextView" />
+            <ImageView
+                android:id="@+id/locationType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:src="@drawable/shopping_cart"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:background="#CCFFFFFF"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/locationName"
+                    style="@style/Scrollable_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Medium Text"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/locationAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="TextView" />
+            </LinearLayout>
+
+        </RelativeLayout>
 
     </RelativeLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#ffffff" >
-
-        <Button
-            android:id="@+id/saveBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:drawableLeft="@drawable/location_save"
-            android:text="@string/save_btn_text" />
-
-        <Button
-            android:id="@+id/likeBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:drawableLeft="@drawable/location_like"
-            android:text="@string/like_btn_text" />
-    </LinearLayout>
 
     <android.support.v4.view.ViewPager
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/dp3_pading" />
+        android:layout_height="fill_parent"
+        android:layout_marginTop="@dimen/dp3_pading"
+        android:layout_weight="0.75" />
 
 </LinearLayout>

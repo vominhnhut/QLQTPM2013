@@ -7,5 +7,7 @@
     <dimen name="dp15_padding">15dp</dimen>
     <dimen name="dp10_pading">10dp</dimen>
     <dimen name="dp3_pading">3dp</dimen>
+    <dimen name="padding_5dp">5dp</dimen>
+    <dimen name="dp5_padding">6dp</dimen>
 
 </resources>

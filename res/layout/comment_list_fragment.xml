@@ -14,7 +14,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignTop="@+id/sned_comment_btn"
         android:layout_marginBottom="@dimen/dp3_pading"
-        android:layout_marginLeft="@dimen/dp10_pading"
+        android:layout_marginLeft="@dimen/dp5_padding"
         android:layout_toLeftOf="@+id/sned_comment_btn"
         android:background="@drawable/rounded_corner_rect"
         android:ems="10"
@@ -30,7 +30,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginBottom="@dimen/dp3_pading"
         android:layout_marginLeft="@dimen/dp3_pading"
-        android:layout_marginRight="@dimen/dp10_pading"
+        android:layout_marginRight="@dimen/dp5_padding"
         android:layout_marginTop="@dimen/dp3_pading"
         android:background="@drawable/post_button_selector"
         android:text="@string/post_text" />
@@ -44,8 +44,8 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_marginBottom="@dimen/dp3_pading"
-        android:layout_marginLeft="@dimen/dp10_pading"
-        android:layout_marginRight="@dimen/dp10_pading"
+        android:layout_marginLeft="@dimen/dp5_padding"
+        android:layout_marginRight="@dimen/dp5_padding"
         android:background="#ffffff"
         android:divider="@drawable/listview_divider_line2" >
 

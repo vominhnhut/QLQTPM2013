@@ -43,7 +43,7 @@
         <!-- Config for map -->
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyBK6kQbPf0dVdtdU0mtOXt72Y7ZXqvwA9A" />
+            android:value="AIzaSyAA2rXShNBGoJl-kQCO58JXI6Y5TGSz1eQ" />
         <!-- End configuration -->
         <activity
             android:name="com.example.wego.LocationDetailActivity"

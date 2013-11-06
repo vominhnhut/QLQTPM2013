@@ -23,4 +23,8 @@ public class LocationDetailPagerAdapter extends FragmentPagerAdapter {
 	  public int getCount() {
 	    return this.fragments.size();
 	  }
+	  
+	  public void replaceItem(int position, Fragment newItem){
+		  this.fragments.set(position, newItem);
+	  }
 }

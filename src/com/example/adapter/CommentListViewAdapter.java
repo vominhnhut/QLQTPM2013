@@ -65,9 +65,9 @@ public class CommentListViewAdapter extends BaseAdapter {
 		BinhLuan binhLuan = (BinhLuan) getItem(arg0);
 		
 		if(binhLuan !=null){
-			holder.userName.setText(binhLuan.getTenNguoiDang());
-			holder.userCommentText.setText( binhLuan.getNoiDung());
-			holder.postDate.setText(binhLuan.getThoiGianDang().toString());
+			holder.userName.setText(binhLuan.tenNguoiDang);
+			holder.userCommentText.setText( binhLuan.noiDung);
+			holder.postDate.setText(binhLuan.thoiGianDang.toString());
 		}
 		
 		return arg1;

@@ -1,5 +1,8 @@
 package com.example.wego;
 
+import java.util.ArrayList;
+
+import com.example.Object.DiaDiem;
 import com.example.adapter.StatusAdapter;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
@@ -47,7 +50,7 @@ public class WeGoMainFragment extends Fragment implements OnItemClickListener {
 		//
 		mStatusList = (ListView) view.findViewById(R.id.list_status);
 		if (mStatusList != null) {
-			mStatusList.setAdapter(new StatusAdapter(getActivity()));//
+			mStatusList.setAdapter(new StatusAdapter(getActivity(), new  ArrayList<DiaDiem>()));//
 			mStatusList.setOnItemClickListener(this);
 		}
 

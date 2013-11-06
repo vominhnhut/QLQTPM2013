@@ -1,9 +1,4 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-
-    <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:showAsAction="never"
-        android:title="@string/action_settings"/>
-
+    <item android:id="@+id/like" android:showAsAction="always" android:orderInCategory="1" android:title="@string/like_btn_text" android:icon="@drawable/location_like"></item>
+    <item android:id="@+id/save" android:title="@string/save_btn_text" android:orderInCategory="2" android:showAsAction="always" android:icon="@drawable/location_save"></item>
 </menu>

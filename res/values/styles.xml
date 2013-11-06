@@ -53,10 +53,15 @@
         <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
         <item name="android:textSize">20sp</item>
     </style>
-
+  
     <style name="divider_line">
         <item name="android:background">@drawable/line1</item>
         <item name="android:padding">5dp</item>
     </style>
     
+    <style name="Scrollable_text">
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:marqueeRepeatLimit">marquee_forever</item>
+    </style>
 </resources>
