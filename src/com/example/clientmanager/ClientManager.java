@@ -35,6 +35,7 @@ public class ClientManager {
 	public static DiaDiem RequestToGetDiaDiemChiTiet(String diadiemID)
 	{
 		DiaDiem diadiem = new DiaDiem();
+		
 		return diadiem;
 	}
 
