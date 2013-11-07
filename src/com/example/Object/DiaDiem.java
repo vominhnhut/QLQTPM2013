@@ -13,17 +13,34 @@ public class DiaDiem implements Serializable {
 	private static final long serialVersionUID = 1L;
 	public DiaDiem() {
 		// TODO Auto-generated constructor stub
+		id="";
+		ten="";
+		diaChi="";
+		moTa="";
+		diemDanhGia=0;
+		//toaDo=new LatLng(0, 0);
+		latitude = 0;
+		longitude = 0;
+		danhSachBinhLuan= new ArrayList<BinhLuan>();
+		danhSachDichVu=new ArrayList<ChiTietDichVu>();
+		isLiked=false;
+		isSaved=false;
+
 	}
 
-	public String id="";
-	public String ten="";
-	public String diaChi="";
-	public String moTa="";
-	public float diemDanhGia=0;
-	public LatLng toaDo=new LatLng(0, 0);
-	public ArrayList<BinhLuan> danhSachBinhLuan= new ArrayList<BinhLuan>();
-	public ArrayList<ChiTietDichVu> danhSachDichVu=new ArrayList<ChiTietDichVu>();
-	public Boolean isLiked=false;
-	public Boolean isSaved=false;
+	public String id;
+	public String ten;
+	public String diaChi;
+	public String moTa;
+	public float diemDanhGia;
+	public double latitude;
+	public double longitude;
+	public ArrayList<BinhLuan> danhSachBinhLuan;
+	public ArrayList<ChiTietDichVu> danhSachDichVu;
+	public Boolean isLiked;
+	public Boolean isSaved;
 
+	public LatLng getLatLng(){
+		return new LatLng(latitude, longitude);
+	}
 }

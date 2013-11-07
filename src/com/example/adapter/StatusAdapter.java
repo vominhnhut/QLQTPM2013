@@ -55,7 +55,7 @@ public class StatusAdapter extends BaseAdapter {
 		if (arg1 == null) {
 			LayoutInflater inflator = (LayoutInflater) mActivity
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			View view = inflator.inflate(R.layout.comment_list_item, null);
+			View view = inflator.inflate(R.layout.mess_status_item, null);
 
 			holder.locationName = (TextView) view
 					.findViewById(R.id.searchLocationNameTxt);
@@ -75,7 +75,7 @@ public class StatusAdapter extends BaseAdapter {
 		if (diaDiem != null) {
 			holder.locationName.setText(diaDiem.ten);
 			holder.locationAddress.setText(diaDiem.diaChi);
-			holder.locationRating.setText(diaDiem.diemDanhGia + "");
+			holder.locationRating.setText((int)diaDiem.diemDanhGia + "");
 		}
 
 		return arg1;
