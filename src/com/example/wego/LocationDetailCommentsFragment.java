@@ -9,7 +9,6 @@ import com.example.adapter.CommentListViewAdapter;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;

@@ -26,6 +26,7 @@ public class WeGoMainFragment extends Fragment implements OnItemClickListener {
 	private ListView mStatusList;
 	private boolean isShow = true;
 	private GoogleMap map;
+	//private LinearLayout mapLayout;
 
 	private static WeGoMainFragment instanceFragment = null;
 
@@ -50,9 +51,12 @@ public class WeGoMainFragment extends Fragment implements OnItemClickListener {
 		//
 		mStatusList = (ListView) view.findViewById(R.id.list_status);
 		if (mStatusList != null) {
-			mStatusList.setAdapter(new StatusAdapter(getActivity(), new  ArrayList<DiaDiem>()));//
+			mStatusList.setAdapter(new StatusAdapter(getActivity(),
+					new ArrayList<DiaDiem>()));//
 			mStatusList.setOnItemClickListener(this);
 		}
+
+		//mapLayout = (LinearLayout) view.findViewById(R.id.mapLayout);
 
 		map = ((MapFragment) getFragmentManager()
 				.findFragmentById(R.id.mapView)).getMap();
@@ -89,7 +93,7 @@ public class WeGoMainFragment extends Fragment implements OnItemClickListener {
 						@Override
 						public void onAnimationStart(Animation animation) {
 							// TODO Auto-generated method stub
-
+							mStatusList.setVisibility(View.GONE);
 						}
 
 						@Override
@@ -101,21 +105,22 @@ public class WeGoMainFragment extends Fragment implements OnItemClickListener {
 						@Override
 						public void onAnimationEnd(Animation animation) {
 							// TODO Auto-generated method stub
-							mStatusList.setVisibility(View.GONE);
+
 						}
 					});
 					mStatusList.startAnimation(anim);
 
 				}
 			}, 200);
+			
 			isShow = false;
 		} else {
 			mStatusList.postDelayed(new Runnable() {
 				@Override
 				public void run() {
-					Animation anim = AnimationUtils.loadAnimation(
+					Animation scrollAnim = AnimationUtils.loadAnimation(
 							getActivity(), R.anim.slide_in_bot_top);
-					anim.setAnimationListener(new AnimationListener() {
+					scrollAnim.setAnimationListener(new AnimationListener() {
 
 						@Override
 						public void onAnimationStart(Animation animation) {
@@ -135,7 +140,7 @@ public class WeGoMainFragment extends Fragment implements OnItemClickListener {
 							mStatusList.setVisibility(View.VISIBLE);
 						}
 					});
-					mStatusList.startAnimation(anim);
+					mStatusList.startAnimation(scrollAnim);
 
 				}
 			}, 200);
@@ -146,6 +151,7 @@ public class WeGoMainFragment extends Fragment implements OnItemClickListener {
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 		// TODO Auto-generated method stub
-		getActivity().startActivity(new Intent(getActivity(), LocationDetailActivity.class));
+		getActivity().startActivity(
+				new Intent(getActivity(), LocationDetailActivity.class));
 	}
 }

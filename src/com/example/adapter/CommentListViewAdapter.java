@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 public class CommentListViewAdapter extends BaseAdapter {
@@ -18,8 +17,8 @@ public class CommentListViewAdapter extends BaseAdapter {
 	private Context adapterContext;
 	private ArrayList<BinhLuan> binhLuanList;
 
-	public static class ViewHolder {
-		ImageView userAvatar;
+	private static class ViewHolder {
+		//ImageView userAvatar;
 		TextView userCommentText;
 		TextView userName;
 		TextView postDate;
@@ -51,10 +50,10 @@ public class CommentListViewAdapter extends BaseAdapter {
             LayoutInflater inflator = (LayoutInflater) adapterContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			View view = inflator.inflate(R.layout.comment_list_item, null);
 			
-			holder.userAvatar = (ImageView) view.findViewById(R.id.user_avata_img);
+			//holder.userAvatar = (ImageView) view.findViewById(R.id.user_avata_img);
 			holder.userName = (TextView) view.findViewById(R.id.user_name_txt);
-			holder.userCommentText = (TextView) view.findViewById(R.id.user_comment_txt);
-			holder.postDate = (TextView) view.findViewById(R.id.postDateTxt);
+			holder.userCommentText = (TextView) view.findViewById(R.id.searchLocationAddressTxt);
+			holder.postDate = (TextView) view.findViewById(R.id.searchLocationNameTxt);
 			
 			arg1 = view;
 			arg1.setTag(holder);
