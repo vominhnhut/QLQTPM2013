@@ -1,9 +1,5 @@
 package com.example.Object;
 
-import org.apache.http.entity.StringEntity;
-
-import android.R.string;
-
 public class TaiKhoan {
 
 	public String tenTaiKhoan;

@@ -9,6 +9,8 @@ import com.example.ultils.DialogGenerator;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.res.Configuration;
@@ -22,8 +24,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.SearchView;
+import android.widget.Toast;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements
+		SearchView.OnQueryTextListener {
 
 	public static final int HOME_ITEM_ID = 0;
 	public static final int ACCOUNT_ITEM_ID = 1;
@@ -36,7 +41,7 @@ public class MainActivity extends Activity {
 	private CharSequence mTitle;
 
 	private ArrayList<DiaDiem> searchedDiadiem;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -73,21 +78,35 @@ public class MainActivity extends Activity {
 		};
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-		getFragmentManager().beginTransaction()
-				.replace(R.id.content_frame, WeGoMainFragment.instance())
-				.commit();
+		getFragmentManager()
+				.beginTransaction()
+				.replace(R.id.content_frame, WeGoMainFragment.instance(),
+						WeGoMainFragment.TAG).commit();
 
 		if (savedInstanceState == null) {
 			selectItem(0);
 		}
-		
-		search("");
+
+	}
+
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.main, menu);
+
+		// Associate searchable configuration with the SearchView
+		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+		SearchView searchView = (SearchView) menu.findItem(R.id.action_search)
+				.getActionView();
+		searchView.setSearchableInfo(searchManager
+				.getSearchableInfo(getComponentName()));
+		searchView.setOnQueryTextListener(this);
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -162,13 +181,36 @@ public class MainActivity extends Activity {
 		mDrawerToggle.onConfigurationChanged(newConfig);
 	}
 
-	public ArrayList<DiaDiem> getSearchedItems(){
+	public ArrayList<DiaDiem> getSearchedItems() {
 		return this.searchedDiadiem;
 	}
 
-	public void search(String key){
+	public void search(String key) {
 		this.searchedDiadiem = Constants.getDumbDDList();
+		updateSearchList();
 	}
 
-	
+	public void updateSearchList() {
+		WeGoMainFragment fragment = (WeGoMainFragment) getFragmentManager()
+				.findFragmentByTag(WeGoMainFragment.TAG);
+		if (fragment != null) {
+			fragment.updateSearchList(searchedDiadiem);
+		} else {
+			Toast.makeText(getApplicationContext(), "fuck", Toast.LENGTH_SHORT)
+					.show();
+		}
+	}
+
+	@Override
+	public boolean onQueryTextChange(String arg0) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean onQueryTextSubmit(String query) {
+		// TODO Auto-generated method stub
+		search(query);
+		return false;
+	}
 }

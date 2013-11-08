@@ -1,21 +1,7 @@
 package com.example.jsonparser;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.StatusLine;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,13 +10,6 @@ import com.example.Object.BinhLuan;
 import com.example.Object.ChiTietDichVu;
 import com.example.Object.DiaDiem;
 import com.example.Object.TaiKhoan;
-import com.google.android.gms.maps.model.LatLng;
-
-import android.R.string;
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.util.Log;
 
 /**
  * JSON to Object. Object to JSON. Parser
@@ -102,9 +81,9 @@ public class JSONParser {
 //		DiaDiem fake = new DiaDiem();
 //
 //		fake.ten = "Osaka Ramen";
-//		fake.diaChi = "18 Thái Văn Lung, P.Bến Nghé, Q.1, Ho Chi Minh City, Vietnam";
+//		fake.diaChi = "18 ThaÌ�i VÄƒn Lung, P.BÃªÌ�n NgheÌ�, Q.1, Ho Chi Minh City, Vietnam";
 //		fake.diemDanhGia = 123;
-//		fake.moTa = "Quán ăn Nhật. Mì Nhật";
+//		fake.moTa = "QuÃ¡n Äƒn Nháº­t. MÃ¬ Nháº­t";
 //		fake.toaDo = new LatLng(10.780023, 106.702282);
 //
 //		return fake;
@@ -117,41 +96,41 @@ public class JSONParser {
 //		DiaDiem fake1 = new DiaDiem();
 //
 //		fake1.ten = "Osaka Ramen";
-//		fake1.diaChi = "18 Thái Văn Lung, P.Bến Nghé, Q.1, Ho Chi Minh City, Vietnam";
+//		fake1.diaChi = "18 ThaÌ�i VÄƒn Lung, P.BÃªÌ�n NgheÌ�, Q.1, Ho Chi Minh City, Vietnam";
 //		fake1.diemDanhGia = 123;
-//		fake1.moTa = "Quán ăn Nhật. Mì Nhật";
+//		fake1.moTa = "QuÃ¡n Äƒn Nháº­t. MÃ¬ Nháº­t";
 //		fake1.toaDo = new LatLng(10.780023, 106.702282);
 //
 //		DiaDiem fake2 = new DiaDiem();
 //
 //		fake2.ten = "Osaka Ramen 2 ";
-//		fake2.diaChi = "18 Thái Văn Lung, P.Bến Nghé, Q.1, Ho Chi Minh City, Vietnam";
+//		fake2.diaChi = "18 ThaÌ�i VÄƒn Lung, P.BÃªÌ�n NgheÌ�, Q.1, Ho Chi Minh City, Vietnam";
 //		fake2.diemDanhGia = 123;
-//		fake2.moTa = "Quán ăn Nhật. Mì Nhật";
+//		fake2.moTa = "QuÃ¡n Äƒn Nháº­t. MÃ¬ Nháº­t";
 //		fake2.toaDo = new LatLng(10.780023, 106.702282);
 //
 //		DiaDiem fake3 = new DiaDiem();
 //
 //		fake3.ten = "Osaka Ramen 3";
-//		fake3.diaChi = "18 Thái Văn Lung, P.Bến Nghé, Q.1, Ho Chi Minh City, Vietnam";
+//		fake3.diaChi = "18 ThaÌ�i VÄƒn Lung, P.BÃªÌ�n NgheÌ�, Q.1, Ho Chi Minh City, Vietnam";
 //		fake3.diemDanhGia = 123;
-//		fake3.moTa = "Quán ăn Nhật. Mì Nhật";
+//		fake3.moTa = "QuÃ¡n Äƒn Nháº­t. MÃ¬ Nháº­t";
 //		fake3.toaDo = new LatLng(10.780023, 106.702282);
 //
 //		DiaDiem fake4 = new DiaDiem();
 //
 //		fake4.ten = "Osaka Ramen 4";
-//		fake4.diaChi = "18 Thái Văn Lung, P.Bến Nghé, Q.1, Ho Chi Minh City, Vietnam";
+//		fake4.diaChi = "18 ThaÌ�i VÄƒn Lung, P.BÃªÌ�n NgheÌ�, Q.1, Ho Chi Minh City, Vietnam";
 //		fake4.diemDanhGia = 123;
-//		fake4.moTa = "Quán ăn Nhật. Mì Nhật";
+//		fake4.moTa = "QuÃ¡n Äƒn Nháº­t. MÃ¬ Nháº­t";
 //		fake4.toaDo = new LatLng(10.780023, 106.702282);
 //
 //		DiaDiem fake5 = new DiaDiem();
 //
 //		fake5.ten = "Osaka Ramen 5";
-//		fake5.diaChi = "18 Thái Văn Lung, P.Bến Nghé, Q.1, Ho Chi Minh City, Vietnam";
+//		fake5.diaChi = "18 ThaÌ�i VÄƒn Lung, P.BÃªÌ�n NgheÌ�, Q.1, Ho Chi Minh City, Vietnam";
 //		fake5.diemDanhGia = 123;
-//		fake5.moTa = "Quán ăn Nhật. Mì Nhật";
+//		fake5.moTa = "QuÃ¡n Äƒn Nháº­t. MÃ¬ Nháº­t";
 //		fake5.toaDo = new LatLng(10.780023, 106.702282);
 //
 //		//

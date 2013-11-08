@@ -5,14 +5,13 @@ import java.util.Hashtable;
 
 import com.example.Object.DiaDiem;
 import com.example.adapter.StatusAdapter;
+import com.example.location_manager.CurrentLocationHelper;
 import com.example.ultils.Constants;
-import com.google.android.gms.internal.bu;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
-import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
@@ -21,8 +20,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import android.app.Fragment;
 import android.content.Intent;
+import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,8 +31,11 @@ import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class WeGoMainFragment extends Fragment implements OnItemClickListener {
+	public static final String TAG = "WeGoMainFragment";
+
 	private ListView mStatusList;
 	private boolean isShow = true;
 	private GoogleMap map;
@@ -68,7 +70,7 @@ public class WeGoMainFragment extends Fragment implements OnItemClickListener {
 					new ArrayList<DiaDiem>()));//
 			mStatusList.setOnItemClickListener(this);
 		}
-
+		showHideListStatus();
 		// mapLayout = (LinearLayout) view.findViewById(R.id.mapLayout);
 
 		map = ((MapFragment) getFragmentManager()
@@ -79,7 +81,14 @@ public class WeGoMainFragment extends Fragment implements OnItemClickListener {
 			@Override
 			public void onMapClick(LatLng point) {
 				// TODO Auto-generated method stub
-				showHideListStatus();
+				if (searchedItemAdapter != null
+						&& searchedItemAdapter.getCount() > 0) {
+					showHideListStatus();
+				} else {
+					Toast.makeText(getActivity(),
+							getString(R.string.no_search_item_text),
+							Toast.LENGTH_SHORT).show();
+				}
 			}
 		});
 		map.setOnInfoWindowClickListener(new OnInfoWindowClickListener() {
@@ -87,22 +96,14 @@ public class WeGoMainFragment extends Fragment implements OnItemClickListener {
 			@Override
 			public void onInfoWindowClick(Marker marker) {
 				// TODO Auto-generated method stub
-				if(hashTable!=null){
+				if (hashTable != null) {
 					toDetailActivity(hashTable.get(marker));
 				}
 			}
 		});
 
-		MainActivity main = (MainActivity) getActivity();
-
-		ArrayList<DiaDiem> diaDiem = main.getSearchedItems();
-
-		this.searchedItemAdapter = new StatusAdapter(getActivity(), diaDiem);
-
-		Log.e("Log", diaDiem.size() + "");
-
-		mStatusList.setAdapter(this.searchedItemAdapter);
-		addMapPin();
+		zoomToLocation(10, false);
+		forcusCurrentLocation(true);
 		return view;
 	}
 
@@ -115,70 +116,77 @@ public class WeGoMainFragment extends Fragment implements OnItemClickListener {
 
 	public void showHideListStatus() {
 		if (isShow) {
-
-			mStatusList.postDelayed(new Runnable() {
-				@Override
-				public void run() {
-					Animation anim = AnimationUtils.loadAnimation(
-							getActivity(), R.anim.slide_out_top_bot);
-					anim.setAnimationListener(new AnimationListener() {
-
-						@Override
-						public void onAnimationStart(Animation animation) {
-							// TODO Auto-generated method stub
-							mStatusList.setVisibility(View.GONE);
-						}
-
-						@Override
-						public void onAnimationRepeat(Animation animation) {
-							// TODO Auto-generated method stub
-
-						}
-
-						@Override
-						public void onAnimationEnd(Animation animation) {
-							// TODO Auto-generated method stub
-
-						}
-					});
-					mStatusList.startAnimation(anim);
-
-				}
-			}, 200);
-
-			isShow = false;
+			hideListStatus();
 		} else {
-			mStatusList.postDelayed(new Runnable() {
-				@Override
-				public void run() {
-					Animation scrollAnim = AnimationUtils.loadAnimation(
-							getActivity(), R.anim.slide_in_bot_top);
-					scrollAnim.setAnimationListener(new AnimationListener() {
-
-						@Override
-						public void onAnimationStart(Animation animation) {
-							// TODO Auto-generated method stub
-
-						}
-
-						@Override
-						public void onAnimationRepeat(Animation animation) {
-							// TODO Auto-generated method stub
-
-						}
-
-						@Override
-						public void onAnimationEnd(Animation animation) {
-							// TODO Auto-generated method stub
-							mStatusList.setVisibility(View.VISIBLE);
-						}
-					});
-					mStatusList.startAnimation(scrollAnim);
-
-				}
-			}, 200);
-			isShow = true;
+			showListStatus();
 		}
+	}
+
+	public void showListStatus() {
+		mStatusList.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				Animation scrollAnim = AnimationUtils.loadAnimation(
+						getActivity(), R.anim.slide_in_bot_top);
+				scrollAnim.setAnimationListener(new AnimationListener() {
+
+					@Override
+					public void onAnimationStart(Animation animation) {
+						// TODO Auto-generated method stub
+
+					}
+
+					@Override
+					public void onAnimationRepeat(Animation animation) {
+						// TODO Auto-generated method stub
+
+					}
+
+					@Override
+					public void onAnimationEnd(Animation animation) {
+						// TODO Auto-generated method stub
+						mStatusList.setVisibility(View.VISIBLE);
+					}
+				});
+				mStatusList.startAnimation(scrollAnim);
+
+			}
+		}, 0);
+		isShow = true;
+	}
+
+	public void hideListStatus() {
+		mStatusList.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				Animation anim = AnimationUtils.loadAnimation(getActivity(),
+						R.anim.slide_out_top_bot);
+				anim.setAnimationListener(new AnimationListener() {
+
+					@Override
+					public void onAnimationStart(Animation animation) {
+						// TODO Auto-generated method stub
+						mStatusList.setVisibility(View.GONE);
+					}
+
+					@Override
+					public void onAnimationRepeat(Animation animation) {
+						// TODO Auto-generated method stub
+
+					}
+
+					@Override
+					public void onAnimationEnd(Animation animation) {
+						// TODO Auto-generated method stub
+
+					}
+				});
+				mStatusList.startAnimation(anim);
+
+			}
+		}, 0);
+
+		isShow = false;
 	}
 
 	@Override
@@ -204,8 +212,8 @@ public class WeGoMainFragment extends Fragment implements OnItemClickListener {
 				hashTable.put(key, diaDiem);
 			}
 		}
-		
-		//forcusSearchItems();
+
+		// forcusSearchItems();
 	}
 
 	private void toDetailActivity(DiaDiem diaDiem) {
@@ -217,17 +225,52 @@ public class WeGoMainFragment extends Fragment implements OnItemClickListener {
 			bundle.putSerializable(Constants.DIADIEM_KEY, diaDiem);
 			intent.putExtras(bundle);
 		}
-		// getActivity().startActivity(intent);
 		startActivity(intent);
 	}
-	
-	private void forcusSearchItems(){
+
+	private void forcusSearchItems() {
 		LatLngBounds.Builder builder = new LatLngBounds.Builder();
 		for (int i = 0; i < this.searchedItemAdapter.getCount(); i++) {
 			DiaDiem diaDiem = (DiaDiem) this.searchedItemAdapter.getItem(i);
 			builder.include(diaDiem.getLatLng());
 		}
-		CameraUpdate camUpdate = CameraUpdateFactory.newLatLngBounds(builder.build(),10);
+		CameraUpdate camUpdate = CameraUpdateFactory.newLatLngBounds(
+				builder.build(), 0);
 		map.animateCamera(camUpdate);
+	}
+
+	public void updateSearchList(ArrayList<DiaDiem> diaDiemList) {
+		if (diaDiemList == null || diaDiemList.size() == 0) {
+			hideListStatus();
+		} else {
+			searchedItemAdapter = new StatusAdapter(getActivity(), diaDiemList);
+			mStatusList.setAdapter(searchedItemAdapter);
+			addMapPin();
+			showListStatus();
+			forcusSearchItems();
+		}
+	}
+
+	private void forcusCurrentLocation(boolean animation) {
+		forcusLocation(CurrentLocationHelper.getCurrentLocationLatLng(
+				getActivity(), LocationManager.NETWORK_PROVIDER), animation);
+	}
+
+	private void forcusLocation(LatLng location, boolean animation) {
+		CameraUpdate camUpdate = CameraUpdateFactory.newLatLng(location);
+		if (animation) {
+			map.animateCamera(camUpdate);
+		} else {
+			map.moveCamera(camUpdate);
+		}
+	}
+
+	private void zoomToLocation(int zoomLevel, boolean animation) {
+		CameraUpdate camUpdate = CameraUpdateFactory.zoomTo(zoomLevel);
+		if (animation) {
+			map.animateCamera(camUpdate);
+		} else {
+			map.moveCamera(camUpdate);
+		}
 	}
 }

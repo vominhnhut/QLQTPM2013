@@ -28,5 +28,7 @@
     <string name="cancel_text">Cancel!</string>
     <string name="services_text">Services</string>
     <string name="like_text">Likes</string>
+    <string name="search_hint">Search location</string>
+    <string name="no_search_item_text">Nothing to show! Search location first!</string>
 
 </resources>
