@@ -42,6 +42,7 @@ public class Constants {
 			dd.isLiked = true;
 			dd.isSaved = true;
 			dd.danhSachBinhLuan = createDumdComments();
+			dd.moTa = "Dumb description of " + i;
 
 			ddList.add(dd);
 		}

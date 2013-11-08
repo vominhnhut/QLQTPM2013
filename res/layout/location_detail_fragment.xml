@@ -21,7 +21,7 @@
                 style="@style/rounded_conner_box"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dp3_pading"
+                android:layout_marginBottom="@dimen/dp15_padding"
                 android:layout_marginLeft="@dimen/dp5_padding"
                 android:layout_marginRight="@dimen/dp5_padding"
                 android:layout_weight="1"
@@ -43,36 +43,15 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/line1" />
 
-                <RelativeLayout
-                    android:id="@+id/RelativeLayout1"
-                    style="@style/rounded_conner_box"
+                <TextView
+                    android:id="@+id/ratingText"
+                    style="@style/small_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/dp3_pading"
-                    android:layout_marginLeft="@dimen/dp5_padding"
-                    android:layout_marginRight="@dimen/dp5_padding"
-                    android:layout_weight="1"
-                    android:orientation="vertical" >
-
-                    <TextView
-                        android:id="@+id/textView2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignBaseline="@+id/ratingText"
-                        android:layout_alignBottom="@+id/ratingText"
-                        android:layout_toRightOf="@+id/ratingText"
-                        android:text="@string/like_text" />
-
-                    <TextView
-                        android:id="@+id/ratingText"
-                        style="@style/large_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
-                        android:layout_alignParentLeft="true"
-                        android:text="@string/app_name" />
-
-                </RelativeLayout>
+                    android:layout_marginLeft="@dimen/dp10_pading"
+                    android:layout_marginRight="@dimen/dp10_pading"
+                    android:drawableLeft="@drawable/ic_like"
+                    android:text="@string/app_name" />
 
                 <TextView
                     android:id="@+id/descriptionText"
@@ -81,7 +60,6 @@
                     android:layout_marginLeft="@dimen/dp10_pading"
                     android:layout_marginRight="@dimen/dp10_pading"
                     android:text="@string/app_name" />
-
             </LinearLayout>
 
             <LinearLayout

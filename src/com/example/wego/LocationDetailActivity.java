@@ -144,7 +144,7 @@ public class LocationDetailActivity extends FragmentActivity {
 			// TODO Auto-generated method stub
 
 			try {
-				ClientManager.RequestToLogIn("Phan Minh Nhut", "tetòte");
+				ClientManager.RequestToChangePassword("Phan Minh Nhut","đâsd","ádasdas");
 			} catch (IllegalStateException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
