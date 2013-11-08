@@ -23,6 +23,7 @@ import org.json.JSONObject;
 import com.example.Object.BinhLuan;
 import com.example.Object.ChiTietDichVu;
 import com.example.Object.DiaDiem;
+import com.example.Object.TaiKhoan;
 import com.google.android.gms.maps.model.LatLng;
 
 import android.R.string;
@@ -31,100 +32,26 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
+/**
+ * JSON to Object. Object to JSON. Parser
+ * 
+ * @author Hoa Phat
+ * @since 2013/11/8
+ * 
+ */
 public class JSONParser {
 
-	static InputStream is = null;
-	static JSONObject jObj = null;
-	static JSONArray jArray = null;
-	static String json = "";
+	public static JSONObject getJSONFromObject(TaiKhoan taiKhoan)
+			throws JSONException {
+		JSONObject obj = new JSONObject();
 
-	public JSONParser() {
-	}
+		obj.put("ten_tai_khoan", taiKhoan.tenTaiKhoan);
+		obj.put("mat_khau", taiKhoan.matKhau);
+		obj.put("ho_va_ten", taiKhoan.hoTen);
+		obj.put("email", taiKhoan.email);
+		obj.put("ngay_sinh", taiKhoan.ngaySinh);
 
-	public JSONObject getJSONFromURL(String url) {
-		// Making HTTP request
-
-		try {
-			// defaultHttpClient
-			DefaultHttpClient httpClient = new DefaultHttpClient();
-			HttpPost httpPost = new HttpPost(url);
-
-			HttpResponse httpResponse = httpClient.execute(httpPost);
-			HttpEntity httpEntity = httpResponse.getEntity();
-			is = httpEntity.getContent();
-
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		} catch (ClientProtocolException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		try {
-			BufferedReader reader = new BufferedReader(new InputStreamReader(
-					is, "iso-8859-1"), 8);
-			StringBuilder sb = new StringBuilder();
-			String line = null;
-			while ((line = reader.readLine()) != null) {
-				sb.append(line + "\n");
-			}
-			is.close();
-			json = sb.toString();
-		} catch (Exception e) {
-			Log.e("Buffer Error", "Error converting result " + e.toString());
-		}
-
-		// try parse the string to a JSON object
-		try {
-			jObj = new JSONObject(json);
-		} catch (JSONException e) {
-			Log.e("JSON Parser", "Error parsing data " + e.toString());
-		}
-
-		// return JSON String
-		return jObj;
-
-	}
-
-	public JSONArray getJSONArrayFromURL(String url) {
-		// Making HTTP request
-
-		StringBuilder builder = new StringBuilder();
-		HttpClient client = new DefaultHttpClient();
-		HttpGet httpGet = new HttpGet(url);
-		try {
-			HttpResponse response = client.execute(httpGet);
-			StatusLine statusLine = response.getStatusLine();
-			int statusCode = statusLine.getStatusCode();
-			if (statusCode == 200) {
-				HttpEntity entity = response.getEntity();
-				InputStream content = entity.getContent();
-				BufferedReader reader = new BufferedReader(
-						new InputStreamReader(content));
-				String line;
-				while ((line = reader.readLine()) != null) {
-					builder.append(line);
-				}
-			} else {
-				Log.e("==>", "Failed to download file");
-			}
-		} catch (ClientProtocolException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		// Parse String to JSON object
-		try {
-			jArray = new JSONArray(builder.toString());
-		} catch (JSONException e) {
-			Log.e("JSON Parser", "Error parsing data " + e.toString());
-		}
-
-		// return JSON Object
-		return jArray;
-
+		return obj;
 	}
 
 	public static DiaDiem parseDiaDiemFromJSON(JSONObject obj) {
