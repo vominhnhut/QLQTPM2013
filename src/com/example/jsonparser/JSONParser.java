@@ -98,72 +98,72 @@ public class JSONParser {
 		return listChiTietDichVu;
 	}
 
-	public static DiaDiem FakeDiaDiem() {
-		DiaDiem fake = new DiaDiem();
-
-		fake.ten = "Osaka Ramen";
-		fake.diaChi = "18 Thái Văn Lung, P.Bến Nghé, Q.1, Ho Chi Minh City, Vietnam";
-		fake.diemDanhGia = 123;
-		fake.moTa = "Quán ăn Nhật. Mì Nhật";
-		fake.toaDo = new LatLng(10.780023, 106.702282);
-
-		return fake;
-	}
-
-	public static ArrayList<DiaDiem> FakeListDiaDiem() {
-
-		ArrayList<DiaDiem> list = new ArrayList<DiaDiem>();
-
-		DiaDiem fake1 = new DiaDiem();
-
-		fake1.ten = "Osaka Ramen";
-		fake1.diaChi = "18 Thái Văn Lung, P.Bến Nghé, Q.1, Ho Chi Minh City, Vietnam";
-		fake1.diemDanhGia = 123;
-		fake1.moTa = "Quán ăn Nhật. Mì Nhật";
-		fake1.toaDo = new LatLng(10.780023, 106.702282);
-
-		DiaDiem fake2 = new DiaDiem();
-
-		fake2.ten = "Osaka Ramen 2 ";
-		fake2.diaChi = "18 Thái Văn Lung, P.Bến Nghé, Q.1, Ho Chi Minh City, Vietnam";
-		fake2.diemDanhGia = 123;
-		fake2.moTa = "Quán ăn Nhật. Mì Nhật";
-		fake2.toaDo = new LatLng(10.780023, 106.702282);
-
-		DiaDiem fake3 = new DiaDiem();
-
-		fake3.ten = "Osaka Ramen 3";
-		fake3.diaChi = "18 Thái Văn Lung, P.Bến Nghé, Q.1, Ho Chi Minh City, Vietnam";
-		fake3.diemDanhGia = 123;
-		fake3.moTa = "Quán ăn Nhật. Mì Nhật";
-		fake3.toaDo = new LatLng(10.780023, 106.702282);
-
-		DiaDiem fake4 = new DiaDiem();
-
-		fake4.ten = "Osaka Ramen 4";
-		fake4.diaChi = "18 Thái Văn Lung, P.Bến Nghé, Q.1, Ho Chi Minh City, Vietnam";
-		fake4.diemDanhGia = 123;
-		fake4.moTa = "Quán ăn Nhật. Mì Nhật";
-		fake4.toaDo = new LatLng(10.780023, 106.702282);
-
-		DiaDiem fake5 = new DiaDiem();
-
-		fake5.ten = "Osaka Ramen 5";
-		fake5.diaChi = "18 Thái Văn Lung, P.Bến Nghé, Q.1, Ho Chi Minh City, Vietnam";
-		fake5.diemDanhGia = 123;
-		fake5.moTa = "Quán ăn Nhật. Mì Nhật";
-		fake5.toaDo = new LatLng(10.780023, 106.702282);
-
-		//
-
-		list.add(fake1);
-		list.add(fake2);
-		list.add(fake3);
-		list.add(fake4);
-		list.add(fake5);
-
-		return list;
-	}
+//	public static DiaDiem FakeDiaDiem() {
+//		DiaDiem fake = new DiaDiem();
+//
+//		fake.ten = "Osaka Ramen";
+//		fake.diaChi = "18 Thái Văn Lung, P.Bến Nghé, Q.1, Ho Chi Minh City, Vietnam";
+//		fake.diemDanhGia = 123;
+//		fake.moTa = "Quán ăn Nhật. Mì Nhật";
+//		fake.toaDo = new LatLng(10.780023, 106.702282);
+//
+//		return fake;
+//	}
+//
+//	public static ArrayList<DiaDiem> FakeListDiaDiem() {
+//
+//		ArrayList<DiaDiem> list = new ArrayList<DiaDiem>();
+//
+//		DiaDiem fake1 = new DiaDiem();
+//
+//		fake1.ten = "Osaka Ramen";
+//		fake1.diaChi = "18 Thái Văn Lung, P.Bến Nghé, Q.1, Ho Chi Minh City, Vietnam";
+//		fake1.diemDanhGia = 123;
+//		fake1.moTa = "Quán ăn Nhật. Mì Nhật";
+//		fake1.toaDo = new LatLng(10.780023, 106.702282);
+//
+//		DiaDiem fake2 = new DiaDiem();
+//
+//		fake2.ten = "Osaka Ramen 2 ";
+//		fake2.diaChi = "18 Thái Văn Lung, P.Bến Nghé, Q.1, Ho Chi Minh City, Vietnam";
+//		fake2.diemDanhGia = 123;
+//		fake2.moTa = "Quán ăn Nhật. Mì Nhật";
+//		fake2.toaDo = new LatLng(10.780023, 106.702282);
+//
+//		DiaDiem fake3 = new DiaDiem();
+//
+//		fake3.ten = "Osaka Ramen 3";
+//		fake3.diaChi = "18 Thái Văn Lung, P.Bến Nghé, Q.1, Ho Chi Minh City, Vietnam";
+//		fake3.diemDanhGia = 123;
+//		fake3.moTa = "Quán ăn Nhật. Mì Nhật";
+//		fake3.toaDo = new LatLng(10.780023, 106.702282);
+//
+//		DiaDiem fake4 = new DiaDiem();
+//
+//		fake4.ten = "Osaka Ramen 4";
+//		fake4.diaChi = "18 Thái Văn Lung, P.Bến Nghé, Q.1, Ho Chi Minh City, Vietnam";
+//		fake4.diemDanhGia = 123;
+//		fake4.moTa = "Quán ăn Nhật. Mì Nhật";
+//		fake4.toaDo = new LatLng(10.780023, 106.702282);
+//
+//		DiaDiem fake5 = new DiaDiem();
+//
+//		fake5.ten = "Osaka Ramen 5";
+//		fake5.diaChi = "18 Thái Văn Lung, P.Bến Nghé, Q.1, Ho Chi Minh City, Vietnam";
+//		fake5.diemDanhGia = 123;
+//		fake5.moTa = "Quán ăn Nhật. Mì Nhật";
+//		fake5.toaDo = new LatLng(10.780023, 106.702282);
+//
+//		//
+//
+//		list.add(fake1);
+//		list.add(fake2);
+//		list.add(fake3);
+//		list.add(fake4);
+//		list.add(fake5);
+//
+//		return list;
+//	}
 
 	public static ArrayList<BinhLuan> FakeListBinhLuan() {
 
