@@ -30,5 +30,6 @@
     <string name="like_text">Likes</string>
     <string name="search_hint">Search location</string>
     <string name="no_search_item_text">Nothing to show! Search location first!</string>
+    <string name="search_action">Search</string>
 
 </resources>

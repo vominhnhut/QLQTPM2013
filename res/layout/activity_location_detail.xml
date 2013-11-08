@@ -3,14 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#C8C8C8"
-    android:orientation="vertical"
-    android:weightSum="3" >
+    android:orientation="vertical" >
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
-        android:layout_marginBottom="@dimen/dp5_padding"
-        android:layout_weight="2.25"
+        android:layout_weight="2"
         android:background="#ffffff" >
 
         <fragment
@@ -58,12 +56,37 @@
                     android:id="@+id/locationAddress"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:text="TextView" />
             </LinearLayout>
-
         </RelativeLayout>
-
     </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp5_padding"
+        android:layout_marginTop="@dimen/dp1_padding" >
+
+        <Button
+            android:id="@+id/like_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/dp0.25_padding"
+            android:layout_weight="1"
+            android:background="@drawable/like_button_selector"
+            android:text="@string/like_btn_text" />
+
+        <Button
+            android:id="@+id/save_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp0.25_padding"
+            android:layout_weight="1"
+            android:background="@drawable/save_button_selector"
+            android:text="@string/save_btn_text" />
+
+    </LinearLayout>
 
     <android.support.v4.view.ViewPager
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -71,6 +94,6 @@
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:layout_marginTop="@dimen/dp3_pading"
-        android:layout_weight="0.75" />
+        android:layout_weight="1" />
 
 </LinearLayout>

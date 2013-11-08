@@ -28,7 +28,8 @@
         android:layout_height="350dp"
         android:layout_weight="1"
         android:background="#383838"
-        android:visibility="visible" >
+        android:visibility="visible"
+        android:divider="@drawable/line2" >
 
     </ListView>
 

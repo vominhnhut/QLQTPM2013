@@ -22,6 +22,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
@@ -73,6 +74,8 @@ public class MainActivity extends Activity implements
 
 			public void onDrawerOpened(View drawerView) {
 				getActionBar().setTitle(mDrawerTitle);
+				getMaGoMainFragment().hideListStatus();
+				hideKeyPad();
 				invalidateOptionsMenu();
 			}
 		};
@@ -191,8 +194,7 @@ public class MainActivity extends Activity implements
 	}
 
 	public void updateSearchList() {
-		WeGoMainFragment fragment = (WeGoMainFragment) getFragmentManager()
-				.findFragmentByTag(WeGoMainFragment.TAG);
+		WeGoMainFragment fragment = getMaGoMainFragment();
 		if (fragment != null) {
 			fragment.updateSearchList(searchedDiadiem);
 		} else {
@@ -211,6 +213,18 @@ public class MainActivity extends Activity implements
 	public boolean onQueryTextSubmit(String query) {
 		// TODO Auto-generated method stub
 		search(query);
+		hideKeyPad();
 		return false;
+	}
+	
+	public WeGoMainFragment getMaGoMainFragment(){
+		WeGoMainFragment fragment = (WeGoMainFragment) getFragmentManager()
+				.findFragmentByTag(WeGoMainFragment.TAG);
+		return fragment;
+	}
+	
+	public void hideKeyPad() {
+		InputMethodManager inputMethodManager = (InputMethodManager)  this.getSystemService(Activity.INPUT_METHOD_SERVICE);
+	    inputMethodManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
 	}
 }
