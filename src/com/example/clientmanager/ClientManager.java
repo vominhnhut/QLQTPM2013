@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -26,6 +27,7 @@ import com.example.Object.ChiTietDichVu;
 import com.example.Object.DiaDiem;
 import com.example.Object.TaiKhoan;
 import com.example.jsonparser.JSONParser;
+import com.example.ultils.Constants;
 
 /**
  * 
@@ -41,6 +43,9 @@ public class ClientManager {
 	// URI
 	public static final String REGISTER_URL = "http://wegorest.viemde.cloudbees.net/user/register";
 	public static final String LOGIN_URL = "http://wegorest.viemde.cloudbees.net/user/login";
+	public static final String LOGOUT_URL = "http://wegorest.viemde.cloudbees.net/user/logout";
+	public static final String CHANGEPASSWORD_URL = "http://wegorest.viemde.cloudbees.net/user/changepassw";
+	public static final String POSTCOMMENT_URL = "http://wegorest.viemde.cloudbees.net/user/comment";
 
 	/**
 	 * Request server to get JSONObject as a response
@@ -102,7 +107,40 @@ public class ClientManager {
 		client = new DefaultHttpClient();
 		get = new HttpGet(uri);
 		get.addHeader(new BasicHeader("Content-Type", "application/json"));
-		// post.setEntity(new StringEntity(input.toString()));
+
+		// request server to get data
+		response = client.execute(get);
+		entity = response.getEntity();
+		is = entity.getContent();
+
+		// get data
+		BufferedReader reader = new BufferedReader(new InputStreamReader(is,
+				"iso-8859-1"), 8);
+		StringBuilder sb = new StringBuilder();
+		String line = null;
+		while ((line = reader.readLine()) != null) {
+			sb.append(line + "\n");
+		}
+		is.close();
+
+		jsonObjectOutput = new JSONObject(sb.toString());
+
+		return jsonObjectOutput;
+	}
+
+	public static JSONObject RequestServerToGetJSONObjectByHttpDelete(String uri)
+			throws IllegalStateException, IOException, JSONException {
+
+		JSONObject jsonObjectOutput;
+		HttpClient client;
+		HttpDelete get;
+		HttpResponse response;
+		HttpEntity entity;
+		InputStream is;
+
+		client = new DefaultHttpClient();
+		get = new HttpDelete(uri);
+		get.addHeader(new BasicHeader("Content-Type", "application/json"));
 
 		// request server to get data
 		response = client.execute(get);
@@ -171,6 +209,8 @@ public class ClientManager {
 		return jsonArrayOutput;
 	}
 
+	// ############################################################################
+
 	public static boolean RequestToRegisterAccount(TaiKhoan taiKhoan)
 			throws IllegalStateException, IOException, JSONException {
 
@@ -193,14 +233,52 @@ public class ClientManager {
 		String LoginURL = LOGIN_URL + "?" + "ten_tai_khoan=" + user + "&"
 				+ "mat_khau=" + pass;
 
-		Log.e("hoaphat", LoginURL);
 		// request server
-//		JSONObject objResponse = ClientManager
-//				.RequestServerToGetJSONObjectByHttpGet(LoginURL);
-//
-//		Boolean result = objResponse.getBoolean("success");
+		JSONObject objResponse = ClientManager
+				.RequestServerToGetJSONObjectByHttpGet(LoginURL);
 
-		return false;
+		Boolean result = objResponse.getBoolean("success");
+		Constants.LOGINUSER_TOKEN = (String) objResponse.get("token");
+		Log.e("hoaphat", Constants.LOGINUSER_TOKEN);
+		return result;
+	}
+
+	public static boolean RequestToLogOut(String token)
+			throws IllegalStateException, IOException, JSONException {
+
+		String tk = URLEncoder.encode(token, "UTF-8");
+
+		String LogoutURL = LOGOUT_URL + "?" + "token=" + tk;
+
+		// request server
+		JSONObject objResponse = ClientManager
+				.RequestServerToGetJSONObjectByHttpDelete(LogoutURL);
+
+		Boolean result = objResponse.getBoolean("success");
+
+		return result;
+	}
+
+	public static boolean RequestToChangePassword(String token, String oldPass,
+			String newPass) throws IllegalStateException, IOException,
+			JSONException {
+
+		String tk = URLEncoder.encode(token, "UTF-8");
+
+		String changePasswordURL = CHANGEPASSWORD_URL + "?" + "token=" + tk;
+
+		JSONObject inputObj = new JSONObject();
+		inputObj.put("mat_khau_cu", oldPass);
+		inputObj.put("mat_khau_moi", newPass);
+		// request server
+		JSONObject objResponse = ClientManager
+				.RequestServerToGetJSONObjectByHttpPost(changePasswordURL,
+						inputObj);
+
+		Log.e("hoaphat", objResponse.toString());
+		Boolean result = objResponse.getBoolean("success");
+
+		return result;
 	}
 
 	public static ArrayList<DiaDiem> RequestToGetListDiaDiemYeuThich(
@@ -208,6 +286,25 @@ public class ClientManager {
 		ArrayList<DiaDiem> listDiaDiem = new ArrayList<DiaDiem>();
 
 		return listDiaDiem;
+	}
+
+	public static boolean RequestToPostComment(String token, String placeID,
+			String comment) throws IllegalStateException, IOException,
+			JSONException {
+
+		String postCommentURL = POSTCOMMENT_URL + "?token=" + token;
+
+		JSONObject inputObj = new JSONObject();
+		inputObj.put("ma_du_lieu", placeID);
+		inputObj.put("comment", comment);
+		// request server
+		JSONObject objResponse = ClientManager
+				.RequestServerToGetJSONObjectByHttpPost(postCommentURL,
+						inputObj);
+
+		Boolean result = objResponse.getBoolean("success");
+
+		return result;
 	}
 
 	public static ArrayList<BinhLuan> RequestToGetListBinhLuan(String diadiemID) {
