@@ -1,23 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/RelativeLayout1"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/LinearLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#383838"
     android:orientation="vertical"
-    android:background="#383838" >
-<fragment
-        android:id="@+id/mapView"
+    android:weightSum="3" >
+
+    <LinearLayout
+        android:id="@+id/mapLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        class="com.google.android.gms.maps.MapFragment" />
+        android:layout_height="wrap_content"
+        android:layout_weight="3"
+        android:orientation="vertical" >
+
+        <fragment
+            android:id="@+id/mapView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            class="com.google.android.gms.maps.MapFragment" />
+
+    </LinearLayout>
 
     <ListView
         android:id="@+id/list_status"
         android:layout_width="match_parent"
         android:layout_height="350dp"
-        android:layout_above="@id/mapView"
-        android:layout_alignParentBottom="true"
+        android:layout_weight="1"
         android:background="#383838"
         android:visibility="visible" >
+
     </ListView>
-</RelativeLayout>
+
+</LinearLayout>

@@ -9,7 +9,6 @@ import com.example.adapter.CommentListViewAdapter;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -84,11 +83,13 @@ public class LocationDetailCommentsFragment extends Fragment implements
 		return false;
 
 	}
-	
-	public void updateCommentList(){
+
+	public void updateCommentList() {
 		LocationDetailActivity parent = (LocationDetailActivity) getActivity();
 		DiaDiem dd = parent.getDiaDiem();
-		setCommentList(dd.danhSachBinhLuan);
+		if (dd != null) {
+			setCommentList(dd.danhSachBinhLuan);
+		}
 	}
 
 	public void addComment(BinhLuan binhLuan) {

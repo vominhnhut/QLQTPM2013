@@ -1,6 +1,10 @@
 package com.example.wego;
 
+import java.util.ArrayList;
+
+import com.example.Object.DiaDiem;
 import com.example.adapter.LeftDrawerAdapter;
+import com.example.ultils.Constants;
 import com.example.ultils.DialogGenerator;
 
 import android.app.Activity;
@@ -31,6 +35,8 @@ public class MainActivity extends Activity {
 	private CharSequence mDrawerTitle;
 	private CharSequence mTitle;
 
+	private ArrayList<DiaDiem> searchedDiadiem;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -74,6 +80,8 @@ public class MainActivity extends Activity {
 		if (savedInstanceState == null) {
 			selectItem(0);
 		}
+		
+		search("");
 	}
 
 	@Override
@@ -154,4 +162,13 @@ public class MainActivity extends Activity {
 		mDrawerToggle.onConfigurationChanged(newConfig);
 	}
 
+	public ArrayList<DiaDiem> getSearchedItems(){
+		return this.searchedDiadiem;
+	}
+
+	public void search(String key){
+		this.searchedDiadiem = Constants.getDumbDDList();
+	}
+
+	
 }

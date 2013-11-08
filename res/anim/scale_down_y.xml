@@ -3,8 +3,8 @@
 
     <scale
         android:duration="0"
-        android:fromYScale="30%"
-        android:toYScale="100%"
-        android:interpolator="@android:anim/accelerate_decelerate_interpolator" />
+        android:fromYScale="100%"
+        android:interpolator="@android:anim/accelerate_decelerate_interpolator"
+        android:toYScale="30%" />
 
 </set>

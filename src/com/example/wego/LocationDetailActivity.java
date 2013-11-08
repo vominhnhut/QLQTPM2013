@@ -1,9 +1,6 @@
 package com.example.wego;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-
-import com.example.Object.BinhLuan;
 import com.example.Object.DiaDiem;
 import com.example.adapter.LocationDetailPagerAdapter;
 import com.example.ultils.Constants;
@@ -11,7 +8,6 @@ import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import android.os.Bundle;
@@ -71,16 +67,16 @@ public class LocationDetailActivity extends FragmentActivity {
 
 		getDiaDiemFromBundle();
 
-		DiaDiem a = new DiaDiem();
-		a.ten = "KFC NOWZONE";
-		a.diaChi = "Không nhớ, Nguyễn Văn Cừ, Q5, HCM";
-		a.toaDo = new LatLng(40.76793169992044, -73.98180484771729);
-		a.danhSachBinhLuan = createDumdComments();
-		a.moTa="Ngon, đông, vui... Gái nhiều thể loại";
-		a.diemDanhGia=1231;
-
-		this.diaDiem = a;
-		setViewValue();
+//		DiaDiem a = new DiaDiem();
+//		a.ten = "KFC NOWZONE";
+//		a.diaChi = "Không nhớ, Nguyễn Văn Cừ, Q5, HCM";
+//		a.toaDo = new LatLng(40.76793169992044, -73.98180484771729);
+//		a.danhSachBinhLuan = createDumdComments();
+//		a.moTa="Ngon, đông, vui... Gái nhiều thể loại";
+//		a.diemDanhGia=1231;
+//
+//		this.diaDiem = a;
+//		setViewValue();
 	}
 
 	@Override
@@ -108,11 +104,11 @@ public class LocationDetailActivity extends FragmentActivity {
 			locationName.setText(diaDiem.ten);
 			locationAddress.setText(diaDiem.diaChi);
 
-			CameraUpdate center = CameraUpdateFactory.newLatLng(diaDiem.toaDo);
+			CameraUpdate center = CameraUpdateFactory.newLatLng(diaDiem.getLatLng());
 			CameraUpdate zoom = CameraUpdateFactory.zoomTo(14);
 			map.moveCamera(center);
 			map.animateCamera(zoom);
-			map.addMarker(new MarkerOptions().position(diaDiem.toaDo));
+			map.addMarker(new MarkerOptions().position(diaDiem.getLatLng()));
 
 		}
 	}
@@ -131,19 +127,5 @@ public class LocationDetailActivity extends FragmentActivity {
 		return this.diaDiem;
 	}
 	
-	private ArrayList<BinhLuan> createDumdComments() {
-		ArrayList<BinhLuan> bls = new ArrayList<BinhLuan>();
-
-		for (int i = 0; i < 10; i++) {
-			BinhLuan newBinhLuan = new BinhLuan();
-			newBinhLuan.noiDung = "This is dumb text of " + i;
-			newBinhLuan.tenNguoiDang = "User " + i;
-			newBinhLuan.thoiGianDang = Calendar.getInstance().getTime();
-			bls.add(newBinhLuan);
-		}
-
-		diaDiem = new DiaDiem();
-		diaDiem.danhSachBinhLuan = bls;
-		return bls;
-	}
+	
 }
