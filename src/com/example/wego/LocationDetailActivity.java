@@ -1,8 +1,13 @@
 package com.example.wego;
 
+import java.io.IOException;
 import java.util.ArrayList;
+
+import org.json.JSONException;
+
 import com.example.Object.DiaDiem;
 import com.example.adapter.LocationDetailPagerAdapter;
+import com.example.clientmanager.ClientManager;
 import com.example.ultils.Constants;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -10,6 +15,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -30,14 +36,14 @@ public class LocationDetailActivity extends FragmentActivity {
 	private LocationDetailPagerAdapter pagerAdapter;
 
 	private static LocationDetailActivity instance = null;
-	
-	public LocationDetailActivity instance(){
-		if(instance == null){
+
+	public LocationDetailActivity instance() {
+		if (instance == null) {
 			instance = new LocationDetailActivity();
 		}
 		return instance;
 	}
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -49,7 +55,7 @@ public class LocationDetailActivity extends FragmentActivity {
 				.findFragmentById(R.id.miniMap)).getMap();
 		map.getUiSettings().setZoomControlsEnabled(false);
 		map.getUiSettings().setZoomGesturesEnabled(false);
-		//map.getUiSettings().setScrollGesturesEnabled(false);
+		// map.getUiSettings().setScrollGesturesEnabled(false);
 
 		locationName = (TextView) findViewById(R.id.locationName);
 		locationAddress = (TextView) findViewById(R.id.locationAddress);
@@ -67,16 +73,18 @@ public class LocationDetailActivity extends FragmentActivity {
 
 		getDiaDiemFromBundle();
 
-//		DiaDiem a = new DiaDiem();
-//		a.ten = "KFC NOWZONE";
-//		a.diaChi = "Không nhớ, Nguyễn Văn Cừ, Q5, HCM";
-//		a.toaDo = new LatLng(40.76793169992044, -73.98180484771729);
-//		a.danhSachBinhLuan = createDumdComments();
-//		a.moTa="Ngon, đông, vui... Gái nhiều thể loại";
-//		a.diemDanhGia=1231;
-//
-//		this.diaDiem = a;
-//		setViewValue();
+		// DiaDiem a = new DiaDiem();
+		// a.ten = "KFC NOWZONE";
+		// a.diaChi = "KhÃ´ng nhá»›, Nguyá»…n VÄƒn Cá»«, Q5, HCM";
+		// a.toaDo = new LatLng(40.76793169992044, -73.98180484771729);
+		// a.danhSachBinhLuan = createDumdComments();
+		// a.moTa="Ngon, Ä‘Ã´ng, vui... GÃ¡i nhiá»�u thá»ƒ loáº¡i";
+		// a.diemDanhGia=1231;
+		//
+		// this.diaDiem = a;
+		// setViewValue();
+
+		//new Tank().execute();
 	}
 
 	@Override
@@ -100,11 +108,12 @@ public class LocationDetailActivity extends FragmentActivity {
 	private void setViewValue() {
 		if (diaDiem != null) {
 			setTitle(diaDiem.ten);
-			
+
 			locationName.setText(diaDiem.ten);
 			locationAddress.setText(diaDiem.diaChi);
 
-			CameraUpdate center = CameraUpdateFactory.newLatLng(diaDiem.getLatLng());
+			CameraUpdate center = CameraUpdateFactory.newLatLng(diaDiem
+					.getLatLng());
 			CameraUpdate zoom = CameraUpdateFactory.zoomTo(14);
 			map.moveCamera(center);
 			map.animateCamera(zoom);
@@ -113,19 +122,42 @@ public class LocationDetailActivity extends FragmentActivity {
 		}
 	}
 
-//	private void setCommentList() {
-//		if (diaDiem != null) {
-//			LocationDetailCommentsFragment commentsFragment = LocationDetailCommentsFragment
-//					.instance();
-//			boolean b = commentsFragment.setCommentList(diaDiem.danhSachBinhLuan);
-//			pagerAdapter.replaceItem(COMMENT_FRAGMENT, commentsFragment);
-//			Log.e("set comment", b+"");
-//		}
-//	}
+	// private void setCommentList() {
+	// if (diaDiem != null) {
+	// LocationDetailCommentsFragment commentsFragment =
+	// LocationDetailCommentsFragment
+	// .instance();
+	// boolean b = commentsFragment.setCommentList(diaDiem.danhSachBinhLuan);
+	// pagerAdapter.replaceItem(COMMENT_FRAGMENT, commentsFragment);
+	// Log.e("set comment", b+"");
+	// }
+	// }
 
-	public DiaDiem getDiaDiem(){
+	public DiaDiem getDiaDiem() {
 		return this.diaDiem;
 	}
-	
-	
+
+	public class Tank extends AsyncTask<String, String, String> {
+
+		@Override
+		protected String doInBackground(String... params) {
+			// TODO Auto-generated method stub
+
+			try {
+				ClientManager.RequestToLogIn("Phan Minh Nhut", "tetòte");
+			} catch (IllegalStateException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			return null;
+		}
+
+	}
 }
