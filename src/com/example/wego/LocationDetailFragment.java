@@ -53,7 +53,13 @@ public class LocationDetailFragment extends Fragment {
 	private void setView() {
 		if(this.diaDiem!=null){
 			descriptionText.setText(this.diaDiem.moTa);
-			ratingText.setText((int)this.diaDiem.diemDanhGia+"");
+			
+			String rating = "";
+			if(this.diaDiem.diemDanhGia >0){
+				rating += (int)this.diaDiem.diemDanhGia+" "+ getString(R.string.like_ext1_string);
+			}
+			rating += " " + getString(R.string.like_ext2_string);
+			ratingText.setText(rating);
 		}
 	}
 
