@@ -252,8 +252,12 @@ public class WeGoMainFragment extends Fragment implements OnItemClickListener {
 	}
 
 	private void forcusCurrentLocation(boolean animation) {
-		forcusLocation(CurrentLocationHelper.getCurrentLocationLatLng(
-				getActivity(), LocationManager.NETWORK_PROVIDER), animation);
+		LatLng currentLocation = CurrentLocationHelper
+				.getCurrentLocationLatLng(getActivity(),
+						LocationManager.NETWORK_PROVIDER);
+		if (currentLocation != null) {
+			forcusLocation(currentLocation, animation);
+		}
 	}
 
 	private void forcusLocation(LatLng location, boolean animation) {

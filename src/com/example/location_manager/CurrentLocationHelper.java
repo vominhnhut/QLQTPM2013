@@ -55,6 +55,9 @@ public class CurrentLocationHelper {
 	public static LatLng getCurrentLocationLatLng(Context context,
 			String locationManagerSource) {
 		Location location = getCurrentLocation(context, locationManagerSource);
+		if(location == null){
+			return null;
+		}
 		return new LatLng(location.getLatitude(), location.getLongitude());
 	}
 
