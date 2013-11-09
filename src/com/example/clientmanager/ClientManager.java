@@ -16,11 +16,14 @@ import org.apache.http.message.BasicHeader;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.util.Log;
+
 import com.example.Object.BinhLuan;
 import com.example.Object.ChiTietDichVu;
 import com.example.Object.DiaDiem;
 import com.example.Object.TaiKhoan;
 import com.example.jsonparser.JSONParser;
+import com.example.ultils.Constants;
 
 /**
  * 
@@ -194,17 +197,22 @@ public class ClientManager {
 		response = ClientManager.RequestServerToGetJSONObjectByHttpPost(
 				LOGIN_URL, accObj);
 
+		Log.e("hoaphat", response.getStatusLine().getStatusCode() + "");
+
 		statusCode = response.getStatusLine().getStatusCode();
 
-		responsedJSONObj = JSONParser.getJSONObjectFromHttpResponse(response);
-
 		if (statusCode == 200) {
+
+			responsedJSONObj = JSONParser
+					.getJSONObjectFromHttpResponse(response);
+
+			Log.e("hoaphat", responsedJSONObj.toString());
 			boolean success = responsedJSONObj.getBoolean("success");
 			if (success) {
 
 				result.success = true;
-				// Constants.LOGINUSER_TOKEN = (String) responsedJSONObj
-				// .get("token");
+				Constants.LOGINUSER_TOKEN = (String) responsedJSONObj
+						.get("token");
 			} else {
 				result.success = false;
 				result.content = "Fail to login";
@@ -241,9 +249,11 @@ public class ClientManager {
 
 		statusCode = response.getStatusLine().getStatusCode();
 
-		responsedJSONObj = JSONParser.getJSONObjectFromHttpResponse(response);
+		if (statusCode == 200) {
 
-		if (statusCode != 200) {
+			responsedJSONObj = JSONParser
+					.getJSONObjectFromHttpResponse(response);
+
 			boolean success = responsedJSONObj.getBoolean("success");
 			if (success) {
 				result.success = true;
@@ -287,9 +297,10 @@ public class ClientManager {
 
 		statusCode = response.getStatusLine().getStatusCode();
 
-		responsedJSONObj = JSONParser.getJSONObjectFromHttpResponse(response);
+		if (statusCode == 200) {
 
-		if (statusCode != 200) {
+			responsedJSONObj = JSONParser
+					.getJSONObjectFromHttpResponse(response);
 
 			boolean success = responsedJSONObj.getBoolean("success");
 			String content = responsedJSONObj.getString("reason");
@@ -343,9 +354,10 @@ public class ClientManager {
 
 		statusCode = response.getStatusLine().getStatusCode();
 
-		responsedJSONObj = JSONParser.getJSONObjectFromHttpResponse(response);
+		if (statusCode == 200) {
 
-		if (statusCode != 200) {
+			responsedJSONObj = JSONParser
+					.getJSONObjectFromHttpResponse(response);
 
 			boolean success = responsedJSONObj.getBoolean("success");
 
