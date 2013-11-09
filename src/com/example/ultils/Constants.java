@@ -8,6 +8,12 @@ import com.example.Object.DiaDiem;
 
 public class Constants {
 
+	public static final String LOG_IN_RESULT_TAG = "Login result";
+	
+	public static final String USERNAME_TAG = "Username";
+	public static final String PASSWORD_TAG = "Password";
+	public static boolean LOGGED_IN = false;
+	
 	public static String LOGINUSER_TOKEN;
 	public static final String DIADIEM_KEY = "Diadiem";
 

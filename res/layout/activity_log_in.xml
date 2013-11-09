@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/LinearLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="fill_parent"
+    android:background="#76C9F5"
+    android:gravity="center"
+    android:orientation="vertical" >
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_wego_banner" />
+
+    <LinearLayout
+        android:id="@+id/log_in_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical" >
+
+        <EditText
+            android:id="@+id/edtUserName"
+            style="@style/log_in_textbox_style"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginBottom="@dimen/dp0.25_padding"
+            android:layout_marginLeft="@dimen/dp20_padding"
+            android:layout_marginRight="@dimen/dp20_padding"
+            android:background="@drawable/user_name_text_box_selector"
+            android:ems="10"
+            android:hint="@string/user_name_text"
+            android:inputType="text" />
+
+        <EditText
+            android:id="@+id/edtPassword"
+            style="@style/log_in_textbox_style"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp20_padding"
+            android:layout_marginRight="@dimen/dp20_padding"
+            android:layout_marginTop="@dimen/dp0.25_padding"
+            android:background="@drawable/pass_word_text_box_selector"
+            android:ems="10"
+            android:gravity="center"
+            android:hint="@string/password_text"
+            android:inputType="textPassword" >
+
+        </EditText>
+
+        <Button
+            android:id="@+id/btnLogin"
+            style="@style/log_in_textbox_style"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dp0.25_padding"
+            android:layout_marginLeft="@dimen/dp20_padding"
+            android:layout_marginRight="@dimen/dp20_padding"
+            android:layout_marginTop="@dimen/dp20_padding"
+            android:background="@drawable/log_in_button_selector"
+            android:text="@string/log_in_text"
+            android:textColor="#ffffff"
+            android:textColorHint="#ffffff" />
+
+        <Button
+            android:id="@+id/btnRegist"
+            style="@style/log_in_textbox_style"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp20_padding"
+            android:layout_marginRight="@dimen/dp20_padding"
+            android:layout_marginTop="@dimen/dp0.25_padding"
+            android:background="@drawable/regist_button_selector"
+            android:text="@string/sign_up_text"
+            android:textColor="#e2f4fb"
+            android:textColorHint="#e2f4fb" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/wait_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical" 
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/progressBar1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+</LinearLayout>

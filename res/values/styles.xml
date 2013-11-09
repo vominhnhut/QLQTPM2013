@@ -2,19 +2,28 @@
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
     <style name="AppBaseTheme" parent="android:Theme.Light">
         <!--
             Theme customizations available in newer API levels can go in
             res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
+            backward-compatibility can go here.
         -->
     </style>
 
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+        <item name="android:actionBarStyle">@style/MyActionBar</item>
+    </style>
+
+    <style name="MyActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
+        <item name="android:background">#76C9F5</item>
+    </style>
+
+    <style name="myTheme.ActionBar.Text" parent="@android:style/TextAppearance">
+        <item name="android:textColor">#FFFFFF</item>
     </style>
 
     <style name="left_drawer_text_style">
@@ -53,24 +62,30 @@
         <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
         <item name="android:textSize">20sp</item>
     </style>
-  
+
     <style name="large_text">
         <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
         <item name="android:textSize">20sp</item>
     </style>
-    
-     <style name="small_text">
+
+    <style name="small_text">
         <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
     </style>
-    
+
     <style name="divider_line">
         <item name="android:background">@drawable/line1</item>
         <item name="android:padding">5dp</item>
     </style>
-    
+
     <style name="Scrollable_text">
         <item name="android:ellipsize">marquee</item>
         <item name="android:singleLine">true</item>
         <item name="android:marqueeRepeatLimit">marquee_forever</item>
     </style>
+
+    <style name="log_in_textbox_style">
+        <item name="android:padding">10dp</item>
+        <item name="android:textAppearance">?android:attr/textAppearance</item>
+    </style>
+
 </resources>

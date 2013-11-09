@@ -82,7 +82,7 @@ public class WeGoMainFragment extends Fragment implements OnItemClickListener {
 			public void onMapClick(LatLng point) {
 				// TODO Auto-generated method stub
 				if (searchedItemAdapter != null
-						&& searchedItemAdapter.getCount() > 0) {
+						&& searchedItemAdapter.getCount() <= 0) {
 					showHideListStatus();
 				} else {
 					Toast.makeText(getActivity(),
