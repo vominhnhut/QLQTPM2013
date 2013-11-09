@@ -24,8 +24,8 @@
     <string name="map_view_text">Map view</string>
     <string name="post_text">Post</string>
     <string name="exit_dialog_title">Quit application</string>
-    <string name="ok_text">OK!</string>
-    <string name="cancel_text">Cancel!</string>
+    <string name="ok_text">OK</string>
+    <string name="cancel_text">Cancel</string>
     <string name="services_text">Services</string>
     <string name="like_text">Likes</string>
     <string name="search_hint">Search location</string>
@@ -33,5 +33,13 @@
     <string name="search_action">Search</string>
     <string name="like_ext1_string">people like and</string>
     <string name="like_ext2_string">1 may like this</string>
+    <string name="title_activity_log_in">LogInActivity</string>
+    <string name="user_name_text">Username</string>
+    <string name="password_text">Password</string>
+    <string name="log_in_text">HERE WeGo!</string>
+    <string name="sign_up_text">Don\'t have accout? Sign up!</string>
+    <string name="no_network_text">No network connection. Open setting now?</string>
+    <string name="can_not_log_in_text">Can not log in. Check your username or passwork</string>
+    <string name="title_activity_register">RegisterActivity</string>
 
 </resources>

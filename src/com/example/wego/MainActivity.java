@@ -13,6 +13,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -45,7 +46,10 @@ public class MainActivity extends Activity implements
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+
 		super.onCreate(savedInstanceState);
+
+		// Transfer to log in when need
 		setContentView(R.layout.activity_main);
 
 		mTitle = getTitle();
@@ -95,6 +99,8 @@ public class MainActivity extends Activity implements
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
+		transferToLoginScreen();
+
 		super.onResume();
 	}
 
@@ -216,15 +222,24 @@ public class MainActivity extends Activity implements
 		hideKeyPad();
 		return false;
 	}
-	
-	public WeGoMainFragment getMaGoMainFragment(){
+
+	public WeGoMainFragment getMaGoMainFragment() {
 		WeGoMainFragment fragment = (WeGoMainFragment) getFragmentManager()
 				.findFragmentByTag(WeGoMainFragment.TAG);
 		return fragment;
 	}
-	
+
 	public void hideKeyPad() {
-		InputMethodManager inputMethodManager = (InputMethodManager)  this.getSystemService(Activity.INPUT_METHOD_SERVICE);
-	    inputMethodManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
+		InputMethodManager inputMethodManager = (InputMethodManager) this
+				.getSystemService(Activity.INPUT_METHOD_SERVICE);
+		inputMethodManager.hideSoftInputFromWindow(this.getCurrentFocus()
+				.getWindowToken(), 0);
+	}
+
+	public void transferToLoginScreen() {
+		if (Constants.LOGGED_IN == false) {
+			Intent intent = new Intent(MainActivity.this, LogInActivity.class);
+			startActivity(intent);
+		}
 	}
 }
