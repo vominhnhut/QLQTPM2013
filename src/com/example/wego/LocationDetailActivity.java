@@ -6,8 +6,10 @@ import java.util.ArrayList;
 import org.json.JSONException;
 
 import com.example.Object.DiaDiem;
+import com.example.Object.TaiKhoan;
 import com.example.adapter.LocationDetailPagerAdapter;
 import com.example.clientmanager.ClientManager;
+import com.example.clientmanager.ResponsedResult;
 import com.example.ultils.Constants;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -22,6 +24,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class LocationDetailActivity extends FragmentActivity {
 
@@ -84,7 +87,7 @@ public class LocationDetailActivity extends FragmentActivity {
 		// this.diaDiem = a;
 		// setViewValue();
 
-		//new Tank().execute();
+		//new LocationDetailAsynctask().execute();
 	}
 
 	@Override
@@ -137,14 +140,31 @@ public class LocationDetailActivity extends FragmentActivity {
 		return this.diaDiem;
 	}
 
-	public class Tank extends AsyncTask<String, String, String> {
+	public class LocationDetailAsynctask extends
+			AsyncTask<String, Integer, ResponsedResult> {
+		TaiKhoan taikhoan;
 
 		@Override
-		protected String doInBackground(String... params) {
+		protected void onPreExecute() {
 			// TODO Auto-generated method stub
+			super.onPreExecute();
+		}
+
+		@Override
+		protected ResponsedResult doInBackground(String... arg0) {
+			// TODO Auto-generated method stub
+			ResponsedResult result = null;
 
 			try {
-				ClientManager.RequestToChangePassword("Phan Minh Nhut","đâsd","ádasdas");
+				result = ClientManager.RequestToLogIn("hoaphat92", "123456");
+				// taikhoan = new TaiKhoan();
+				// taikhoan.hoTen = "Nguyen Hoa Phat";
+				// taikhoan.matKhau = "123456";
+				// taikhoan.ngaySinh = "1992-11-6";
+				// taikhoan.email = "phatnguyen.it.khtn@gmail.com";
+				// taikhoan.tenTaiKhoan = "hoaphat92";
+				// result = ClientManager.RequestToRegisterAccount(taikhoan);
+
 			} catch (IllegalStateException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -156,8 +176,24 @@ public class LocationDetailActivity extends FragmentActivity {
 				e.printStackTrace();
 			}
 
-			return null;
+			return result;
 		}
 
+		@Override
+		protected void onPostExecute(ResponsedResult result) {
+			// TODO Auto-generated method stub
+			super.onPostExecute(result);
+
+//			boolean success = result.success;
+//
+//			if (success) {
+//				Toast.makeText(getApplicationContext(),
+//						"Logic Success" + Constants.LOGINUSER_TOKEN, 2).show();
+//
+//			} else {
+//				Toast.makeText(getApplicationContext(),
+//						"Fail" + result.content, 2).show();
+//			}
+		}
 	}
 }
