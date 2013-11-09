@@ -1,14 +1,11 @@
 package com.example.clientmanager;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
-import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
@@ -16,18 +13,14 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicHeader;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import android.util.Log;
 
 import com.example.Object.BinhLuan;
 import com.example.Object.ChiTietDichVu;
 import com.example.Object.DiaDiem;
 import com.example.Object.TaiKhoan;
 import com.example.jsonparser.JSONParser;
-import com.example.ultils.Constants;
 
 /**
  * 
@@ -58,16 +51,13 @@ public class ClientManager {
 	 * @author Hoa Phat
 	 * @since 2013/11/8
 	 */
-	public static JSONObject RequestServerToGetJSONObjectByHttpPost(String uri,
-			JSONObject input) throws IllegalStateException, IOException,
-			JSONException {
+	private static HttpResponse RequestServerToGetJSONObjectByHttpPost(
+			String uri, JSONObject input) throws IllegalStateException,
+			IOException, JSONException {
 
-		JSONObject jsonObjectOutput;
 		HttpClient client;
 		HttpPost post;
 		HttpResponse response;
-		HttpEntity entity;
-		InputStream is;
 
 		client = new DefaultHttpClient();
 		post = new HttpPost(uri);
@@ -76,33 +66,16 @@ public class ClientManager {
 
 		// request server to get data
 		response = client.execute(post);
-		entity = response.getEntity();
-		is = entity.getContent();
 
-		// get data
-		BufferedReader reader = new BufferedReader(new InputStreamReader(is,
-				"iso-8859-1"), 8);
-		StringBuilder sb = new StringBuilder();
-		String line = null;
-		while ((line = reader.readLine()) != null) {
-			sb.append(line + "\n");
-		}
-		is.close();
-
-		jsonObjectOutput = new JSONObject(sb.toString());
-
-		return jsonObjectOutput;
+		return response;
 	}
 
-	public static JSONObject RequestServerToGetJSONObjectByHttpGet(String uri)
-			throws IllegalStateException, IOException, JSONException {
+	private static HttpResponse RequestServerToGetJSONObjectByHttpGet(String uri)
+			throws ClientProtocolException, IOException {
 
-		JSONObject jsonObjectOutput;
 		HttpClient client;
 		HttpGet get;
 		HttpResponse response;
-		HttpEntity entity;
-		InputStream is;
 
 		client = new DefaultHttpClient();
 		get = new HttpGet(uri);
@@ -110,33 +83,17 @@ public class ClientManager {
 
 		// request server to get data
 		response = client.execute(get);
-		entity = response.getEntity();
-		is = entity.getContent();
 
-		// get data
-		BufferedReader reader = new BufferedReader(new InputStreamReader(is,
-				"iso-8859-1"), 8);
-		StringBuilder sb = new StringBuilder();
-		String line = null;
-		while ((line = reader.readLine()) != null) {
-			sb.append(line + "\n");
-		}
-		is.close();
-
-		jsonObjectOutput = new JSONObject(sb.toString());
-
-		return jsonObjectOutput;
+		return response;
 	}
 
-	public static JSONObject RequestServerToGetJSONObjectByHttpDelete(String uri)
-			throws IllegalStateException, IOException, JSONException {
+	private static HttpResponse RequestServerToGetJSONObjectByHttpDelete(
+			String uri) throws IllegalStateException, IOException,
+			JSONException {
 
-		JSONObject jsonObjectOutput;
 		HttpClient client;
 		HttpDelete get;
 		HttpResponse response;
-		HttpEntity entity;
-		InputStream is;
 
 		client = new DefaultHttpClient();
 		get = new HttpDelete(uri);
@@ -144,22 +101,8 @@ public class ClientManager {
 
 		// request server to get data
 		response = client.execute(get);
-		entity = response.getEntity();
-		is = entity.getContent();
 
-		// get data
-		BufferedReader reader = new BufferedReader(new InputStreamReader(is,
-				"iso-8859-1"), 8);
-		StringBuilder sb = new StringBuilder();
-		String line = null;
-		while ((line = reader.readLine()) != null) {
-			sb.append(line + "\n");
-		}
-		is.close();
-
-		jsonObjectOutput = new JSONObject(sb.toString());
-
-		return jsonObjectOutput;
+		return response;
 	}
 
 	/**
@@ -173,16 +116,13 @@ public class ClientManager {
 	 * @author Hoa Phat
 	 * @since 2013/11/8
 	 */
-	public static JSONArray RequestServerToGetJSONArray(String uri,
+	private static HttpResponse RequestServerToGetJSONArray(String uri,
 			JSONObject input) throws IllegalStateException, IOException,
 			JSONException {
 
-		JSONArray jsonArrayOutput;
 		HttpClient client;
 		HttpPost post;
 		HttpResponse response;
-		HttpEntity entity;
-		InputStream is;
 
 		client = new DefaultHttpClient();
 		post = new HttpPost(uri);
@@ -191,92 +131,181 @@ public class ClientManager {
 
 		// request server to get data
 		response = client.execute(post);
-		entity = response.getEntity();
-		is = entity.getContent();
 
-		// get data
-		BufferedReader reader = new BufferedReader(new InputStreamReader(is,
-				"iso-8859-1"), 8);
-		StringBuilder sb = new StringBuilder();
-		String line = null;
-		while ((line = reader.readLine()) != null) {
-			sb.append(line + "\n");
-		}
-		is.close();
-
-		jsonArrayOutput = new JSONArray(sb.toString());
-
-		return jsonArrayOutput;
+		return response;
 	}
 
 	// ############################################################################
 
-	public static boolean RequestToRegisterAccount(TaiKhoan taiKhoan)
+	public static ResponsedResult RequestToRegisterAccount(TaiKhoan taiKhoan)
 			throws IllegalStateException, IOException, JSONException {
 
-		// request server
-		JSONObject objResponse = ClientManager
-				.RequestServerToGetJSONObjectByHttpPost(REGISTER_URL,
-						JSONParser.getJSONFromObject(taiKhoan));
+		ResponsedResult result;
+		JSONObject accObj;
+		JSONObject responsedJSONObj;
+		HttpResponse response;
+		int statusCode;
 
-		Boolean result = objResponse.getBoolean("success");
+		result = new ResponsedResult();
+
+		accObj = JSONParser.getJSONFromObject(taiKhoan);
+
+		response = ClientManager.RequestServerToGetJSONObjectByHttpPost(
+				REGISTER_URL, accObj);
+
+		statusCode = response.getStatusLine().getStatusCode();
+
+		responsedJSONObj = JSONParser.getJSONObjectFromHttpResponse(response);
+
+		if (statusCode == 200) {
+			boolean success = responsedJSONObj.getBoolean("success");
+			if (success) {
+				result.success = true;
+			} else {
+				result.success = false;
+				result.content = responsedJSONObj.getString("reason");
+			}
+		} else {
+
+			result.success = false;
+			result.content = "Can not connect Wego Server.";
+		}
 
 		return result;
 	}
 
-	public static boolean RequestToLogIn(String username, String password)
-			throws IllegalStateException, IOException, JSONException {
-
-		String user = URLEncoder.encode(username, "UTF-8");
-		String pass = URLEncoder.encode(password, "UTF-8");
-
-		String LoginURL = LOGIN_URL + "?" + "ten_tai_khoan=" + user + "&"
-				+ "mat_khau=" + pass;
-
-		// request server
-		JSONObject objResponse = ClientManager
-				.RequestServerToGetJSONObjectByHttpGet(LoginURL);
-
-		Boolean result = objResponse.getBoolean("success");
-		Constants.LOGINUSER_TOKEN = (String) objResponse.get("token");
-		Log.e("hoaphat", Constants.LOGINUSER_TOKEN);
-		return result;
-	}
-
-	public static boolean RequestToLogOut(String token)
-			throws IllegalStateException, IOException, JSONException {
-
-		String tk = URLEncoder.encode(token, "UTF-8");
-
-		String LogoutURL = LOGOUT_URL + "?" + "token=" + tk;
-
-		// request server
-		JSONObject objResponse = ClientManager
-				.RequestServerToGetJSONObjectByHttpDelete(LogoutURL);
-
-		Boolean result = objResponse.getBoolean("success");
-
-		return result;
-	}
-
-	public static boolean RequestToChangePassword(String token, String oldPass,
-			String newPass) throws IllegalStateException, IOException,
+	public static ResponsedResult RequestToLogIn(String username,
+			String password) throws IllegalStateException, IOException,
 			JSONException {
 
-		String tk = URLEncoder.encode(token, "UTF-8");
+		ResponsedResult result;
+		JSONObject accObj;
+		JSONObject responsedJSONObj;
+		HttpResponse response;
+		int statusCode;
 
-		String changePasswordURL = CHANGEPASSWORD_URL + "?" + "token=" + tk;
+		result = new ResponsedResult();
+
+		accObj = new JSONObject();
+		accObj.put("ten_tai_khoan", username);
+		accObj.put("mat_khau", password);
+
+		// request server
+		response = ClientManager.RequestServerToGetJSONObjectByHttpPost(
+				LOGIN_URL, accObj);
+
+		statusCode = response.getStatusLine().getStatusCode();
+
+		responsedJSONObj = JSONParser.getJSONObjectFromHttpResponse(response);
+
+		if (statusCode == 200) {
+			boolean success = responsedJSONObj.getBoolean("success");
+			if (success) {
+
+				result.success = true;
+				// Constants.LOGINUSER_TOKEN = (String) responsedJSONObj
+				// .get("token");
+			} else {
+				result.success = false;
+				result.content = "Fail to login";
+			}
+
+		} else {
+
+			result.success = false;
+			result.content = "Can not connect Wego Server.";
+		}
+
+		return result;
+	}
+
+	public static ResponsedResult RequestToLogOut(String token)
+			throws IllegalStateException, IOException, JSONException {
+
+		String LogoutURL;
+		String tokenEncoded;
+		ResponsedResult result;
+		JSONObject responsedJSONObj;
+		HttpResponse response;
+		int statusCode;
+
+		result = new ResponsedResult();
+
+		tokenEncoded = URLEncoder.encode(token, "UTF-8");
+
+		LogoutURL = LOGOUT_URL + "?" + "token=" + tokenEncoded;
+
+		// request server
+		response = ClientManager
+				.RequestServerToGetJSONObjectByHttpDelete(LogoutURL);
+
+		statusCode = response.getStatusLine().getStatusCode();
+
+		responsedJSONObj = JSONParser.getJSONObjectFromHttpResponse(response);
+
+		if (statusCode != 200) {
+			boolean success = responsedJSONObj.getBoolean("success");
+			if (success) {
+				result.success = true;
+			} else {
+				result.success = false;
+				result.content = "Fail to logout";
+			}
+
+		} else {
+
+			result.success = false;
+			result.content = "Can not connect Wego Server.";
+		}
+
+		return result;
+	}
+
+	public static ResponsedResult RequestToChangePassword(String token,
+			String oldPass, String newPass) throws IllegalStateException,
+			IOException, JSONException {
+
+		String changePasswordURL;
+		String tokenEncoded;
+		ResponsedResult result;
+		JSONObject responsedJSONObj;
+		HttpResponse response;
+		int statusCode;
+
+		result = new ResponsedResult();
+
+		tokenEncoded = URLEncoder.encode(token, "UTF-8");
+
+		changePasswordURL = CHANGEPASSWORD_URL + "?" + "token=" + tokenEncoded;
 
 		JSONObject inputObj = new JSONObject();
 		inputObj.put("mat_khau_cu", oldPass);
 		inputObj.put("mat_khau_moi", newPass);
 		// request server
-		JSONObject objResponse = ClientManager
-				.RequestServerToGetJSONObjectByHttpPost(changePasswordURL,
-						inputObj);
+		response = ClientManager.RequestServerToGetJSONObjectByHttpPost(
+				changePasswordURL, inputObj);
 
-		Log.e("hoaphat", objResponse.toString());
-		Boolean result = objResponse.getBoolean("success");
+		statusCode = response.getStatusLine().getStatusCode();
+
+		responsedJSONObj = JSONParser.getJSONObjectFromHttpResponse(response);
+
+		if (statusCode != 200) {
+
+			boolean success = responsedJSONObj.getBoolean("success");
+			String content = responsedJSONObj.getString("reason");
+
+			if (success) {
+				result.success = true;
+			} else {
+				result.success = false;
+				result.content = content;
+			}
+
+		} else {
+
+			result.success = false;
+			result.content = "Can not connect Wego Server.";
+		}
 
 		return result;
 	}
@@ -288,21 +317,50 @@ public class ClientManager {
 		return listDiaDiem;
 	}
 
-	public static boolean RequestToPostComment(String token, String placeID,
-			String comment) throws IllegalStateException, IOException,
-			JSONException {
+	public static ResponsedResult RequestToPostComment(String token,
+			String locationID, String comment) throws IllegalStateException,
+			IOException, JSONException {
 
-		String postCommentURL = POSTCOMMENT_URL + "?token=" + token;
+		String postCommentURL;
+		String tokenEncoded;
+		ResponsedResult result;
+		JSONObject responsedJSONObj;
+		HttpResponse response;
+		int statusCode;
+
+		result = new ResponsedResult();
+
+		tokenEncoded = URLEncoder.encode(token, "UTF-8");
+
+		postCommentURL = POSTCOMMENT_URL + "?token=" + tokenEncoded;
 
 		JSONObject inputObj = new JSONObject();
-		inputObj.put("ma_du_lieu", placeID);
+		inputObj.put("ma_du_lieu", locationID);
 		inputObj.put("comment", comment);
 		// request server
-		JSONObject objResponse = ClientManager
-				.RequestServerToGetJSONObjectByHttpPost(postCommentURL,
-						inputObj);
+		response = ClientManager.RequestServerToGetJSONObjectByHttpPost(
+				postCommentURL, inputObj);
 
-		Boolean result = objResponse.getBoolean("success");
+		statusCode = response.getStatusLine().getStatusCode();
+
+		responsedJSONObj = JSONParser.getJSONObjectFromHttpResponse(response);
+
+		if (statusCode != 200) {
+
+			boolean success = responsedJSONObj.getBoolean("success");
+
+			if (success) {
+				result.success = true;
+			} else {
+				result.success = false;
+				result.content = "Fail to send comment";
+			}
+
+		} else {
+
+			result.success = false;
+			result.content = "Can not connect Wego Server.";
+		}
 
 		return result;
 	}
