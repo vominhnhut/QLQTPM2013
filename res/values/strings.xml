@@ -6,7 +6,7 @@
     <string-array name="left_items_array">
         <item>Home</item>
         <item>Account</item>
-        <!-- <item>Setting</item> -->
+        <item>Log out</item>
         <item>Exit</item>
     </string-array>
 
@@ -39,7 +39,15 @@
     <string name="log_in_text">HERE WeGo!</string>
     <string name="sign_up_text">Don\'t have accout? Sign up!</string>
     <string name="no_network_text">No network connection. Open setting now?</string>
-    <string name="can_not_log_in_text">Can not log in. Check your username or passwork</string>
+    <string name="can_not_log_in_text">Can not log in. Check your username or password</string>
+    <string name="can_not_regist_text">Can not sign up new account.</string>
     <string name="title_activity_register">RegisterActivity</string>
+    <string name="confirm_password_text">Confirm password</string>
+    <string name="real_name">Your real name</string>
+    <string name="email">Email</string>
+    <string name="birth_day">Birth day</string>
+    <string name="regist_text">Sign up!</string>
+    <string name="empty_field">Please fill all fields!</string>
+    <string name="password_missmatch">Passwords are mismatch!</string>
 
 </resources>

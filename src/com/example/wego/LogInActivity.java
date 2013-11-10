@@ -49,7 +49,7 @@ public class LogInActivity extends Activity implements OnClickListener {
 		getActionBar().hide();
 
 		log_in_view = (LinearLayout) findViewById(R.id.log_in_view);
-		wait_view = (LinearLayout) findViewById(R.id.wait_view);
+		wait_view = (LinearLayout) findViewById(R.id.rgt_wait_view);
 
 		txtUserName = (TextView) findViewById(R.id.edtUserName);
 		txtPassWord = (TextView) findViewById(R.id.edtPassword);
@@ -144,15 +144,15 @@ public class LogInActivity extends Activity implements OnClickListener {
 
 			} catch (IllegalStateException e) {
 				// TODO Auto-generated catch block
-				Log.e("Log", e.getMessage());
+				Log.e("Log 1", e.getMessage());
 				e.printStackTrace();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
-				Log.e("Log", e.getMessage());
+				Log.e("Log 2", e.getMessage());
 				e.printStackTrace();
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
-				Log.e("Log", e.getMessage());
+				Log.e("Log 3", e.getMessage());
 				e.printStackTrace();
 			}
 
@@ -173,17 +173,20 @@ public class LogInActivity extends Activity implements OnClickListener {
 				SharedPreferences prefs = getSharedPreferences(
 						getPackageName(), Context.MODE_PRIVATE);
 
-				prefs.edit().putString(Constants.USERNAME_TAG,
+				SharedPreferences.Editor edit = prefs.edit();
+				
+				edit.putString(Constants.USERNAME_TAG,
 						txtUserName.getText().toString());
-				prefs.edit().putString(Constants.PASSWORD_TAG,
+				edit.putString(Constants.PASSWORD_TAG,
 						txtUserName.getText().toString());
+				edit.commit();
 
 				Constants.LOGGED_IN = true;
 
 				finish();
 			} else {
 				AlertDialog dialog = DialogGenerator
-						.createLoginFailDialog(LogInActivity.this);
+						.createAlertDialog(LogInActivity.this, result.content);
 				dialog.show();
 			}
 

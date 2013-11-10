@@ -34,7 +34,8 @@ public class MainActivity extends Activity implements
 
 	public static final int HOME_ITEM_ID = 0;
 	public static final int ACCOUNT_ITEM_ID = 1;
-	public static final int EXIT_ITEM_ID = 2;
+	public static final int LOG_OUT_ITEM_ID = 2;
+	public static final int EXIT_ITEM_ID = 3;
 
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
@@ -78,7 +79,7 @@ public class MainActivity extends Activity implements
 
 			public void onDrawerOpened(View drawerView) {
 				getActionBar().setTitle(mDrawerTitle);
-				getMaGoMainFragment().hideListStatus();
+				getMaGoMainFragment().hideListStatusIfShown();
 				hideKeyPad();
 				invalidateOptionsMenu();
 			}
@@ -152,6 +153,10 @@ public class MainActivity extends Activity implements
 			break;
 		case ACCOUNT_ITEM_ID:
 			break;
+		case LOG_OUT_ITEM_ID:
+			mDrawerLayout.closeDrawers();
+			logOut();
+			break;
 		case EXIT_ITEM_ID:
 			AlertDialog dialog = DialogGenerator.createExitConfirmationDialog(
 					this, new OnClickListener() {
@@ -204,8 +209,7 @@ public class MainActivity extends Activity implements
 		if (fragment != null) {
 			fragment.updateSearchList(searchedDiadiem);
 		} else {
-			Toast.makeText(getApplicationContext(), "fuck", Toast.LENGTH_SHORT)
-					.show();
+			
 		}
 	}
 
@@ -241,5 +245,10 @@ public class MainActivity extends Activity implements
 			Intent intent = new Intent(MainActivity.this, LogInActivity.class);
 			startActivity(intent);
 		}
+	}
+	
+	public void logOut(){
+		Constants.LOGGED_IN = false;
+		transferToLoginScreen();
 	}
 }
