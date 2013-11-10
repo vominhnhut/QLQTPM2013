@@ -29,7 +29,7 @@ public class LeftDrawerAdapter extends BaseAdapter {
 		mListIcon = new ArrayList<Integer>();
 		mListIcon.add(R.drawable.home);
 		mListIcon.add(R.drawable.user);
-//		mListIcon.add(R.drawable.setting);
+		mListIcon.add(R.drawable.setting);
 		mListIcon.add(R.drawable.close);
 	}
 

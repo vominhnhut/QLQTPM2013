@@ -37,7 +37,7 @@ public class WeGoMainFragment extends Fragment implements OnItemClickListener {
 	public static final String TAG = "WeGoMainFragment";
 
 	private ListView mStatusList;
-	private boolean isShow = true;
+	public boolean isShow = true;
 	private GoogleMap map;
 	private StatusAdapter searchedItemAdapter;
 	// private LinearLayout mapLayout;
@@ -189,6 +189,11 @@ public class WeGoMainFragment extends Fragment implements OnItemClickListener {
 		isShow = false;
 	}
 
+	public void hideListStatusIfShown(){
+		if(isShow){
+			hideListStatus();
+		}
+	}
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 		// TODO Auto-generated method stub
