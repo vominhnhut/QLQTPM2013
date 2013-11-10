@@ -35,13 +35,7 @@ public class ChangePasswordActivity extends Activity implements OnClickListener 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_change_password);
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.change_password, menu);
-
+		
 		changePassView = (LinearLayout) findViewById(R.id.change_pass_view);
 		waitView = (LinearLayout) findViewById(R.id.chg_wait_view);
 
@@ -53,6 +47,14 @@ public class ChangePasswordActivity extends Activity implements OnClickListener 
 
 		btnOk.setOnClickListener(this);
 		btnCancel.setOnClickListener(this);
+		
+		getActionBar().hide();
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.change_password, menu);
 
 		return true;
 	}
