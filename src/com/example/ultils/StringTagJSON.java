@@ -6,6 +6,12 @@ package com.example.ultils;
  *         Skype: vhnam.7
  */
 public class StringTagJSON {
+
+	// GENERAL
+	public static String TAG_CONTENTString = "content";
+	public static String TAG_SUCCESS = "success";
+	public static String TAG_REASON = "reason";
+
 	// DIA DIEM
 	public static String TAG_MA_DU_LIEU = "ma_du_lieu";
 	public static String TAG_TEN_DICH_VU = "ten_dich_vu";
@@ -25,14 +31,14 @@ public class StringTagJSON {
 	public static String TAG_TEN_NGUOI_DUNG = "ten_nguoi_dung";
 	public static String TAG_THOI_GIAN_DANG = "thoi_gian_dang";
 	public static String TAG_NOI_DUNG = "noi_dung";
-	public static String TAG_CONTENTString = "content";
-	public static String TAG_SUCCESS = "success";
-	
-	//TAIKHOAN
+
+	// TAIKHOAN
 	public static String TAG_TEN_TAI_KHOAN = "ten_tai_khoan";
 	public static String TAG_MAT_KHAU = "mat_khau";
 	public static String TAG_HO_VA_TEN = "ho_va_ten";
 	public static String TAG_EMAIL = "email";
 	public static String TAG_NGAY_SINH = "ngay_sinh";
-	
+	public static String TAG_MAT_KHAU_CU = "mat_khau_cu";
+	public static String TAG_MAT_KHAU_MOI = "mat_khau_moi";
+
 }
