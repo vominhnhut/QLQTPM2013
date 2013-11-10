@@ -16,13 +16,13 @@ import org.apache.http.message.BasicHeader;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import android.util.Log;
 
 import com.example.Object.BinhLuan;
 import com.example.Object.DiaDiem;
 import com.example.Object.TaiKhoan;
 import com.example.jsonparser.JSONParser;
 import com.example.ultils.Constants;
+import com.example.ultils.StringTagJSON;
 
 /**
  * 
@@ -161,12 +161,14 @@ public class ClientManager {
 			responsedJSONObj = JSONParser
 					.getJSONObjectFromHttpResponse(response);
 
-			boolean success = responsedJSONObj.getBoolean("success");
+			boolean success = responsedJSONObj
+					.getBoolean(StringTagJSON.TAG_SUCCESS);
 			if (success) {
 				result.success = true;
 			} else {
 				result.success = false;
-				result.content = responsedJSONObj.getString("reason");
+				result.content = responsedJSONObj
+						.getString(StringTagJSON.TAG_REASON);
 			}
 		} else {
 
@@ -190,13 +192,11 @@ public class ClientManager {
 		result = new ResponsedResult();
 
 		accObj = new JSONObject();
-		accObj.put("ten_tai_khoan", username);
-		accObj.put("mat_khau", password);
+		accObj.put(StringTagJSON.TAG_TEN_TAI_KHOAN, username);
+		accObj.put(StringTagJSON.TAG_MAT_KHAU, password);
 
 		// request server
 		response = ClientManager.RequestServerByHttpPost(LOGIN_URL, accObj);
-
-		Log.e("hoaphat", response.getStatusLine().getStatusCode() + "");
 
 		statusCode = response.getStatusLine().getStatusCode();
 
@@ -205,8 +205,8 @@ public class ClientManager {
 			responsedJSONObj = JSONParser
 					.getJSONObjectFromHttpResponse(response);
 
-			Log.e("hoaphat", responsedJSONObj.toString());
-			boolean success = responsedJSONObj.getBoolean("success");
+			boolean success = responsedJSONObj
+					.getBoolean(StringTagJSON.TAG_SUCCESS);
 			if (success) {
 
 				result.success = true;
@@ -220,7 +220,7 @@ public class ClientManager {
 		} else {
 
 			result.success = false;
-			result.content = "Can not connect Wego Server.";
+			result.content = "Problem with connecting server";
 		}
 
 		return result;
@@ -252,7 +252,8 @@ public class ClientManager {
 			responsedJSONObj = JSONParser
 					.getJSONObjectFromHttpResponse(response);
 
-			boolean success = responsedJSONObj.getBoolean("success");
+			boolean success = responsedJSONObj
+					.getBoolean(StringTagJSON.TAG_SUCCESS);
 			if (success) {
 				result.success = true;
 			} else {
@@ -263,7 +264,7 @@ public class ClientManager {
 		} else {
 
 			result.success = false;
-			result.content = "Can not connect Wego Server.";
+			result.content = "Problem with connecting server";
 		}
 
 		return result;
@@ -287,8 +288,8 @@ public class ClientManager {
 		changePasswordURL = CHANGEPASSWORD_URL + "?" + "token=" + tokenEncoded;
 
 		JSONObject inputObj = new JSONObject();
-		inputObj.put("mat_khau_cu", oldPass);
-		inputObj.put("mat_khau_moi", newPass);
+		inputObj.put(StringTagJSON.TAG_MAT_KHAU_CU, oldPass);
+		inputObj.put(StringTagJSON.TAG_MAT_KHAU_MOI, newPass);
 		// request server
 		response = ClientManager.RequestServerByHttpPost(changePasswordURL,
 				inputObj);
@@ -300,8 +301,10 @@ public class ClientManager {
 			responsedJSONObj = JSONParser
 					.getJSONObjectFromHttpResponse(response);
 
-			boolean success = responsedJSONObj.getBoolean("success");
-			String content = responsedJSONObj.getString("reason");
+			boolean success = responsedJSONObj
+					.getBoolean(StringTagJSON.TAG_SUCCESS);
+			String content = responsedJSONObj
+					.getString(StringTagJSON.TAG_REASON);
 
 			if (success) {
 				result.success = true;
@@ -313,7 +316,7 @@ public class ClientManager {
 		} else {
 
 			result.success = false;
-			result.content = "Can not connect Wego Server.";
+			result.content = "Problem with connecting server";
 		}
 
 		return result;
@@ -344,7 +347,7 @@ public class ClientManager {
 		postCommentURL = POSTCOMMENT_URL + "?token=" + tokenEncoded;
 
 		JSONObject inputObj = new JSONObject();
-		inputObj.put("ma_du_lieu", locationID);
+		inputObj.put(StringTagJSON.TAG_MA_DU_LIEU, locationID);
 		inputObj.put("comment", comment);
 		// request server
 		response = ClientManager.RequestServerByHttpPost(postCommentURL,
@@ -357,7 +360,8 @@ public class ClientManager {
 			responsedJSONObj = JSONParser
 					.getJSONObjectFromHttpResponse(response);
 
-			boolean success = responsedJSONObj.getBoolean("success");
+			boolean success = responsedJSONObj
+					.getBoolean(StringTagJSON.TAG_SUCCESS);
 
 			if (success) {
 				result.success = true;
@@ -369,7 +373,7 @@ public class ClientManager {
 		} else {
 
 			result.success = false;
-			result.content = "Can not connect Wego Server.";
+			result.content = "Problem with connecting server";
 		}
 
 		return result;
@@ -408,15 +412,17 @@ public class ClientManager {
 			responsedJSONObj = JSONParser
 					.getJSONObjectFromHttpResponse(response);
 
-			boolean success = responsedJSONObj.getBoolean("success");
+			boolean success = responsedJSONObj
+					.getBoolean(StringTagJSON.TAG_SUCCESS);
 			if (success) {
 
 				result.success = true;
 
-				JSONArray array = responsedJSONObj.getJSONArray("content");
+				JSONArray array = responsedJSONObj
+						.getJSONArray(StringTagJSON.TAG_CONTENTString);
 
 				listDiaDiem.addAll(JSONParser
-						.parseListDiaDiemTomTatFromJSON(array));
+						.getListDiaDiemTomTatFromJSON(array));
 
 			} else {
 				result.success = false;
@@ -426,7 +432,7 @@ public class ClientManager {
 		} else {
 
 			result.success = false;
-			result.content = "Can not connect Wego Server.";
+			result.content = "Problem with connecting server";
 		}
 
 		return result;
