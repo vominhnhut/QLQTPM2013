@@ -54,9 +54,9 @@ public class ClientManager {
 	 * @author Hoa Phat
 	 * @since 2013/11/8
 	 */
-	private static HttpResponse RequestServerToGetJSONObjectByHttpPost(
-			String uri, JSONObject input) throws IllegalStateException,
-			IOException, JSONException {
+	private static HttpResponse RequestServerByHttpPost(String uri,
+			JSONObject input) throws IllegalStateException, IOException,
+			JSONException {
 
 		HttpClient client;
 		HttpPost post;
@@ -73,7 +73,7 @@ public class ClientManager {
 		return response;
 	}
 
-	private static HttpResponse RequestServerToGetJSONObjectByHttpGet(String uri)
+	private static HttpResponse RequestServerByHttpGet(String uri)
 			throws ClientProtocolException, IOException {
 
 		HttpClient client;
@@ -90,9 +90,8 @@ public class ClientManager {
 		return response;
 	}
 
-	private static HttpResponse RequestServerToGetJSONObjectByHttpDelete(
-			String uri) throws IllegalStateException, IOException,
-			JSONException {
+	private static HttpResponse RequestServerByHttpDelete(String uri)
+			throws IllegalStateException, IOException, JSONException {
 
 		HttpClient client;
 		HttpDelete get;
@@ -119,9 +118,8 @@ public class ClientManager {
 	 * @author Hoa Phat
 	 * @since 2013/11/8
 	 */
-	private static HttpResponse RequestServerToGetJSONArray(String uri,
-			JSONObject input) throws IllegalStateException, IOException,
-			JSONException {
+	private static HttpResponse RequestServer(String uri, JSONObject input)
+			throws IllegalStateException, IOException, JSONException {
 
 		HttpClient client;
 		HttpPost post;
@@ -153,8 +151,7 @@ public class ClientManager {
 
 		accObj = JSONParser.getJSONFromObject(taiKhoan);
 
-		response = ClientManager.RequestServerToGetJSONObjectByHttpPost(
-				REGISTER_URL, accObj);
+		response = ClientManager.RequestServerByHttpPost(REGISTER_URL, accObj);
 
 		statusCode = response.getStatusLine().getStatusCode();
 
@@ -194,8 +191,7 @@ public class ClientManager {
 		accObj.put("mat_khau", password);
 
 		// request server
-		response = ClientManager.RequestServerToGetJSONObjectByHttpPost(
-				LOGIN_URL, accObj);
+		response = ClientManager.RequestServerByHttpPost(LOGIN_URL, accObj);
 
 		Log.e("hoaphat", response.getStatusLine().getStatusCode() + "");
 
@@ -244,8 +240,7 @@ public class ClientManager {
 		LogoutURL = LOGOUT_URL + "?" + "token=" + tokenEncoded;
 
 		// request server
-		response = ClientManager
-				.RequestServerToGetJSONObjectByHttpDelete(LogoutURL);
+		response = ClientManager.RequestServerByHttpDelete(LogoutURL);
 
 		statusCode = response.getStatusLine().getStatusCode();
 
@@ -292,8 +287,8 @@ public class ClientManager {
 		inputObj.put("mat_khau_cu", oldPass);
 		inputObj.put("mat_khau_moi", newPass);
 		// request server
-		response = ClientManager.RequestServerToGetJSONObjectByHttpPost(
-				changePasswordURL, inputObj);
+		response = ClientManager.RequestServerByHttpPost(changePasswordURL,
+				inputObj);
 
 		statusCode = response.getStatusLine().getStatusCode();
 
@@ -349,8 +344,8 @@ public class ClientManager {
 		inputObj.put("ma_du_lieu", locationID);
 		inputObj.put("comment", comment);
 		// request server
-		response = ClientManager.RequestServerToGetJSONObjectByHttpPost(
-				postCommentURL, inputObj);
+		response = ClientManager.RequestServerByHttpPost(postCommentURL,
+				inputObj);
 
 		statusCode = response.getStatusLine().getStatusCode();
 
