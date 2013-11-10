@@ -8,6 +8,7 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface.OnClickListener;
 
+
 public class DialogGenerator {
 
 	public static AlertDialog createExitConfirmationDialog(Context context,

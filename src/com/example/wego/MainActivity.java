@@ -11,6 +11,7 @@ import com.example.clientmanager.ClientManager;
 import com.example.clientmanager.ResponsedResult;
 import com.example.ultils.Constants;
 import com.example.ultils.DialogGenerator;
+import com.example.ultils.Ultils;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -159,6 +160,8 @@ public class MainActivity extends Activity implements
 			mDrawerLayout.closeDrawer(mDrawerList);
 			break;
 		case ACCOUNT_ITEM_ID:
+			Intent intent = new Intent(MainActivity.this, ChangePasswordActivity.class);
+			startActivity(intent);
 			break;
 		case LOG_OUT_ITEM_ID:
 			mDrawerLayout.closeDrawers();
@@ -260,6 +263,7 @@ public class MainActivity extends Activity implements
 
 	public void logOut() {
 		Constants.LOGGED_IN = false;
+		Ultils.removeUserNameAndPasswordToSharedPref(this);		
 		transferToLoginScreen();
 	}
 
@@ -271,7 +275,7 @@ public class MainActivity extends Activity implements
 			// TODO Auto-generated method stub
 			WeGoMainFragment fragment = (WeGoMainFragment) getFragmentManager()
 					.findFragmentByTag(WeGoMainFragment.TAG);
-			if(fragment != null){
+			if (fragment != null) {
 				fragment.initViewsBeginSearch();
 			}
 			super.onPreExecute();
@@ -284,11 +288,11 @@ public class MainActivity extends Activity implements
 			String key = params[0];
 			try {
 
-				//searchedDiadiem.clear();
+				// searchedDiadiem.clear();
 				ArrayList<DiaDiem> temp = new ArrayList<DiaDiem>();
 				result = ClientManager.RequestToGetFindDiaDiemByKeywords(key,
 						temp);
-				if(temp != null && temp.size() >0){
+				if (temp != null && temp.size() > 0) {
 					searchedDiadiem.clear();
 					searchedDiadiem = temp;
 				}
@@ -312,13 +316,14 @@ public class MainActivity extends Activity implements
 			// TODO Auto-generated method stub
 			WeGoMainFragment fragment = (WeGoMainFragment) getFragmentManager()
 					.findFragmentByTag(WeGoMainFragment.TAG);
-			if(fragment != null){
+			if (fragment != null) {
 				fragment.initViewsBeginSearchFinish();
 			}
 			if (result != null && result.success && searchedDiadiem.size() > 0) {
 				updateSearchList();
 			} else {
-				AlertDialog dialog = DialogGenerator.createAlertDialog(MainActivity.this, result.content);
+				AlertDialog dialog = DialogGenerator.createAlertDialog(
+						MainActivity.this, result.content);
 				dialog.show();
 			}
 

@@ -50,5 +50,10 @@
     <string name="empty_field">Please fill all fields!</string>
     <string name="password_missmatch">Passwords are mismatch!</string>
     <string name="please_wait">Please wait...</string>
+    <string name="new_pass_text">New password</string>
+    <string name="confirm_new_pass_text">Confirm new password</string>
+    <string name="change_pass_text">Change password</string>
+    <string name="old_pass_text">Old password</string>
+    <string name="title_activity_change_password">ChangePasswordActivity</string>
 
 </resources>

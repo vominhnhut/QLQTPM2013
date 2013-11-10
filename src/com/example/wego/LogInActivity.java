@@ -10,15 +10,14 @@ import com.example.clientmanager.ResponsedResult;
 import com.example.ultils.Constants;
 import com.example.ultils.DialogGenerator;
 import com.example.ultils.NetworkHelper;
+import com.example.ultils.Ultils;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -41,18 +40,16 @@ public class LogInActivity extends Activity implements OnClickListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		autoLogIn();
-		
+
 		setContentView(R.layout.activity_log_in);
 
 		getActionBar().hide();
 
 		log_in_view = (LinearLayout) findViewById(R.id.log_in_view);
-		wait_view = (LinearLayout) findViewById(R.id.rgt_wait_view);
+		wait_view = (LinearLayout) findViewById(R.id.wait_view);
 
-		txtUserName = (TextView) findViewById(R.id.edtUserName);
-		txtPassWord = (TextView) findViewById(R.id.edtPassword);
+		txtUserName = (TextView) findViewById(R.id.userName);
+		txtPassWord = (TextView) findViewById(R.id.password);
 		btnLogIn = (Button) findViewById(R.id.btnLogin);
 		btnRegister = (Button) findViewById(R.id.btnRegist);
 
@@ -61,6 +58,8 @@ public class LogInActivity extends Activity implements OnClickListener {
 
 		txtUserName.setText("hoaphat92");
 		txtPassWord.setText("123456");
+
+		autoLogIn();
 	}
 
 	@Override
@@ -82,7 +81,8 @@ public class LogInActivity extends Activity implements OnClickListener {
 			logIn(tk);
 			break;
 		case R.id.btnRegist:
-			Intent intent = new Intent(LogInActivity.this, RegisterActivity.class);
+			Intent intent = new Intent(LogInActivity.this,
+					RegisterActivity.class);
 			startActivity(intent);
 			break;
 		}
@@ -115,15 +115,9 @@ public class LogInActivity extends Activity implements OnClickListener {
 	}
 
 	private void autoLogIn() {
-		SharedPreferences prefs = getSharedPreferences(getPackageName(),
-				Context.MODE_PRIVATE);
-
-		TaiKhoan tk = new TaiKhoan();
-		tk.tenTaiKhoan = prefs.getString(Constants.USERNAME_TAG, null);
-		tk.matKhau = prefs.getString(Constants.PASSWORD_TAG, null);
-
-		if (tk.tenTaiKhoan != null && tk.matKhau != null) {
-			new LoginStask().equals(tk);
+		TaiKhoan tk = Ultils.getUserNameAndPasswordFromSharedPref(this);
+		if (tk != null) {
+			logIn(tk);
 		}
 	}
 
@@ -165,28 +159,21 @@ public class LogInActivity extends Activity implements OnClickListener {
 			wait_view.setVisibility(View.GONE);
 			log_in_view.setVisibility(View.VISIBLE);
 
-			if (result!= null && result.success) {
+			if (result != null && result.success) {
 				Intent intent = new Intent(LogInActivity.this,
 						MainActivity.class);
 				intent.putExtra(Constants.LOG_IN_RESULT_TAG, result.success);
 
-				SharedPreferences prefs = getSharedPreferences(
-						getPackageName(), Context.MODE_PRIVATE);
-
-				SharedPreferences.Editor edit = prefs.edit();
-				
-				edit.putString(Constants.USERNAME_TAG,
-						txtUserName.getText().toString());
-				edit.putString(Constants.PASSWORD_TAG,
-						txtUserName.getText().toString());
-				edit.commit();
+				Ultils.saveUserNameAndPasswordToSharedPref(LogInActivity.this,
+						txtUserName.getText().toString(), txtPassWord.getText()
+								.toString());
 
 				Constants.LOGGED_IN = true;
 
 				finish();
 			} else {
-				AlertDialog dialog = DialogGenerator
-						.createAlertDialog(LogInActivity.this, result.content);
+				AlertDialog dialog = DialogGenerator.createAlertDialog(
+						LogInActivity.this, result.content);
 				dialog.show();
 			}
 
