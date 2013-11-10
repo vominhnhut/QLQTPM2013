@@ -6,7 +6,7 @@
     <string-array name="left_items_array">
         <item>Home</item>
         <item>Account</item>
-        <!-- <item>Setting</item> -->
+        <item>Log out</item>
         <item>Exit</item>
     </string-array>
 

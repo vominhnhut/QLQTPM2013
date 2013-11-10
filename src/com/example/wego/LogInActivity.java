@@ -173,17 +173,20 @@ public class LogInActivity extends Activity implements OnClickListener {
 				SharedPreferences prefs = getSharedPreferences(
 						getPackageName(), Context.MODE_PRIVATE);
 
-				prefs.edit().putString(Constants.USERNAME_TAG,
+				SharedPreferences.Editor edit = prefs.edit();
+				
+				edit.putString(Constants.USERNAME_TAG,
 						txtUserName.getText().toString());
-				prefs.edit().putString(Constants.PASSWORD_TAG,
+				edit.putString(Constants.PASSWORD_TAG,
 						txtUserName.getText().toString());
+				edit.commit();
 
 				Constants.LOGGED_IN = true;
 
 				finish();
 			} else {
 				AlertDialog dialog = DialogGenerator
-						.createLoginFailDialog(LogInActivity.this);
+						.createAlertDialog(LogInActivity.this, result.content);
 				dialog.show();
 			}
 
