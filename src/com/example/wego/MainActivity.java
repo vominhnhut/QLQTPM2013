@@ -1,9 +1,15 @@
 package com.example.wego;
 
+import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
+
+import org.json.JSONException;
 
 import com.example.Object.DiaDiem;
 import com.example.adapter.LeftDrawerAdapter;
+import com.example.clientmanager.ClientManager;
+import com.example.clientmanager.ResponsedResult;
 import com.example.ultils.Constants;
 import com.example.ultils.DialogGenerator;
 
@@ -15,10 +21,12 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -27,6 +35,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 public class MainActivity extends Activity implements
 		SearchView.OnQueryTextListener {
@@ -42,7 +51,7 @@ public class MainActivity extends Activity implements
 	//private CharSequence mDrawerTitle;
 	//private CharSequence mTitle;
 
-	private ArrayList<DiaDiem> searchedDiadiem;
+	private ArrayList<DiaDiem> searchedDiadiem = new ArrayList<DiaDiem>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -200,8 +209,10 @@ public class MainActivity extends Activity implements
 	}
 
 	public void search(String key) {
-		this.searchedDiadiem = Constants.getDumbDDList();
-		updateSearchList();
+		// this.searchedDiadiem = Constants.getDumbDDList();
+		// updateSearchList();
+
+		new FindLocationAsynctask().execute(key);
 	}
 
 	public void updateSearchList() {
@@ -209,7 +220,7 @@ public class MainActivity extends Activity implements
 		if (fragment != null) {
 			fragment.updateSearchList(searchedDiadiem);
 		} else {
-			
+
 		}
 	}
 
@@ -246,10 +257,67 @@ public class MainActivity extends Activity implements
 			startActivity(intent);
 		}
 	}
-	
-	public void logOut(){
-		Constants.LOGINUSER_TOKEN = null;
+
+	public void logOut() {
 		Constants.LOGGED_IN = false;
 		transferToLoginScreen();
+	}
+
+	public class FindLocationAsynctask extends
+			AsyncTask<String, Integer, ResponsedResult> {
+
+		@Override
+		protected void onPreExecute() {
+			// TODO Auto-generated method stub
+			super.onPreExecute();
+		}
+
+		@Override
+		protected ResponsedResult doInBackground(String... params) {
+			// TODO Auto-generated method stub
+			ResponsedResult result = null;
+			String key = params[0];
+			Log.e("hoatphat", key);
+			try {
+
+				searchedDiadiem.clear();
+				result = ClientManager.RequestToGetFindDiaDiemByKeywords(key,
+						searchedDiadiem);
+
+			} catch (IllegalStateException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			return result;
+		}
+
+		@Override
+		protected void onPostExecute(ResponsedResult result) {
+			// TODO Auto-generated method stub
+			super.onPostExecute(result);
+
+			if (result != null) {
+
+				if (result.success) {
+
+					updateSearchList();
+
+				} else {
+
+					Toast.makeText(getApplicationContext(), result.content, 2)
+							.show();
+				}
+
+			} else {
+				Toast.makeText(getApplicationContext(), "null", 2).show();
+			}
+		}
 	}
 }
