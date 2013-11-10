@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.json.JSONArray;
@@ -15,6 +16,7 @@ import com.example.Object.BinhLuan;
 import com.example.Object.ChiTietDichVu;
 import com.example.Object.DiaDiem;
 import com.example.Object.TaiKhoan;
+import com.example.ultils.StringTagJSON;
 
 /**
  * JSON to Object. Object to JSON. Parser
@@ -53,11 +55,11 @@ public class JSONParser {
 			throws JSONException {
 		JSONObject obj = new JSONObject();
 
-		obj.put("ten_tai_khoan", taiKhoan.tenTaiKhoan);
-		obj.put("mat_khau", taiKhoan.matKhau);
-		obj.put("ho_va_ten", taiKhoan.hoTen);
-		obj.put("email", taiKhoan.email);
-		obj.put("ngay_sinh", taiKhoan.ngaySinh);
+		obj.put(StringTagJSON.TAG_TEN_TAI_KHOAN, taiKhoan.tenTaiKhoan);
+		obj.put(StringTagJSON.TAG_MAT_KHAU, taiKhoan.matKhau);
+		obj.put(StringTagJSON.TAG_HO_VA_TEN, taiKhoan.hoTen);
+		obj.put(StringTagJSON.TAG_EMAIL, taiKhoan.email);
+		obj.put(StringTagJSON.TAG_NGAY_SINH, taiKhoan.ngaySinh);
 
 		return obj;
 	}
@@ -67,17 +69,17 @@ public class JSONParser {
 
 		DiaDiem diadiem = new DiaDiem();
 
-		diadiem.ten = obj.getString("ten_dia_diem");
-		diadiem.diemDanhGia = obj.getInt("so_luot_thich");
-		diadiem.latitude = obj.getDouble("vi_do");
-		diadiem.longitude = obj.getDouble("kinh_do");
+		diadiem.ten = obj.getString(StringTagJSON.TAG_TEN_DIA_DIEM);
+		diadiem.diemDanhGia = obj.getInt(StringTagJSON.TAG_SO_LUOT_THICH);
+		diadiem.latitude = obj.getDouble(StringTagJSON.TAG_VI_DO);
+		diadiem.longitude = obj.getDouble(StringTagJSON.TAG_KINH_DO);
 
 		// dia chi
-		String so_nha = obj.getString("so_nha");
-		String ten_duong = obj.getString("ten_duong");
-		String ten_phuong = obj.getString("ten_phuong");
-		String ten_quan_huyen = obj.getString("ten_quan_huyen");
-		String ten_tinh_thanh = obj.getString("ten_tinh_thanh");
+		String so_nha = obj.getString(StringTagJSON.TAG_SO_NHA);
+		String ten_duong = obj.getString(StringTagJSON.TAG_TEN_DUONG);
+		String ten_phuong = obj.getString(StringTagJSON.TAG_TEN_PHUONG);
+		String ten_quan_huyen = obj.getString(StringTagJSON.TAG_QUAN_HUYEN);
+		String ten_tinh_thanh = obj.getString(StringTagJSON.TAG_TEN_TINH_THANH);
 		//
 
 		diadiem.diaChi = so_nha + " " + ten_duong + ", " + ten_phuong + ", "
@@ -88,7 +90,7 @@ public class JSONParser {
 	}
 
 	// lay danh sach dia diem tom tat tu jsonarray
-	public static ArrayList<DiaDiem> parseListDiaDiemTomTatFromJSON(
+	public static ArrayList<DiaDiem> getListDiaDiemTomTatFromJSON(
 			JSONArray array) throws JSONException {
 
 		ArrayList<DiaDiem> listDiaDiem = new ArrayList<DiaDiem>();

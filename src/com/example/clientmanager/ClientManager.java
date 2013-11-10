@@ -416,7 +416,7 @@ public class ClientManager {
 				JSONArray array = responsedJSONObj.getJSONArray("content");
 
 				listDiaDiem.addAll(JSONParser
-						.parseListDiaDiemTomTatFromJSON(array));
+						.getListDiaDiemTomTatFromJSON(array));
 
 			} else {
 				result.success = false;
