@@ -155,9 +155,11 @@ public class ClientManager {
 
 		statusCode = response.getStatusLine().getStatusCode();
 
-		responsedJSONObj = JSONParser.getJSONObjectFromHttpResponse(response);
-
 		if (statusCode == 200) {
+
+			responsedJSONObj = JSONParser
+					.getJSONObjectFromHttpResponse(response);
+
 			boolean success = responsedJSONObj.getBoolean("success");
 			if (success) {
 				result.success = true;
