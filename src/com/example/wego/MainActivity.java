@@ -27,7 +27,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.Toast;
 
 public class MainActivity extends Activity implements
 		SearchView.OnQueryTextListener {
@@ -40,8 +39,8 @@ public class MainActivity extends Activity implements
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
-	private CharSequence mDrawerTitle;
-	private CharSequence mTitle;
+	//private CharSequence mDrawerTitle;
+	//private CharSequence mTitle;
 
 	private ArrayList<DiaDiem> searchedDiadiem;
 
@@ -53,8 +52,8 @@ public class MainActivity extends Activity implements
 		// Transfer to log in when need
 		setContentView(R.layout.activity_main);
 
-		mTitle = getTitle();
-		mDrawerTitle = mTitle;
+		//mTitle = getTitle();
+		//mDrawerTitle = mTitle;
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		// mDrawerLayout.setVisibility(View.GONE);
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
@@ -66,6 +65,7 @@ public class MainActivity extends Activity implements
 
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
+		getActionBar().setTitle("");
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setHomeButtonEnabled(true);
 
@@ -73,12 +73,12 @@ public class MainActivity extends Activity implements
 				R.drawable.ic_drawer, R.string.drawer_open,
 				R.string.drawer_close) {
 			public void onDrawerClosed(View view) {
-				getActionBar().setTitle(mTitle);
+				//getActionBar().setTitle(mTitle);
 				invalidateOptionsMenu();
 			}
 
 			public void onDrawerOpened(View drawerView) {
-				getActionBar().setTitle(mDrawerTitle);
+				//getActionBar().setTitle(mDrawerTitle);
 				getMaGoMainFragment().hideListStatusIfShown();
 				hideKeyPad();
 				invalidateOptionsMenu();
@@ -177,8 +177,8 @@ public class MainActivity extends Activity implements
 
 	@Override
 	public void setTitle(CharSequence title) {
-		mTitle = title;
-		getActionBar().setTitle(mTitle);
+		//mTitle = title;
+		//getActionBar().setTitle(mTitle);
 	}
 
 	@Override
@@ -248,6 +248,7 @@ public class MainActivity extends Activity implements
 	}
 	
 	public void logOut(){
+		Constants.LOGINUSER_TOKEN = null;
 		Constants.LOGGED_IN = false;
 		transferToLoginScreen();
 	}
