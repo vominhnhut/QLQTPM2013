@@ -13,13 +13,12 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicHeader;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import android.util.Log;
 
 import com.example.Object.BinhLuan;
-import com.example.Object.ChiTietDichVu;
 import com.example.Object.DiaDiem;
 import com.example.Object.TaiKhoan;
 import com.example.jsonparser.JSONParser;
@@ -42,6 +41,7 @@ public class ClientManager {
 	public static final String LOGOUT_URL = "http://wegorest.viemde.cloudbees.net/user/logout";
 	public static final String CHANGEPASSWORD_URL = "http://wegorest.viemde.cloudbees.net/user/changepassw";
 	public static final String POSTCOMMENT_URL = "http://wegorest.viemde.cloudbees.net/user/comment";
+	public static final String FINDLOCATION_URL = "http://wegorest.viemde.cloudbees.net/place/find";
 
 	/**
 	 * Request server to get JSONObject as a response
@@ -82,7 +82,8 @@ public class ClientManager {
 
 		client = new DefaultHttpClient();
 		get = new HttpGet(uri);
-		get.addHeader(new BasicHeader("Content-Type", "application/json"));
+		get.addHeader(new BasicHeader("Content-Type",
+				"application/json;charset=utf-8"));
 
 		// request server to get data
 		response = client.execute(get);
@@ -380,11 +381,55 @@ public class ClientManager {
 		return listBinhLuan;
 	}
 
-	public static ArrayList<ChiTietDichVu> RequestToGetListChiTietDichVu(
-			String diadiemID) {
-		ArrayList<ChiTietDichVu> listChiTietDichVu = new ArrayList<ChiTietDichVu>();
+	public static ResponsedResult RequestToGetFindDiaDiemByKeywords(
+			String keywords, ArrayList<DiaDiem> listDiaDiem)
+			throws IllegalStateException, IOException, JSONException {
 
-		return listChiTietDichVu;
+		ResponsedResult result;
+		JSONObject responsedJSONObj;
+		HttpResponse response;
+		int statusCode;
+		String findLocation;
+		result = new ResponsedResult();
+
+		String encodedToken = URLEncoder.encode(Constants.LOGINUSER_TOKEN,
+				"UTF-8");
+		String encodedQuery = URLEncoder.encode(keywords, "UTF-8");
+
+		findLocation = FINDLOCATION_URL + "?token=" + encodedToken + "&index=0"
+				+ "&query=" + encodedQuery;
+
+		response = ClientManager.RequestServerByHttpGet(findLocation);
+
+		statusCode = response.getStatusLine().getStatusCode();
+
+		if (statusCode == 200) {
+
+			responsedJSONObj = JSONParser
+					.getJSONObjectFromHttpResponse(response);
+
+			boolean success = responsedJSONObj.getBoolean("success");
+			if (success) {
+
+				result.success = true;
+
+				JSONArray array = responsedJSONObj.getJSONArray("content");
+
+				listDiaDiem.addAll(JSONParser
+						.parseListDiaDiemTomTatFromJSON(array));
+
+			} else {
+				result.success = false;
+				result.content = "Result not found";
+			}
+
+		} else {
+
+			result.success = false;
+			result.content = "Can not connect Wego Server.";
+		}
+
+		return result;
 	}
 
 	public static DiaDiem RequestToGetDiaDiemChiTiet(String diadiemID) {
