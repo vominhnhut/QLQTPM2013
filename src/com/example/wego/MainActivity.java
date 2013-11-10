@@ -1,7 +1,6 @@
 package com.example.wego;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 
 import org.json.JSONException;
@@ -26,7 +25,6 @@ import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -35,7 +33,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.Toast;
 
 public class MainActivity extends Activity implements
 		SearchView.OnQueryTextListener {
@@ -48,8 +45,8 @@ public class MainActivity extends Activity implements
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
-	//private CharSequence mDrawerTitle;
-	//private CharSequence mTitle;
+	// private CharSequence mDrawerTitle;
+	// private CharSequence mTitle;
 
 	private ArrayList<DiaDiem> searchedDiadiem = new ArrayList<DiaDiem>();
 
@@ -59,10 +56,12 @@ public class MainActivity extends Activity implements
 		super.onCreate(savedInstanceState);
 
 		// Transfer to log in when need
+		transferToLoginScreen();
+
 		setContentView(R.layout.activity_main);
 
-		//mTitle = getTitle();
-		//mDrawerTitle = mTitle;
+		// mTitle = getTitle();
+		// mDrawerTitle = mTitle;
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		// mDrawerLayout.setVisibility(View.GONE);
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
@@ -82,12 +81,12 @@ public class MainActivity extends Activity implements
 				R.drawable.ic_drawer, R.string.drawer_open,
 				R.string.drawer_close) {
 			public void onDrawerClosed(View view) {
-				//getActionBar().setTitle(mTitle);
+				// getActionBar().setTitle(mTitle);
 				invalidateOptionsMenu();
 			}
 
 			public void onDrawerOpened(View drawerView) {
-				//getActionBar().setTitle(mDrawerTitle);
+				// getActionBar().setTitle(mDrawerTitle);
 				getMaGoMainFragment().hideListStatusIfShown();
 				hideKeyPad();
 				invalidateOptionsMenu();
@@ -109,7 +108,6 @@ public class MainActivity extends Activity implements
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
-		transferToLoginScreen();
 
 		super.onResume();
 	}
@@ -186,8 +184,8 @@ public class MainActivity extends Activity implements
 
 	@Override
 	public void setTitle(CharSequence title) {
-		//mTitle = title;
-		//getActionBar().setTitle(mTitle);
+		// mTitle = title;
+		// getActionBar().setTitle(mTitle);
 	}
 
 	@Override
@@ -252,6 +250,8 @@ public class MainActivity extends Activity implements
 	}
 
 	public void transferToLoginScreen() {
+		this.searchedDiadiem = new ArrayList<DiaDiem>();
+		updateSearchList();
 		if (Constants.LOGGED_IN == false) {
 			Intent intent = new Intent(MainActivity.this, LogInActivity.class);
 			startActivity(intent);
@@ -269,6 +269,11 @@ public class MainActivity extends Activity implements
 		@Override
 		protected void onPreExecute() {
 			// TODO Auto-generated method stub
+			WeGoMainFragment fragment = (WeGoMainFragment) getFragmentManager()
+					.findFragmentByTag(WeGoMainFragment.TAG);
+			if(fragment != null){
+				fragment.initViewsBeginSearch();
+			}
 			super.onPreExecute();
 		}
 
@@ -277,12 +282,16 @@ public class MainActivity extends Activity implements
 			// TODO Auto-generated method stub
 			ResponsedResult result = null;
 			String key = params[0];
-			Log.e("hoatphat", key);
 			try {
 
-				searchedDiadiem.clear();
+				//searchedDiadiem.clear();
+				ArrayList<DiaDiem> temp = new ArrayList<DiaDiem>();
 				result = ClientManager.RequestToGetFindDiaDiemByKeywords(key,
-						searchedDiadiem);
+						temp);
+				if(temp != null && temp.size() >0){
+					searchedDiadiem.clear();
+					searchedDiadiem = temp;
+				}
 
 			} catch (IllegalStateException e) {
 				// TODO Auto-generated catch block
@@ -301,23 +310,19 @@ public class MainActivity extends Activity implements
 		@Override
 		protected void onPostExecute(ResponsedResult result) {
 			// TODO Auto-generated method stub
-			super.onPostExecute(result);
-
-			if (result != null) {
-
-				if (result.success) {
-
-					updateSearchList();
-
-				} else {
-
-					Toast.makeText(getApplicationContext(), result.content, 2)
-							.show();
-				}
-
-			} else {
-				Toast.makeText(getApplicationContext(), "null", 2).show();
+			WeGoMainFragment fragment = (WeGoMainFragment) getFragmentManager()
+					.findFragmentByTag(WeGoMainFragment.TAG);
+			if(fragment != null){
+				fragment.initViewsBeginSearchFinish();
 			}
+			if (result != null && result.success && searchedDiadiem.size() > 0) {
+				updateSearchList();
+			} else {
+				AlertDialog dialog = DialogGenerator.createAlertDialog(MainActivity.this, result.content);
+				dialog.show();
+			}
+
+			super.onPostExecute(result);
 		}
 	}
 }

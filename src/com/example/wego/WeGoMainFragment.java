@@ -30,6 +30,7 @@ import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -37,6 +38,7 @@ public class WeGoMainFragment extends Fragment implements OnItemClickListener {
 	public static final String TAG = "WeGoMainFragment";
 
 	private ListView mStatusList;
+	private LinearLayout mSearchWaitView;
 	public boolean isShow = true;
 	private GoogleMap map;
 	private StatusAdapter searchedItemAdapter;
@@ -82,7 +84,7 @@ public class WeGoMainFragment extends Fragment implements OnItemClickListener {
 			public void onMapClick(LatLng point) {
 				// TODO Auto-generated method stub
 				if (searchedItemAdapter != null
-						&& searchedItemAdapter.getCount() <= 0) {
+						&& searchedItemAdapter.getCount() > 0) {
 					showHideListStatus();
 				} else {
 					Toast.makeText(getActivity(),
@@ -101,6 +103,9 @@ public class WeGoMainFragment extends Fragment implements OnItemClickListener {
 				}
 			}
 		});
+
+		mSearchWaitView = (LinearLayout) view
+				.findViewById(R.id.search_wait_view);
 
 		zoomToLocation(10, false);
 		forcusCurrentLocation(true);
@@ -189,11 +194,12 @@ public class WeGoMainFragment extends Fragment implements OnItemClickListener {
 		isShow = false;
 	}
 
-	public void hideListStatusIfShown(){
-		if(isShow){
+	public void hideListStatusIfShown() {
+		if (isShow) {
 			hideListStatus();
 		}
 	}
+
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 		// TODO Auto-generated method stub
@@ -245,6 +251,7 @@ public class WeGoMainFragment extends Fragment implements OnItemClickListener {
 	}
 
 	public void updateSearchList(ArrayList<DiaDiem> diaDiemList) {
+		map.clear();
 		if (diaDiemList == null || diaDiemList.size() == 0) {
 			hideListStatus();
 		} else {
@@ -281,5 +288,17 @@ public class WeGoMainFragment extends Fragment implements OnItemClickListener {
 		} else {
 			map.moveCamera(camUpdate);
 		}
+	}
+
+	public void initViewsBeginSearch() {
+		hideListStatusIfShown();
+		mSearchWaitView.setVisibility(View.VISIBLE);
+	}
+
+	public void initViewsBeginSearchFinish() {
+		if (searchedItemAdapter != null && searchedItemAdapter.getCount() > 0) {
+			showListStatus();
+		}
+		mSearchWaitView.setVisibility(View.GONE);
 	}
 }

@@ -49,5 +49,6 @@
     <string name="regist_text">Sign up!</string>
     <string name="empty_field">Please fill all fields!</string>
     <string name="password_missmatch">Passwords are mismatch!</string>
+    <string name="please_wait">Please wait...</string>
 
 </resources>

@@ -1,36 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/LinearLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#383838"
-    android:orientation="vertical"
-    android:weightSum="3" >
+    android:background="#383838" >
 
     <LinearLayout
         android:id="@+id/mapLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="3"
-        android:orientation="vertical" >
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="3" >
 
         <fragment
             android:id="@+id/mapView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="2"
             class="com.google.android.gms.maps.MapFragment" />
+
+        <ListView
+            android:id="@+id/list_status"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:background="#a8dff4"
+            android:divider="@drawable/line2"
+            android:visibility="visible" >
+        </ListView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/search_wait_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:background="#CC7f7f7f"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:visibility="gone" >
+
+        <ProgressBar
+            android:id="@+id/progressBar1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/please_wait"
+            android:textColor="#ffffff" />
 
     </LinearLayout>
 
-    <ListView
-        android:id="@+id/list_status"
-        android:layout_width="match_parent"
-        android:layout_height="350dp"
-        android:layout_weight="1"
-        android:background="#383838"
-        android:visibility="visible"
-        android:divider="@drawable/line2" >
-
-    </ListView>
-
-</LinearLayout>
+</RelativeLayout>
