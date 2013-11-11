@@ -1,7 +1,6 @@
 package com.example.clientmanager;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
@@ -17,6 +16,8 @@ import org.apache.http.message.BasicHeader;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import android.util.Log;
 
 import com.example.Object.BinhLuan;
 import com.example.Object.DiaDiem;
@@ -41,9 +42,9 @@ public class ClientManager {
 	public static final String LOGIN_URL = "http://wegorest.viemde.cloudbees.net/user/login";
 	public static final String LOGOUT_URL = "http://wegorest.viemde.cloudbees.net/user/logout";
 	public static final String CHANGEPASSWORD_URL = "http://wegorest.viemde.cloudbees.net/user/changepassw";
-	public static final String POSTCOMMENT_URL = "http://wegorest.viemde.cloudbees.net/user/comment";
+	public static final String POSTCOMMENT_URL = "http://wegorest.viemde.cloudbees.net/place/comment";
 	public static final String FINDLOCATION_URL = "http://wegorest.viemde.cloudbees.net/place/find";
-	public static final String LISTCOMMENT_URL = "http://wegorest.viemde.cloudbees.net/place/find";
+	public static final String LISTCOMMENT_URL = "http://wegorest.viemde.cloudbees.net/place/comment";
 
 	/**
 	 * Request server to get JSONObject as a response
@@ -348,9 +349,13 @@ public class ClientManager {
 
 		postCommentURL = POSTCOMMENT_URL + "?token=" + tokenEncoded;
 
+		Log.e("hoaphat", postCommentURL);
+
 		JSONObject inputObj = new JSONObject();
 		inputObj.put(StringTagJSON.TAG_MA_DU_LIEU, locationID);
-		inputObj.put("comment", comment);
+		inputObj.put(StringTagJSON.TAG_COMMENT, comment);
+
+		Log.e("hoaphat", inputObj.toString());
 		// request server
 		response = ClientManager.RequestServerByHttpPost(postCommentURL,
 				inputObj);
@@ -393,9 +398,12 @@ public class ClientManager {
 		result = new ResponsedResult();
 
 		String encodedDiaDiemID = URLEncoder.encode(diadiemID, "UTF-8");
+		String encodedToken = URLEncoder.encode(Constants.LOGINUSER_TOKEN,
+				"UTF-8");
 
-		listCommentURL = LISTCOMMENT_URL + "?token=" + encodedDiaDiemID
-				+ "&index=0";
+		listCommentURL = LISTCOMMENT_URL + "?token=" + encodedToken
+				+ "&index=1" + "&ma_du_lieu=" + encodedDiaDiemID;
+		Log.e("hoaphat", listCommentURL);
 
 		response = ClientManager.RequestServerByHttpGet(listCommentURL);
 
@@ -414,7 +422,7 @@ public class ClientManager {
 
 				JSONArray array = responsedJSONObj
 						.getJSONArray(StringTagJSON.TAG_CONTENTString);
-
+				Log.e("hoaphat", array.toString());
 				listBinhLuan.addAll(JSONParser.getListBinhLuanFromJSON(array));
 
 			} else {
