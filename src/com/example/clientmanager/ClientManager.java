@@ -1,6 +1,7 @@
 package com.example.clientmanager;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
@@ -42,6 +43,7 @@ public class ClientManager {
 	public static final String CHANGEPASSWORD_URL = "http://wegorest.viemde.cloudbees.net/user/changepassw";
 	public static final String POSTCOMMENT_URL = "http://wegorest.viemde.cloudbees.net/user/comment";
 	public static final String FINDLOCATION_URL = "http://wegorest.viemde.cloudbees.net/place/find";
+	public static final String LISTCOMMENT_URL = "http://wegorest.viemde.cloudbees.net/place/find";
 
 	/**
 	 * Request server to get JSONObject as a response
@@ -379,10 +381,54 @@ public class ClientManager {
 		return result;
 	}
 
-	public static ArrayList<BinhLuan> RequestToGetListBinhLuan(String diadiemID) {
-		ArrayList<BinhLuan> listBinhLuan = new ArrayList<BinhLuan>();
+	public static ResponsedResult RequestToGetListBinhLuan(String diadiemID,
+			ArrayList<BinhLuan> listBinhLuan) throws JSONException,
+			ClientProtocolException, IOException {
 
-		return listBinhLuan;
+		ResponsedResult result;
+		JSONObject responsedJSONObj;
+		HttpResponse response;
+		int statusCode;
+		String listCommentURL;
+		result = new ResponsedResult();
+
+		String encodedDiaDiemID = URLEncoder.encode(diadiemID, "UTF-8");
+
+		listCommentURL = LISTCOMMENT_URL + "?token=" + encodedDiaDiemID
+				+ "&index=0";
+
+		response = ClientManager.RequestServerByHttpGet(listCommentURL);
+
+		statusCode = response.getStatusLine().getStatusCode();
+
+		if (statusCode == 200) {
+
+			responsedJSONObj = JSONParser
+					.getJSONObjectFromHttpResponse(response);
+
+			boolean success = responsedJSONObj
+					.getBoolean(StringTagJSON.TAG_SUCCESS);
+			if (success) {
+
+				result.success = true;
+
+				JSONArray array = responsedJSONObj
+						.getJSONArray(StringTagJSON.TAG_CONTENTString);
+
+				listBinhLuan.addAll(JSONParser.getListBinhLuanFromJSON(array));
+
+			} else {
+				result.success = false;
+				result.content = "Result not found";
+			}
+
+		} else {
+
+			result.success = false;
+			result.content = "Problem with connecting server";
+		}
+
+		return result;
 	}
 
 	public static ResponsedResult RequestToGetFindDiaDiemByKeywords(
