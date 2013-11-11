@@ -28,9 +28,10 @@ public class StringTagJSON {
 
 	// BINH LUAN
 	public static String TAG_MA_BINH_LUAN = "ma_binh_luan";
-	public static String TAG_TEN_NGUOI_DUNG = "ten_nguoi_dung";
-	public static String TAG_THOI_GIAN_DANG = "thoi_gian_dang";
+	public static String TAG_TEN_NGUOI_DUNG = "ten_tai_khoan";
+	public static String TAG_THOI_GIAN_DANG = "thoi_gian";
 	public static String TAG_NOI_DUNG = "noi_dung";
+	public static String TAG_COMMENT = "comment";
 
 	// TAIKHOAN
 	public static String TAG_TEN_TAI_KHOAN = "ten_tai_khoan";
