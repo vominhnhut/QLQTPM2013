@@ -1,14 +1,22 @@
 package com.example.wego;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+
+import org.json.JSONException;
 
 import com.example.Object.BinhLuan;
 import com.example.Object.DiaDiem;
 import com.example.adapter.CommentListViewAdapter;
+import com.example.clientmanager.ClientManager;
+import com.example.clientmanager.ResponsedResult;
+import com.example.ultils.Constants;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -16,6 +24,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class LocationDetailCommentsFragment extends Fragment implements
 		OnClickListener {
@@ -67,6 +76,13 @@ public class LocationDetailCommentsFragment extends Fragment implements
 		commentListview.setAdapter(commentAdapter);
 
 		updateCommentList();
+
+		
+		
+		new LoadListCommentAsynctask().execute();
+		
+		
+		
 		return view;
 	}
 
@@ -108,16 +124,142 @@ public class LocationDetailCommentsFragment extends Fragment implements
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.sned_comment_btn:
-			BinhLuan newBinhLuan = new BinhLuan();
-			newBinhLuan.noiDung = "This is dumb text of me:"
-					+ commentTxtview.getText();
-			newBinhLuan.tenNguoiDang = "Me";
-			newBinhLuan.thoiGianDang = Calendar.getInstance().getTime();
-			addComment(newBinhLuan);
+
+			new PostCommentAsynctask().execute(commentTxtview.getText()
+					.toString());
+
 			break;
 
 		default:
 			break;
+		}
+	}
+
+	public class PostCommentAsynctask extends
+			AsyncTask<String, Integer, ResponsedResult> {
+
+		BinhLuan binhluan = null;
+
+		@Override
+		protected ResponsedResult doInBackground(String... params) {
+			// TODO Auto-generated method stub
+			binhluan = new BinhLuan();
+
+			ResponsedResult result = null;
+			String comment = params[0];
+
+			binhluan.tenNguoiDang = Constants.LOGINUSER_TOKEN;
+			binhluan.noiDung = comment;
+			binhluan.thoiGianDang = Calendar.getInstance().getTime().toString();
+
+			String locationID = ((LocationDetailActivity) getActivity())
+					.getDiaDiem().id;
+
+			try {
+				result = ClientManager.RequestToPostComment(
+						Constants.LOGINUSER_TOKEN, locationID, comment);
+			} catch (IllegalStateException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			return result;
+		}
+
+		@Override
+		protected void onPostExecute(ResponsedResult result) {
+			// TODO Auto-generated method stub
+			super.onPostExecute(result);
+
+			if (result != null) {
+
+				Log.e("hoapphat1", result.success + "");
+				if (result.success) {
+
+					addComment(binhluan);
+
+					updateCommentList();
+
+				} else {
+
+					Toast.makeText(getActivity().getApplicationContext(),
+							"Fail to send comment", 2).show();
+
+				}
+			} else {
+				Toast.makeText(getActivity().getApplicationContext(), "null", 2)
+						.show();
+			}
+
+		}
+	}
+
+	public class LoadListCommentAsynctask extends
+			AsyncTask<String, Integer, ResponsedResult> {
+
+		ArrayList<BinhLuan> listBinhLuan;
+
+		@Override
+		protected ResponsedResult doInBackground(String... params) {
+			// TODO Auto-generated method stub
+			listBinhLuan = new ArrayList<>();
+			ResponsedResult result = null;
+
+			String locationID = ((LocationDetailActivity) getActivity())
+					.getDiaDiem().id;
+
+			try {
+				result = ClientManager.RequestToGetListBinhLuan(locationID,
+						listBinhLuan);
+			} catch (IllegalStateException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			return result;
+		}
+
+		@Override
+		protected void onPostExecute(ResponsedResult result) {
+			// TODO Auto-generated method stub
+			super.onPostExecute(result);
+
+			if (result != null) {
+
+				Log.e("hoapphat1", result.success + "");
+				if (result.success) {
+
+					for (BinhLuan bl : listBinhLuan) {
+
+						addComment(bl);
+
+					}
+
+					updateCommentList();
+
+				} else {
+
+					Toast.makeText(getActivity().getApplicationContext(),
+							"Fail to load comments", 2).show();
+
+				}
+			} else {
+				Toast.makeText(getActivity().getApplicationContext(), "null", 2)
+						.show();
+			}
+
 		}
 	}
 
