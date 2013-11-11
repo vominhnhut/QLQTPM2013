@@ -1,8 +1,6 @@
 package com.example.ultils;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-
 import com.example.Object.BinhLuan;
 import com.example.Object.DiaDiem;
 
@@ -25,7 +23,7 @@ public class Constants {
 			BinhLuan newBinhLuan = new BinhLuan();
 			newBinhLuan.noiDung = "This is dumb text of " + i;
 			newBinhLuan.tenNguoiDang = "User " + i;
-			newBinhLuan.thoiGianDang = Calendar.getInstance().getTime();
+		//	newBinhLuan.thoiGianDang = Calendar.getInstance().getTime();
 			bls.add(newBinhLuan);
 		}
 		return bls;
