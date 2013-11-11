@@ -1,7 +1,6 @@
 package com.example.Object;
 
 import java.io.Serializable;
-import java.util.Date;
 
 public class BinhLuan implements Serializable {
 
@@ -15,6 +14,6 @@ public class BinhLuan implements Serializable {
 
 	public String id;
 	public String tenNguoiDang;
-	public Date  thoiGianDang;
+	public String  thoiGianDang;
 	public String noiDung;
 }
