@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Date;
-
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.json.JSONArray;
@@ -70,6 +68,7 @@ public class JSONParser {
 
 		DiaDiem diadiem = new DiaDiem();
 
+		diadiem.id = obj.getString(StringTagJSON.TAG_MA_DU_LIEU);
 		diadiem.ten = obj.getString(StringTagJSON.TAG_TEN_DIA_DIEM);
 		diadiem.diemDanhGia = obj.getInt(StringTagJSON.TAG_SO_LUOT_THICH);
 		diadiem.latitude = obj.getDouble(StringTagJSON.TAG_VI_DO);
@@ -96,9 +95,8 @@ public class JSONParser {
 		BinhLuan binhluan = new BinhLuan();
 
 		binhluan.tenNguoiDang = obj.getString(StringTagJSON.TAG_TEN_NGUOI_DUNG);
-		binhluan.noiDung = obj.getString(StringTagJSON.TAG_NOI_DUNG);
-		// binhluan.thoiGianDang = Date.parse(obj
-		// .getString(StringTagJSON.TAG_THOI_GIAN_DANG));
+		binhluan.noiDung = obj.getString(StringTagJSON.TAG_COMMENT);
+		binhluan.thoiGianDang = obj.getString(StringTagJSON.TAG_THOI_GIAN_DANG);
 		binhluan.id = obj.getString(StringTagJSON.TAG_MA_BINH_LUAN);
 
 		return binhluan;
