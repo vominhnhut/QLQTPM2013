@@ -71,9 +71,7 @@
                     android:ems="10"
                     android:gravity="center"
                     android:hint="@string/confirm_password_text"
-                    android:inputType="textEmailAddress" >
-
-                    <requestFocus />
+                    android:inputType="textPassword" >
                 </EditText>
 
                 <EditText
@@ -101,7 +99,8 @@
                     android:background="@drawable/password_text_box_selector2"
                     android:ems="10"
                     android:gravity="center"
-                    android:hint="@string/email" />
+                    android:hint="@string/email"
+                    android:inputType="textEmailAddress" />
 
                 <EditText
                     android:id="@+id/edtRgtBirthday"
