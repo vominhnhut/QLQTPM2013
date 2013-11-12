@@ -208,7 +208,7 @@ public class LocationDetailCommentsFragment extends Fragment implements
 		@Override
 		protected ResponsedResult doInBackground(String... params) {
 			// TODO Auto-generated method stub
-			listBinhLuan = new ArrayList<>();
+			listBinhLuan = new ArrayList<BinhLuan>();
 			ResponsedResult result = null;
 
 			String locationID = ((LocationDetailActivity) getActivity())
