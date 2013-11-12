@@ -38,6 +38,8 @@ import android.widget.SearchView;
 public class MainActivity extends Activity implements
 		SearchView.OnQueryTextListener {
 
+	private static String SEARCH_LIST_TAG = "Search_list";
+
 	public static final int HOME_ITEM_ID = 0;
 	public static final int ACCOUNT_ITEM_ID = 1;
 	public static final int LOG_OUT_ITEM_ID = 2;
@@ -55,10 +57,6 @@ public class MainActivity extends Activity implements
 	protected void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
-
-		// Transfer to log in when need
-		transferToLoginScreen();
-
 		setContentView(R.layout.activity_main);
 
 		// mTitle = getTitle();
@@ -109,6 +107,12 @@ public class MainActivity extends Activity implements
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
+		// Transfer to log in when need
+		transferToLoginScreen();
+
+		// if(searchedDiadiem != null){
+		// updateSearchList();
+		// }
 
 		super.onResume();
 	}
@@ -160,7 +164,8 @@ public class MainActivity extends Activity implements
 			mDrawerLayout.closeDrawer(mDrawerList);
 			break;
 		case ACCOUNT_ITEM_ID:
-			Intent intent = new Intent(MainActivity.this, ChangePasswordActivity.class);
+			Intent intent = new Intent(MainActivity.this,
+					ChangePasswordActivity.class);
 			startActivity(intent);
 			break;
 		case LOG_OUT_ITEM_ID:
@@ -220,8 +225,6 @@ public class MainActivity extends Activity implements
 		WeGoMainFragment fragment = getMaGoMainFragment();
 		if (fragment != null) {
 			fragment.updateSearchList(searchedDiadiem);
-		} else {
-
 		}
 	}
 
@@ -263,8 +266,27 @@ public class MainActivity extends Activity implements
 
 	public void logOut() {
 		Constants.LOGGED_IN = false;
-		Ultils.removeUserNameAndPasswordToSharedPref(this);		
+		Ultils.removeUserNameAndPasswordToSharedPref(this);
 		transferToLoginScreen();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		this.searchedDiadiem = (ArrayList<DiaDiem>) savedInstanceState
+				.getSerializable(SEARCH_LIST_TAG);
+		updateSearchList();
+		super.onRestoreInstanceState(savedInstanceState);
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		// TODO Auto-generated method stub
+		if (searchedDiadiem != null) {
+			outState.putSerializable(SEARCH_LIST_TAG, searchedDiadiem);
+		}
+		super.onSaveInstanceState(outState);
 	}
 
 	public class FindLocationAsynctask extends

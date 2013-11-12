@@ -4,8 +4,8 @@
     <string name="app_name">WeGo</string>
 
     <string-array name="left_items_array">
-        <item>Home</item>
-        <item>Account</item>
+        <item>Favorite</item>
+        <item>Change password</item>
         <item>Log out</item>
         <item>Exit</item>
     </string-array>
@@ -55,5 +55,8 @@
     <string name="change_pass_text">Change password</string>
     <string name="old_pass_text">Old password</string>
     <string name="title_activity_change_password">ChangePasswordActivity</string>
+    <string name="unknown_exceeption">Unknown error</string>
+    <string name="say_something_text">Leave your comment...</string>
+    <string name="posted_test">Posted</string>
 
 </resources>

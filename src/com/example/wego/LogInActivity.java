@@ -56,8 +56,8 @@ public class LogInActivity extends Activity implements OnClickListener {
 		btnLogIn.setOnClickListener(this);
 		btnRegister.setOnClickListener(this);
 
-		txtUserName.setText("hoaphat92");
-		txtPassWord.setText("123456");
+		txtUserName.setText("nhut");
+		txtPassWord.setText("nhut");
 
 		autoLogIn();
 	}
@@ -156,9 +156,6 @@ public class LogInActivity extends Activity implements OnClickListener {
 		@Override
 		protected void onPostExecute(ResponsedResult result) {
 			// TODO Auto-generated method stub
-			wait_view.setVisibility(View.GONE);
-			log_in_view.setVisibility(View.VISIBLE);
-
 			if (result != null && result.success) {
 				Intent intent = new Intent(LogInActivity.this,
 						MainActivity.class);
@@ -177,6 +174,8 @@ public class LogInActivity extends Activity implements OnClickListener {
 				dialog.show();
 			}
 
+			wait_view.setVisibility(View.GONE);
+			log_in_view.setVisibility(View.VISIBLE);
 		}
 
 		@Override

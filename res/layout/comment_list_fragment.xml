@@ -18,7 +18,10 @@
         android:layout_toLeftOf="@+id/sned_comment_btn"
         android:background="@drawable/rounded_corner_rect"
         android:ems="10"
-        android:inputType="text" >
+        android:hint="@string/say_something_text"
+        android:inputType="text"
+        android:paddingLeft="@dimen/dp3_pading"
+        android:paddingRight="@dimen/dp3_pading" >
 
     </EditText>
 
@@ -50,5 +53,27 @@
         android:divider="@drawable/listview_divider_line2" >
 
     </ListView>
+    
+    <LinearLayout
+        android:id="@+id/cmt_wait_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/comment_text"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="@dimen/dp3_pading"
+        android:layout_marginLeft="@dimen/dp5_padding"
+        android:layout_marginRight="@dimen/dp5_padding"
+        android:background="#ffffff"
+        android:gravity="center"
+        android:visibility="gone" >
+
+        <ProgressBar
+            android:id="@+id/progressBar1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
 
 </RelativeLayout>

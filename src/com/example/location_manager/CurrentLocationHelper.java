@@ -44,18 +44,21 @@ public class CurrentLocationHelper {
 		LocationManager locationManager = (LocationManager) context
 				.getSystemService(Context.LOCATION_SERVICE);
 
-		locationManager.requestLocationUpdates(locationManagerSource, 0, 0,
-				locationListener);
-		lastLocation = locationManager
-				.getLastKnownLocation(locationManagerSource);
+		if (locationManager != null) {
+			locationManager.requestLocationUpdates(locationManagerSource, 0, 0,
+					locationListener);
+			lastLocation = locationManager
+					.getLastKnownLocation(locationManagerSource);
 
-		return lastLocation;
+			return lastLocation;
+		}
+		return null;
 	}
 
 	public static LatLng getCurrentLocationLatLng(Context context,
 			String locationManagerSource) {
 		Location location = getCurrentLocation(context, locationManagerSource);
-		if(location == null){
+		if (location == null) {
 			return null;
 		}
 		return new LatLng(location.getLatitude(), location.getLongitude());

@@ -1,15 +1,11 @@
 package com.example.wego;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
-import org.json.JSONException;
 
+import com.example.Object.BinhLuan;
 import com.example.Object.DiaDiem;
-import com.example.Object.TaiKhoan;
 import com.example.adapter.LocationDetailPagerAdapter;
-import com.example.clientmanager.ClientManager;
-import com.example.clientmanager.ResponsedResult;
 import com.example.ultils.Constants;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -17,7 +13,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -74,19 +69,6 @@ public class LocationDetailActivity extends FragmentActivity {
 		pager.setAdapter(pagerAdapter);
 
 		getDiaDiemFromBundle();
-
-		// DiaDiem a = new DiaDiem();
-		// a.ten = "KFC NOWZONE";
-		// a.diaChi = "KhÃ´ng nhá»›, Nguyá»…n VÄƒn Cá»«, Q5, HCM";
-		// a.toaDo = new LatLng(40.76793169992044, -73.98180484771729);
-		// a.danhSachBinhLuan = createDumdComments();
-		// a.moTa="Ngon, Ä‘Ã´ng, vui... GÃ¡i nhiá»�u thá»ƒ loáº¡i";
-		// a.diemDanhGia=1231;
-		//
-		// this.diaDiem = a;
-		// setViewValue();
-
-		//new LocationDetailAsynctask().execute();
 	}
 
 	@Override
@@ -124,75 +106,11 @@ public class LocationDetailActivity extends FragmentActivity {
 		}
 	}
 
-	// private void setCommentList() {
-	// if (diaDiem != null) {
-	// LocationDetailCommentsFragment commentsFragment =
-	// LocationDetailCommentsFragment
-	// .instance();
-	// boolean b = commentsFragment.setCommentList(diaDiem.danhSachBinhLuan);
-	// pagerAdapter.replaceItem(COMMENT_FRAGMENT, commentsFragment);
-	// Log.e("set comment", b+"");
-	// }
-	// }
-
 	public DiaDiem getDiaDiem() {
 		return this.diaDiem;
 	}
-
-	public class LocationDetailAsynctask extends
-			AsyncTask<String, Integer, ResponsedResult> {
-		TaiKhoan taikhoan;
-
-		@Override
-		protected void onPreExecute() {
-			// TODO Auto-generated method stub
-			super.onPreExecute();
-		}
-
-		@Override
-		protected ResponsedResult doInBackground(String... arg0) {
-			// TODO Auto-generated method stub
-			ResponsedResult result = null;
-
-			try {
-				result = ClientManager.RequestToLogIn("hoaphat92", "123456");
-				// taikhoan = new TaiKhoan();
-				// taikhoan.hoTen = "Nguyen Hoa Phat";
-				// taikhoan.matKhau = "123456";
-				// taikhoan.ngaySinh = "1992-11-6";
-				// taikhoan.email = "phatnguyen.it.khtn@gmail.com";
-				// taikhoan.tenTaiKhoan = "hoaphat92";
-				// result = ClientManager.RequestToRegisterAccount(taikhoan);
-
-			} catch (IllegalStateException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-			return result;
-		}
-
-		@Override
-		protected void onPostExecute(ResponsedResult result) {
-			// TODO Auto-generated method stub
-			super.onPostExecute(result);
-
-//			boolean success = result.success;
-//
-//			if (success) {
-//				Toast.makeText(getApplicationContext(),
-//						"Logic Success" + Constants.LOGINUSER_TOKEN, 2).show();
-//
-//			} else {
-//				Toast.makeText(getApplicationContext(),
-//						"Fail" + result.content, 2).show();
-//			}
-		}
+	
+	public void updateCommentList(ArrayList<BinhLuan> listBinhLuan){
+		this.diaDiem.danhSachBinhLuan = listBinhLuan;
 	}
 }

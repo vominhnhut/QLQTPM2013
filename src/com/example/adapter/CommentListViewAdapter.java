@@ -81,4 +81,12 @@ public class CommentListViewAdapter extends BaseAdapter {
 	public void addComment(BinhLuan bl){
 		this.binhLuanList.add(bl);
 	}
+	
+	public void addCommentToTop(BinhLuan bl){
+		this.binhLuanList.add(0,bl);
+	}
+	
+	public ArrayList<BinhLuan> getList(){
+		return this.binhLuanList;
+	}
 }

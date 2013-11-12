@@ -15,6 +15,5 @@ public class NetworkHelper {
 		} else {
 			return true;
 		}
-
 	}
 }

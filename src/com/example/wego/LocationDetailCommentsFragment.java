@@ -16,13 +16,13 @@ import com.example.ultils.Constants;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -32,7 +32,7 @@ public class LocationDetailCommentsFragment extends Fragment implements
 	private ListView commentListview;
 	private EditText commentTxtview;
 	private Button postCommentBtn;
-
+	private LinearLayout waitView;
 	private CommentListViewAdapter commentAdapter;
 	private static LocationDetailCommentsFragment instanceFragment = null;
 
@@ -57,32 +57,20 @@ public class LocationDetailCommentsFragment extends Fragment implements
 		commentTxtview = (EditText) view.findViewById(R.id.comment_text);
 		postCommentBtn = (Button) view.findViewById(R.id.sned_comment_btn);
 		postCommentBtn.setOnClickListener(this);
-
+		waitView = (LinearLayout) view.findViewById(R.id.cmt_wait_view);
 		commentListview = (ListView) view.findViewById(R.id.comments_listView);
 
 		this.commentAdapter = null;
 
 		ArrayList<BinhLuan> bls = new ArrayList<BinhLuan>();
-		// for(int i=0 ; i< 10 ; i++){
-		// BinhLuan newBinhLuan = new BinhLuan();
-		// newBinhLuan.setNoiDung("This is dumb text of " + i);
-		// newBinhLuan.setTenNguoiDang("User " + i );
-		// newBinhLuan.setThoiGianDang(Calendar.getInstance().getTime());
-		//
-		// bls.add(newBinhLuan);
-		// }
 		this.commentAdapter = new CommentListViewAdapter(getActivity()
 				.getApplicationContext(), bls);
 		commentListview.setAdapter(commentAdapter);
 
 		updateCommentList();
 
-		
-		
 		new LoadListCommentAsynctask().execute();
-		
-		
-		
+
 		return view;
 	}
 
@@ -107,6 +95,11 @@ public class LocationDetailCommentsFragment extends Fragment implements
 			setCommentList(dd.danhSachBinhLuan);
 		}
 	}
+	
+	public void updateCommentListOfParent() {
+		LocationDetailActivity parent = (LocationDetailActivity) getActivity();
+		parent.updateCommentList(this.commentAdapter.getList());
+	}
 
 	public void addComment(BinhLuan binhLuan) {
 		if (commentAdapter == null) {
@@ -116,7 +109,18 @@ public class LocationDetailCommentsFragment extends Fragment implements
 		commentAdapter.addComment(binhLuan);
 		commentAdapter.notifyDataSetChanged();
 
-		commentListview.smoothScrollToPosition(commentAdapter.getCount() - 1);
+		commentListview.smoothScrollToPosition(0);
+	}
+	
+	public void addCommentToTop(BinhLuan binhLuan) {
+		if (commentAdapter == null) {
+			commentAdapter = new CommentListViewAdapter(getActivity()
+					.getApplicationContext(), new ArrayList<BinhLuan>());
+		}
+		commentAdapter.addCommentToTop(binhLuan);
+		commentAdapter.notifyDataSetChanged();
+
+		commentListview.smoothScrollToPosition(0);
 	}
 
 	@Override
@@ -178,27 +182,39 @@ public class LocationDetailCommentsFragment extends Fragment implements
 			super.onPostExecute(result);
 
 			if (result != null) {
-
-				Log.e("hoapphat1", result.success + "");
 				if (result.success) {
-
-					addComment(binhluan);
-
-					updateCommentList();
-
+					binhluan.thoiGianDang = getResources().getString(R.string.posted_test);
+					addCommentToTop(binhluan);
+					updateCommentListOfParent();
+					commentTxtview.setText("");
 				} else {
-
 					Toast.makeText(getActivity().getApplicationContext(),
-							"Fail to send comment", 2).show();
-
+							result.content, Toast.LENGTH_SHORT).show();
 				}
 			} else {
-				Toast.makeText(getActivity().getApplicationContext(), "null", 2)
-						.show();
+				Toast.makeText(getActivity().getApplicationContext(),
+						R.string.unknown_exceeption, Toast.LENGTH_SHORT).show();
 			}
+			
+			waitView.setVisibility(View.GONE);
+			commentListview.setVisibility(View.VISIBLE);
+		}
 
+		@Override
+		protected void onPreExecute() {
+			// TODO Auto-generated method stub
+			waitView.setVisibility(View.VISIBLE);
+			commentListview.setVisibility(View.GONE);
+			
+			super.onPreExecute();
 		}
 	}
+
+	/**
+	 * 
+	 * @author VMNhut
+	 * 
+	 */
 
 	public class LoadListCommentAsynctask extends
 			AsyncTask<String, Integer, ResponsedResult> {
@@ -232,34 +248,35 @@ public class LocationDetailCommentsFragment extends Fragment implements
 		}
 
 		@Override
+		protected void onPreExecute() {
+			// TODO Auto-generated method stub
+			waitView.setVisibility(View.VISIBLE);
+			commentListview.setVisibility(View.GONE);
+			super.onPreExecute();
+		}
+
+		@Override
 		protected void onPostExecute(ResponsedResult result) {
 			// TODO Auto-generated method stub
 			super.onPostExecute(result);
 
 			if (result != null) {
-
-				Log.e("hoapphat1", result.success + "");
 				if (result.success) {
-
 					for (BinhLuan bl : listBinhLuan) {
-
+						commentTxtview.setText("");
 						addComment(bl);
-
 					}
-
-					updateCommentList();
-
+					updateCommentListOfParent();
 				} else {
-
 					Toast.makeText(getActivity().getApplicationContext(),
-							"Fail to load comments", 2).show();
-
+							result.content, Toast.LENGTH_SHORT).show();
 				}
 			} else {
-				Toast.makeText(getActivity().getApplicationContext(), "null", 2)
-						.show();
+				Toast.makeText(getActivity().getApplicationContext(),
+						R.string.unknown_exceeption, Toast.LENGTH_SHORT).show();
 			}
-
+			waitView.setVisibility(View.GONE);
+			commentListview.setVisibility(View.VISIBLE);
 		}
 	}
 
