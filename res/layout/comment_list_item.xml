@@ -32,7 +32,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:text="@string/app_name"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#76C9F5" />
 
     <TextView
         android:id="@+id/searchLocationAddressTxt"
@@ -41,6 +42,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/user_name_txt"
+        android:layout_marginLeft="@dimen/dp10_pading"
         android:text="@string/app_name"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 

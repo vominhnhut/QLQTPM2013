@@ -22,15 +22,16 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AbsListView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -72,6 +73,25 @@ public class WeGoMainFragment extends Fragment implements OnItemClickListener {
 			mStatusList.setAdapter(new StatusAdapter(getActivity(),
 					new ArrayList<DiaDiem>()));//
 			mStatusList.setOnItemClickListener(this);
+			mStatusList.setOnScrollListener(new OnScrollListener() {
+				
+				@Override
+				public void onScrollStateChanged(AbsListView view, int scrollState) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void onScroll(AbsListView view, int firstVisibleItem,
+						int visibleItemCount, int totalItemCount) {
+					// TODO Auto-generated method stub
+					int lastItem = firstVisibleItem + visibleItemCount;
+					if (lastItem >= totalItemCount && totalItemCount >0) {
+						//Code here
+						//
+					}
+				}
+			});
 		}
 		showHideListStatus();
 		// mapLayout = (LinearLayout) view.findViewById(R.id.mapLayout);
@@ -258,12 +278,14 @@ public class WeGoMainFragment extends Fragment implements OnItemClickListener {
 		} else {
 			searchedItemAdapter = new StatusAdapter(getActivity(), diaDiemList);
 			mStatusList.setAdapter(searchedItemAdapter);
-			addMapPin();
-			showListStatus();
-			forcusSearchItems();
-			
-			Log.e("WEGO", "Here");
+			updateMap();
 		}
+	}
+
+	private void updateMap() {
+		addMapPin();
+		showListStatus();
+		forcusSearchItems();
 	}
 
 	private void forcusCurrentLocation(boolean animation) {

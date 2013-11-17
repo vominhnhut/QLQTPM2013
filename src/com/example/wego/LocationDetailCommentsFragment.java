@@ -20,6 +20,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -66,6 +68,24 @@ public class LocationDetailCommentsFragment extends Fragment implements
 		this.commentAdapter = new CommentListViewAdapter(getActivity()
 				.getApplicationContext(), bls);
 		commentListview.setAdapter(commentAdapter);
+		commentListview.setOnScrollListener(new OnScrollListener() {
+
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+				// TODO Auto-generated method stub
+			}
+
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem,
+					int visibleItemCount, int totalItemCount) {
+				// TODO Auto-generated method stub
+				int lastItem = firstVisibleItem + visibleItemCount;
+				if (lastItem >= totalItemCount && totalItemCount >0) {
+					//Code here
+					//
+				}
+			}
+		});
 
 		updateCommentList();
 
@@ -95,7 +115,7 @@ public class LocationDetailCommentsFragment extends Fragment implements
 			setCommentList(dd.danhSachBinhLuan);
 		}
 	}
-	
+
 	public void updateCommentListOfParent() {
 		LocationDetailActivity parent = (LocationDetailActivity) getActivity();
 		parent.updateCommentList(this.commentAdapter.getList());
@@ -111,7 +131,7 @@ public class LocationDetailCommentsFragment extends Fragment implements
 
 		commentListview.smoothScrollToPosition(0);
 	}
-	
+
 	public void addCommentToTop(BinhLuan binhLuan) {
 		if (commentAdapter == null) {
 			commentAdapter = new CommentListViewAdapter(getActivity()
@@ -183,7 +203,8 @@ public class LocationDetailCommentsFragment extends Fragment implements
 
 			if (result != null) {
 				if (result.success) {
-					binhluan.thoiGianDang = getResources().getString(R.string.posted_test);
+					binhluan.thoiGianDang = getResources().getString(
+							R.string.posted_test);
 					addCommentToTop(binhluan);
 					updateCommentListOfParent();
 					commentTxtview.setText("");
@@ -195,7 +216,7 @@ public class LocationDetailCommentsFragment extends Fragment implements
 				Toast.makeText(getActivity().getApplicationContext(),
 						R.string.unknown_exceeption, Toast.LENGTH_SHORT).show();
 			}
-			
+
 			waitView.setVisibility(View.GONE);
 			commentListview.setVisibility(View.VISIBLE);
 		}
@@ -205,7 +226,7 @@ public class LocationDetailCommentsFragment extends Fragment implements
 			// TODO Auto-generated method stub
 			waitView.setVisibility(View.VISIBLE);
 			commentListview.setVisibility(View.GONE);
-			
+
 			super.onPreExecute();
 		}
 	}

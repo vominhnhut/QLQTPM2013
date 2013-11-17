@@ -3,7 +3,6 @@
     android:id="@+id/LinearLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#C8C8C8"
     android:orientation="vertical"
     android:weightSum="3" >
 
@@ -30,7 +29,7 @@
 
                 <TextView
                     android:id="@+id/searchLocationRating"
-                    style="@style/large_text"
+                    style="@style/detail_title_text_style"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/description_text"
@@ -74,7 +73,7 @@
 
                 <TextView
                     android:id="@+id/textView5"
-                    style="@style/large_text"
+                    style="@style/detail_title_text_style"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/services_text" />
@@ -85,6 +84,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:src="@drawable/line1" />
+
+                <LinearLayout
+                    android:id="@+id/services_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/dp5_padding"
+                    android:paddingRight="@dimen/dp5_padding" >
+
+                </LinearLayout>
+
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

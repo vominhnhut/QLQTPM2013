@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/RelativeLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/service_name"
+        style="@style/service_name_text_style"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:text="Medium Text"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#000000" />
+
+    <TextView
+        android:id="@+id/service_description"
+        style="@style/service_description_text_style"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/service_name"
+        android:layout_marginLeft="@dimen/dp10_pading"
+        android:layout_marginRight="@dimen/dp10_pading"
+        android:text="Medium Text"
+        android:textAppearance="?android:attr/textAppearance"
+        />
+
+    <TextView
+        android:id="@+id/service_price"
+        style="@style/service_price_text_style"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/service_description"
+        android:layout_alignParentRight="true"
+        android:text="Small Text"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+         />
+
+</RelativeLayout>

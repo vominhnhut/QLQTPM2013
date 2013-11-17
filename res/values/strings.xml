@@ -58,5 +58,6 @@
     <string name="unknown_exceeption">Unknown error</string>
     <string name="say_something_text">Leave your comment...</string>
     <string name="posted_test">Posted</string>
+    <color name="theme_color">#76C9F5</color>
 
 </resources>
