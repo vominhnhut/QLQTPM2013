@@ -42,4 +42,8 @@ public class StringTagJSON {
 	public static String TAG_MAT_KHAU_CU = "mat_khau_cu";
 	public static String TAG_MAT_KHAU_MOI = "mat_khau_moi";
 
+	// LIKE OR UNLIKE
+
+	public static String TAG_LIKE = "thich";
+
 }
