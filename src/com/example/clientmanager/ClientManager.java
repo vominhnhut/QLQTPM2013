@@ -17,7 +17,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.util.Log;
+
 import com.example.Object.BinhLuan;
+import com.example.Object.ChiTietDichVu;
 import com.example.Object.DiaDiem;
 import com.example.Object.TaiKhoan;
 import com.example.jsonparser.JSONParser;
@@ -36,26 +39,19 @@ import com.example.ultils.StringTagJSON;
 public class ClientManager {
 
 	// URI
-	public static final String REGISTER_URL = "http://wegorest.viemde.cloudbees.net/user/register";
-	public static final String LOGIN_URL = "http://wegorest.viemde.cloudbees.net/user/login";
-	public static final String LOGOUT_URL = "http://wegorest.viemde.cloudbees.net/user/logout";
-	public static final String CHANGEPASSWORD_URL = "http://wegorest.viemde.cloudbees.net/user/changepassw";
-	public static final String POSTCOMMENT_URL = "http://wegorest.viemde.cloudbees.net/place/comment";
-	public static final String FINDLOCATION_URL = "http://wegorest.viemde.cloudbees.net/place/find";
-	public static final String LISTCOMMENT_URL = "http://wegorest.viemde.cloudbees.net/place/comment";
-	public static final String LIKEORUNLIKE_URL = "http://wegorest.viemde.cloudbees.net/place/feeling";
+	private static final String REGISTER_URL = "http://wegorest.viemde.cloudbees.net/user/register";
+	private static final String LOGIN_URL = "http://wegorest.viemde.cloudbees.net/user/login";
+	private static final String LOGOUT_URL = "http://wegorest.viemde.cloudbees.net/user/logout";
+	private static final String CHANGEPASSWORD_URL = "http://wegorest.viemde.cloudbees.net/user/changepassw";
+	private static final String POSTCOMMENT_URL = "http://wegorest.viemde.cloudbees.net/place/comment";
+	private static final String FINDLOCATION_URL = "http://wegorest.viemde.cloudbees.net/place/find";
+	private static final String LISTCOMMENT_URL = "http://wegorest.viemde.cloudbees.net/place/comment";
+	private static final String LIKEORUNLIKE_URL = "http://wegorest.viemde.cloudbees.net/place/feeling";
+	private static final String SERVICESLIST_URL = "http://wegorest.viemde.cloudbees.net/place/details";
+	private static final String FAVOURITELOCATION_URL = "http://wegorest.viemde.cloudbees.net/place/lovedplace";
 
-	/**
-	 * Request server to get JSONObject as a response
-	 * 
-	 * @param uri
-	 *            Uri of webservice
-	 * @param input
-	 *            jsonObject - send to server
-	 * @return jsonObject - recieve from server
-	 * @author Hoa Phat
-	 * @since 2013/11/8
-	 */
+	public static int max_Index_LoadedBinhLuan = 0;
+
 	private static HttpResponse RequestServerByHttpPost(String uri,
 			JSONObject input) throws IllegalStateException, IOException,
 			JSONException {
@@ -109,35 +105,6 @@ public class ClientManager {
 
 		return response;
 	}
-
-	// /**
-	// * Request server to get JSONArray as a response
-	// *
-	// * @param uri
-	// * Uri of webservice
-	// * @param input
-	// * jsonObject - send to server
-	// * @return jsonArray - recieve from server
-	// * @author Hoa Phat
-	// * @since 2013/11/8
-	// */
-	// private static HttpResponse RequestServer(String uri, JSONObject input)
-	// throws IllegalStateException, IOException, JSONException {
-	//
-	// HttpClient client;
-	// HttpPost post;
-	// HttpResponse response;
-	//
-	// client = new DefaultHttpClient();
-	// post = new HttpPost(uri);
-	// post.addHeader(new BasicHeader("Content-Type", "application/json"));
-	// post.setEntity(new StringEntity(input.toString()));
-	//
-	// // request server to get data
-	// response = client.execute(post);
-	//
-	// return response;
-	// }
 
 	// ############################################################################
 
@@ -324,13 +291,6 @@ public class ClientManager {
 		return result;
 	}
 
-	public static ArrayList<DiaDiem> RequestToGetListDiaDiemYeuThich(
-			String userID) {
-		ArrayList<DiaDiem> listDiaDiem = new ArrayList<DiaDiem>();
-
-		return listDiaDiem;
-	}
-
 	public static ResponsedResult RequestToPostComment(String token,
 			String locationID, String comment) throws IllegalStateException,
 			IOException, JSONException {
@@ -383,7 +343,7 @@ public class ClientManager {
 	}
 
 	public static ResponsedResult RequestToGetListBinhLuan(String diadiemID,
-			ArrayList<BinhLuan> listBinhLuan) throws JSONException,
+			ArrayList<BinhLuan> listBinhLuan, int index) throws JSONException,
 			ClientProtocolException, IOException {
 
 		ResponsedResult result;
@@ -397,8 +357,10 @@ public class ClientManager {
 		String encodedToken = URLEncoder.encode(Constants.LOGINUSER_TOKEN,
 				"UTF-8");
 
-		listCommentURL = LISTCOMMENT_URL + "?token=" + encodedToken
-				+ "&index=1" + "&ma_du_lieu=" + encodedDiaDiemID;
+		listCommentURL = LISTCOMMENT_URL + "?token=" + encodedToken + "&index="
+				+ (index + 1) + "&ma_du_lieu=" + encodedDiaDiemID;
+
+		Log.e("hoaphat", listCommentURL);
 
 		response = ClientManager.RequestServerByHttpGet(listCommentURL);
 
@@ -433,6 +395,64 @@ public class ClientManager {
 		return result;
 	}
 
+	public static ResponsedResult RequestToGetListChiTietDichVu(
+			String diadiemID, ArrayList<ChiTietDichVu> listChiTietDichVu)
+			throws JSONException, ClientProtocolException, IOException {
+
+		ResponsedResult result;
+		JSONObject responsedJSONObj;
+		HttpResponse response;
+		int statusCode;
+		String serviceListURL;
+		result = new ResponsedResult();
+
+		String encodedDiaDiemID = URLEncoder.encode(diadiemID, "UTF-8");
+		String encodedToken = URLEncoder.encode(Constants.LOGINUSER_TOKEN,
+				"UTF-8");
+
+		serviceListURL = SERVICESLIST_URL + "?token=" + encodedToken
+				+ "&ma_du_lieu=" + encodedDiaDiemID;
+
+		Log.e("hoaphat", serviceListURL.toString());
+
+		response = ClientManager.RequestServerByHttpGet(serviceListURL);
+
+		statusCode = response.getStatusLine().getStatusCode();
+
+		if (statusCode == 200) {
+
+			responsedJSONObj = JSONParser
+					.getJSONObjectFromHttpResponse(response);
+
+			Log.e("hoaphat", responsedJSONObj.toString());
+
+			boolean success = responsedJSONObj
+					.getBoolean(StringTagJSON.TAG_SUCCESS);
+			if (success) {
+
+				result.success = true;
+
+				JSONArray array = responsedJSONObj
+						.getJSONArray(StringTagJSON.TAG_CONTENTString);
+
+				Log.e("hoaphat", array.length() + "");
+				listChiTietDichVu.addAll(JSONParser
+						.getListChiTietDichVuFromJSON(array));
+
+			} else {
+				result.success = false;
+				result.content = "Result not found";
+			}
+
+		} else {
+
+			result.success = false;
+			result.content = "Problem with connecting server";
+		}
+
+		return result;
+	}
+
 	public static ResponsedResult RequestToGetFindDiaDiemByKeywords(
 			String keywords, ArrayList<DiaDiem> listDiaDiem)
 			throws IllegalStateException, IOException, JSONException {
@@ -450,6 +470,58 @@ public class ClientManager {
 
 		findLocation = FINDLOCATION_URL + "?token=" + encodedToken + "&index=0"
 				+ "&query=" + encodedQuery;
+
+		response = ClientManager.RequestServerByHttpGet(findLocation);
+
+		statusCode = response.getStatusLine().getStatusCode();
+
+		if (statusCode == 200) {
+
+			responsedJSONObj = JSONParser
+					.getJSONObjectFromHttpResponse(response);
+
+			boolean success = responsedJSONObj
+					.getBoolean(StringTagJSON.TAG_SUCCESS);
+			if (success) {
+
+				result.success = true;
+
+				JSONArray array = responsedJSONObj
+						.getJSONArray(StringTagJSON.TAG_CONTENTString);
+
+				listDiaDiem.addAll(JSONParser
+						.getListDiaDiemTomTatFromJSON(array));
+
+			} else {
+				result.success = false;
+				result.content = "Result not found";
+			}
+
+		} else {
+
+			result.success = false;
+			result.content = "Problem with connecting server";
+		}
+
+		return result;
+	}
+
+	public static ResponsedResult RequestToGetListDiaDiemYeuThich(
+			ArrayList<DiaDiem> listDiaDiem, int index)
+			throws IllegalStateException, IOException, JSONException {
+
+		ResponsedResult result;
+		JSONObject responsedJSONObj;
+		HttpResponse response;
+		int statusCode;
+		String findLocation;
+		result = new ResponsedResult();
+
+		String encodedToken = URLEncoder.encode(Constants.LOGINUSER_TOKEN,
+				"UTF-8");
+
+		findLocation = FAVOURITELOCATION_URL + "?token=" + encodedToken
+				+ "&index=0";
 
 		response = ClientManager.RequestServerByHttpGet(findLocation);
 
@@ -526,6 +598,59 @@ public class ClientManager {
 			} else {
 				result.success = false;
 				result.content = "Fail to like/unlike location.";
+			}
+
+		} else {
+
+			result.success = false;
+			result.content = "Problem with connecting server";
+		}
+
+		return result;
+
+	}
+
+	public static ResponsedResult RequestToAddOrRemoveFavouriteDiaDiem(
+			String token, String diadiemID, boolean save) throws JSONException,
+			IllegalStateException, IOException {
+
+		String likeOrUnlikeURL;
+		String tokenEncoded;
+		ResponsedResult result;
+		JSONObject responsedJSONObj;
+		HttpResponse response;
+		int statusCode;
+
+		result = new ResponsedResult();
+
+		tokenEncoded = URLEncoder.encode(token, "UTF-8");
+
+		likeOrUnlikeURL = FAVOURITELOCATION_URL + "?token=" + tokenEncoded;
+
+		JSONObject inputObj = new JSONObject();
+		inputObj.put(StringTagJSON.TAG_MA_DU_LIEU, diadiemID);
+
+		// save
+
+		// request server
+		response = ClientManager.RequestServerByHttpPost(likeOrUnlikeURL,
+				inputObj);
+
+		statusCode = response.getStatusLine().getStatusCode();
+
+		if (statusCode == 200) {
+
+			responsedJSONObj = JSONParser
+					.getJSONObjectFromHttpResponse(response);
+
+			boolean success = responsedJSONObj
+					.getBoolean(StringTagJSON.TAG_SUCCESS);
+
+			if (success) {
+				result.success = true;
+			} else {
+				result.success = false;
+				result.content = "Fail to add favourite location.";
 			}
 
 		} else {
