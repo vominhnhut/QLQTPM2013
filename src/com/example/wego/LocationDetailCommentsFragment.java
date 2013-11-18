@@ -80,8 +80,8 @@ public class LocationDetailCommentsFragment extends Fragment implements
 					int visibleItemCount, int totalItemCount) {
 				// TODO Auto-generated method stub
 				int lastItem = firstVisibleItem + visibleItemCount;
-				if (lastItem >= totalItemCount && totalItemCount >0) {
-					//Code here
+				if (lastItem >= totalItemCount && totalItemCount > 0) {
+					// Code here
 					//
 				}
 			}
@@ -118,7 +118,9 @@ public class LocationDetailCommentsFragment extends Fragment implements
 
 	public void updateCommentListOfParent() {
 		LocationDetailActivity parent = (LocationDetailActivity) getActivity();
-		parent.updateCommentList(this.commentAdapter.getList());
+		if (parent != null) {
+			parent.updateCommentList(this.commentAdapter.getList());
+		}
 	}
 
 	public void addComment(BinhLuan binhLuan) {

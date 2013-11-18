@@ -18,6 +18,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -46,6 +47,7 @@ public class LocationDetailActivity extends FragmentActivity {
 
 	// hoaphat
 	private Button likeBtn;
+	private Button saveBtn;
 
 	public LocationDetailActivity instance() {
 		if (instance == null) {
@@ -68,6 +70,8 @@ public class LocationDetailActivity extends FragmentActivity {
 		// map.getUiSettings().setScrollGesturesEnabled(false);
 
 		likeBtn = (Button) findViewById(R.id.like_btn);
+		saveBtn = (Button) findViewById(R.id.save_btn);
+
 
 		locationName = (TextView) findViewById(R.id.locationName);
 		locationAddress = (TextView) findViewById(R.id.locationAddress);
@@ -84,25 +88,33 @@ public class LocationDetailActivity extends FragmentActivity {
 		pager.setAdapter(pagerAdapter);
 
 		getDiaDiemFromBundle();
-
+		new LoadLocationAsynctask().execute();
 		// hoaphat
 		likeBtn.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 
-				if (likeBtn.getText().equals("Like")) {
+				if (diaDiem.isLiked == false) {
 					new LikeOrUnlikeLocationAsynctask().execute(true);
-				} else if (likeBtn.getText().equals("Unlike")) {
+				} else if (diaDiem.isLiked = true) {
 					new LikeOrUnlikeLocationAsynctask().execute(false);
-				} else {
-					// nothing
 				}
 			}
 		});
+		
+		saveBtn.setOnClickListener(new OnClickListener() {
 
-		new LoadLocationAsynctask().execute();
+			@Override
+			public void onClick(View v) {
 
+				if (diaDiem.isSaved== false) {
+					//new LikeOrUnlikeLocationAsynctask().execute(true);
+				} else if (diaDiem.isSaved = true) {
+					//new LikeOrUnlikeLocationAsynctask().execute(false);
+				}
+			}
+		});
 	}
 
 	@Override
@@ -137,6 +149,9 @@ public class LocationDetailActivity extends FragmentActivity {
 			map.animateCamera(zoom);
 			map.addMarker(new MarkerOptions().position(diaDiem.getLatLng()));
 
+			setLikeButtonState(diaDiem.isLiked);
+			setSaveButtonState(diaDiem.isSaved);
+
 		}
 	}
 
@@ -148,12 +163,37 @@ public class LocationDetailActivity extends FragmentActivity {
 		this.diaDiem.danhSachBinhLuan = listBinhLuan;
 	}
 
+	private void setLikeButtonState(boolean isLiked) {
+		if (isLiked) {
+			likeBtn.setTextColor(Color.WHITE);
+			likeBtn.setBackgroundResource(R.drawable.hited_button_selector);
+			likeBtn.setText(R.string.liked_text);
+		} else {
+			likeBtn.setTextColor(Color.BLACK);
+			likeBtn.setBackgroundResource(R.drawable.hit_button_selector);
+			likeBtn.setText(R.string.like_text);
+		}
+	}
+
+	private void setSaveButtonState(boolean isLiked) {
+		if (isLiked) {
+			saveBtn.setTextColor(Color.WHITE);
+			saveBtn.setBackgroundResource(R.drawable.hited_button_selector);
+			saveBtn.setText(R.string.saved_text);
+		} else {
+			saveBtn.setTextColor(Color.BLACK);
+			saveBtn.setBackgroundResource(R.drawable.hit_button_selector);
+			saveBtn.setText(R.string.save_text);
+		}
+	}
+	
 	public class LoadLocationAsynctask extends
 			AsyncTask<String, Integer, ResponsedResult> {
 
 		@Override
 		protected void onPreExecute() {
 			// TODO Auto-generated method stub
+			likeBtn.setEnabled(false);
 		}
 
 		@Override
@@ -184,26 +224,19 @@ public class LocationDetailActivity extends FragmentActivity {
 		@Override
 		protected void onPostExecute(ResponsedResult result) {
 			// TODO Auto-generated method stub
+			likeBtn.setEnabled(true);
 
 			if (result != null) {
-
 				if (result.success) {
-
 					boolean liked = (Boolean) result.content2;
-					if (liked) {
-						likeBtn.setText("Unlike");
-
-					} else {
-						likeBtn.setText("Like");
-					}
-
+					diaDiem.isLiked = liked;
+					setLikeButtonState(liked);
 				} else {
-					Toast.makeText(getApplicationContext(), result.content,
-							Toast.LENGTH_LONG).show();
+					Toast.makeText(getApplicationContext(),
+							"result" + result.content, Toast.LENGTH_LONG)
+							.show();
 				}
-
 			} else {
-
 				Toast.makeText(getApplicationContext(), "null",
 						Toast.LENGTH_LONG).show();
 			}
@@ -219,6 +252,8 @@ public class LocationDetailActivity extends FragmentActivity {
 		@Override
 		protected void onPreExecute() {
 			// TODO Auto-generated method stub
+			likeBtn.setEnabled(false);
+
 		}
 
 		@Override
@@ -250,28 +285,18 @@ public class LocationDetailActivity extends FragmentActivity {
 		@Override
 		protected void onPostExecute(ResponsedResult result) {
 			// TODO Auto-generated method stub
+			likeBtn.setEnabled(true);
 
 			if (result != null) {
 
 				if (result.success) {
-
-					if (like) {
-						likeBtn.setText("Unlike");
-
-					} else {
-						likeBtn.setText("Like");
-					}
-
+					setLikeButtonState(like);
+					diaDiem.isLiked = like;
 				} else {
-
 					// like thanh cong nhung sv tra ve success false. code mang
 					// tinh test thu.
-					if (like) {
-						likeBtn.setText("Unlike");
-
-					} else {
-						likeBtn.setText("Like");
-					}
+					setLikeButtonState(like);
+					diaDiem.isLiked = like;
 					Toast.makeText(getApplicationContext(), result.content,
 							Toast.LENGTH_LONG).show();
 				}
