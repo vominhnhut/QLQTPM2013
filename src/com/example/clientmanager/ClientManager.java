@@ -17,8 +17,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.util.Log;
-
 import com.example.Object.BinhLuan;
 import com.example.Object.DiaDiem;
 import com.example.Object.TaiKhoan;
@@ -45,6 +43,7 @@ public class ClientManager {
 	public static final String POSTCOMMENT_URL = "http://wegorest.viemde.cloudbees.net/place/comment";
 	public static final String FINDLOCATION_URL = "http://wegorest.viemde.cloudbees.net/place/find";
 	public static final String LISTCOMMENT_URL = "http://wegorest.viemde.cloudbees.net/place/comment";
+	public static final String LIKEORUNLIKE_URL = "http://wegorest.viemde.cloudbees.net/place/feeling";
 
 	/**
 	 * Request server to get JSONObject as a response
@@ -111,34 +110,34 @@ public class ClientManager {
 		return response;
 	}
 
-	/**
-	 * Request server to get JSONArray as a response
-	 * 
-	 * @param uri
-	 *            Uri of webservice
-	 * @param input
-	 *            jsonObject - send to server
-	 * @return jsonArray - recieve from server
-	 * @author Hoa Phat
-	 * @since 2013/11/8
-	 */
-	private static HttpResponse RequestServer(String uri, JSONObject input)
-			throws IllegalStateException, IOException, JSONException {
-
-		HttpClient client;
-		HttpPost post;
-		HttpResponse response;
-
-		client = new DefaultHttpClient();
-		post = new HttpPost(uri);
-		post.addHeader(new BasicHeader("Content-Type", "application/json"));
-		post.setEntity(new StringEntity(input.toString()));
-
-		// request server to get data
-		response = client.execute(post);
-
-		return response;
-	}
+	// /**
+	// * Request server to get JSONArray as a response
+	// *
+	// * @param uri
+	// * Uri of webservice
+	// * @param input
+	// * jsonObject - send to server
+	// * @return jsonArray - recieve from server
+	// * @author Hoa Phat
+	// * @since 2013/11/8
+	// */
+	// private static HttpResponse RequestServer(String uri, JSONObject input)
+	// throws IllegalStateException, IOException, JSONException {
+	//
+	// HttpClient client;
+	// HttpPost post;
+	// HttpResponse response;
+	//
+	// client = new DefaultHttpClient();
+	// post = new HttpPost(uri);
+	// post.addHeader(new BasicHeader("Content-Type", "application/json"));
+	// post.setEntity(new StringEntity(input.toString()));
+	//
+	// // request server to get data
+	// response = client.execute(post);
+	//
+	// return response;
+	// }
 
 	// ############################################################################
 
@@ -349,13 +348,10 @@ public class ClientManager {
 
 		postCommentURL = POSTCOMMENT_URL + "?token=" + tokenEncoded;
 
-		Log.e("hoaphat", postCommentURL);
-
 		JSONObject inputObj = new JSONObject();
 		inputObj.put(StringTagJSON.TAG_MA_DU_LIEU, locationID);
 		inputObj.put(StringTagJSON.TAG_COMMENT, comment);
 
-		Log.e("hoaphat", inputObj.toString());
 		// request server
 		response = ClientManager.RequestServerByHttpPost(postCommentURL,
 				inputObj);
@@ -403,7 +399,6 @@ public class ClientManager {
 
 		listCommentURL = LISTCOMMENT_URL + "?token=" + encodedToken
 				+ "&index=1" + "&ma_du_lieu=" + encodedDiaDiemID;
-		Log.e("hoaphat", listCommentURL);
 
 		response = ClientManager.RequestServerByHttpGet(listCommentURL);
 
@@ -422,7 +417,6 @@ public class ClientManager {
 
 				JSONArray array = responsedJSONObj
 						.getJSONArray(StringTagJSON.TAG_CONTENTString);
-				Log.e("hoaphat", array.toString());
 				listBinhLuan.addAll(JSONParser.getListBinhLuanFromJSON(array));
 
 			} else {
@@ -490,6 +484,118 @@ public class ClientManager {
 		}
 
 		return result;
+	}
+
+	public static ResponsedResult RequestToLikeOrUnlikeDiaDiem(String token,
+			String diadiemID, boolean like) throws JSONException,
+			IllegalStateException, IOException {
+
+		String likeOrUnlikeURL;
+		String tokenEncoded;
+		ResponsedResult result;
+		JSONObject responsedJSONObj;
+		HttpResponse response;
+		int statusCode;
+
+		result = new ResponsedResult();
+
+		tokenEncoded = URLEncoder.encode(token, "UTF-8");
+
+		likeOrUnlikeURL = LIKEORUNLIKE_URL + "?token=" + tokenEncoded;
+
+		JSONObject inputObj = new JSONObject();
+		inputObj.put(StringTagJSON.TAG_MA_DU_LIEU, diadiemID);
+		inputObj.put(StringTagJSON.TAG_LIKE, ((Boolean) like).toString());
+
+		// request server
+		response = ClientManager.RequestServerByHttpPost(likeOrUnlikeURL,
+				inputObj);
+
+		statusCode = response.getStatusLine().getStatusCode();
+
+		if (statusCode == 200) {
+
+			responsedJSONObj = JSONParser
+					.getJSONObjectFromHttpResponse(response);
+
+			boolean success = responsedJSONObj
+					.getBoolean(StringTagJSON.TAG_SUCCESS);
+
+			if (success) {
+				result.success = true;
+			} else {
+				result.success = false;
+				result.content = "Fail to like/unlike location.";
+			}
+
+		} else {
+
+			result.success = false;
+			result.content = "Problem with connecting server";
+		}
+
+		return result;
+
+	}
+
+	public static ResponsedResult RequestToGetLikeOrNotLikeDiaDiem(
+			String token, String diadiemID) throws ClientProtocolException,
+			IOException, IllegalStateException, JSONException {
+
+		String likeOrUnlikeURL;
+		String tokenEncoded;
+		ResponsedResult result;
+		JSONObject responsedJSONObj;
+		HttpResponse response;
+		int statusCode;
+
+		result = new ResponsedResult();
+
+		tokenEncoded = URLEncoder.encode(token, "UTF-8");
+
+		likeOrUnlikeURL = LIKEORUNLIKE_URL + "?token=" + tokenEncoded
+				+ "&ma_du_lieu=" + diadiemID;
+
+		// request server
+		response = ClientManager.RequestServerByHttpGet(likeOrUnlikeURL);
+
+		statusCode = response.getStatusLine().getStatusCode();
+
+		if (statusCode == 200) {
+
+			responsedJSONObj = JSONParser
+					.getJSONObjectFromHttpResponse(response);
+
+			boolean success = responsedJSONObj
+					.getBoolean(StringTagJSON.TAG_SUCCESS);
+
+			if (success) {
+				result.success = true;
+
+				JSONObject obj = responsedJSONObj
+						.getJSONObject(StringTagJSON.TAG_CONTENTString);
+
+				boolean liked = obj.getBoolean(StringTagJSON.TAG_LIKE);
+
+				if (liked) {
+					result.content2 = Boolean.TRUE;
+				} else {
+					result.content2 = Boolean.FALSE;
+				}
+
+			} else {
+				result.success = false;
+				result.content = "Fail get like";
+			}
+
+		} else {
+
+			result.success = false;
+			result.content = "Problem with connecting server";
+		}
+
+		return result;
+
 	}
 
 	public static DiaDiem RequestToGetDiaDiemChiTiet(String diadiemID) {
