@@ -4,6 +4,7 @@ public class ResponsedResult {
 
 	public boolean success = false;
 	public String content = "";
+	public Object content2 = new Object();
 
 	public ResponsedResult() {
 
