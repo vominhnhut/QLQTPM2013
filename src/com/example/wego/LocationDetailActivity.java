@@ -1,11 +1,16 @@
 package com.example.wego;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
+import org.apache.http.client.ClientProtocolException;
+import org.json.JSONException;
 
 import com.example.Object.BinhLuan;
 import com.example.Object.DiaDiem;
 import com.example.adapter.LocationDetailPagerAdapter;
+import com.example.clientmanager.ClientManager;
+import com.example.clientmanager.ResponsedResult;
 import com.example.ultils.Constants;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -13,12 +18,17 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class LocationDetailActivity extends FragmentActivity {
 
@@ -33,6 +43,9 @@ public class LocationDetailActivity extends FragmentActivity {
 	private LocationDetailPagerAdapter pagerAdapter;
 
 	private static LocationDetailActivity instance = null;
+
+	// hoaphat
+	private Button likeBtn;
 
 	public LocationDetailActivity instance() {
 		if (instance == null) {
@@ -54,6 +67,8 @@ public class LocationDetailActivity extends FragmentActivity {
 		map.getUiSettings().setZoomGesturesEnabled(false);
 		// map.getUiSettings().setScrollGesturesEnabled(false);
 
+		likeBtn = (Button) findViewById(R.id.like_btn);
+
 		locationName = (TextView) findViewById(R.id.locationName);
 		locationAddress = (TextView) findViewById(R.id.locationAddress);
 
@@ -69,6 +84,25 @@ public class LocationDetailActivity extends FragmentActivity {
 		pager.setAdapter(pagerAdapter);
 
 		getDiaDiemFromBundle();
+
+		// hoaphat
+		likeBtn.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+
+				if (likeBtn.getText().equals("Like")) {
+					new LikeOrUnlikeLocationAsynctask().execute(true);
+				} else if (likeBtn.getText().equals("Unlike")) {
+					new LikeOrUnlikeLocationAsynctask().execute(false);
+				} else {
+					// nothing
+				}
+			}
+		});
+
+		new LoadLocationAsynctask().execute();
+
 	}
 
 	@Override
@@ -109,8 +143,146 @@ public class LocationDetailActivity extends FragmentActivity {
 	public DiaDiem getDiaDiem() {
 		return this.diaDiem;
 	}
-	
-	public void updateCommentList(ArrayList<BinhLuan> listBinhLuan){
+
+	public void updateCommentList(ArrayList<BinhLuan> listBinhLuan) {
 		this.diaDiem.danhSachBinhLuan = listBinhLuan;
+	}
+
+	public class LoadLocationAsynctask extends
+			AsyncTask<String, Integer, ResponsedResult> {
+
+		@Override
+		protected void onPreExecute() {
+			// TODO Auto-generated method stub
+		}
+
+		@Override
+		protected ResponsedResult doInBackground(String... params) {
+			// TODO Auto-generated method stub
+			ResponsedResult result = null;
+
+			try {
+				result = ClientManager.RequestToGetLikeOrNotLikeDiaDiem(
+						Constants.LOGINUSER_TOKEN, diaDiem.id);
+			} catch (ClientProtocolException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalStateException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			return result;
+		}
+
+		@Override
+		protected void onPostExecute(ResponsedResult result) {
+			// TODO Auto-generated method stub
+
+			if (result != null) {
+
+				if (result.success) {
+
+					boolean liked = (Boolean) result.content2;
+					if (liked) {
+						likeBtn.setText("Unlike");
+
+					} else {
+						likeBtn.setText("Like");
+					}
+
+				} else {
+					Toast.makeText(getApplicationContext(), result.content,
+							Toast.LENGTH_LONG).show();
+				}
+
+			} else {
+
+				Toast.makeText(getApplicationContext(), "null",
+						Toast.LENGTH_LONG).show();
+			}
+
+			super.onPostExecute(result);
+		}
+	}
+
+	public class LikeOrUnlikeLocationAsynctask extends
+			AsyncTask<Boolean, Integer, ResponsedResult> {
+		boolean like = false;
+
+		@Override
+		protected void onPreExecute() {
+			// TODO Auto-generated method stub
+		}
+
+		@Override
+		protected ResponsedResult doInBackground(Boolean... params) {
+			// TODO Auto-generated method stub
+			ResponsedResult result = null;
+			like = params[0];
+
+			try {
+				result = ClientManager.RequestToLikeOrUnlikeDiaDiem(
+						Constants.LOGINUSER_TOKEN, diaDiem.id, like);
+			} catch (ClientProtocolException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalStateException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			return result;
+		}
+
+		@Override
+		protected void onPostExecute(ResponsedResult result) {
+			// TODO Auto-generated method stub
+
+			if (result != null) {
+
+				if (result.success) {
+
+					if (like) {
+						likeBtn.setText("Unlike");
+
+					} else {
+						likeBtn.setText("Like");
+					}
+
+				} else {
+
+					// like thanh cong nhung sv tra ve success false. code mang
+					// tinh test thu.
+					if (like) {
+						likeBtn.setText("Unlike");
+
+					} else {
+						likeBtn.setText("Like");
+					}
+					Toast.makeText(getApplicationContext(), result.content,
+							Toast.LENGTH_LONG).show();
+				}
+
+			} else {
+
+				Toast.makeText(getApplicationContext(), "null",
+						Toast.LENGTH_LONG).show();
+			}
+
+			super.onPostExecute(result);
+		}
 	}
 }
