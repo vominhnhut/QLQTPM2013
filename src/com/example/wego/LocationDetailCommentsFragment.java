@@ -16,6 +16,7 @@ import com.example.ultils.Constants;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -89,7 +90,10 @@ public class LocationDetailCommentsFragment extends Fragment implements
 
 		updateCommentList();
 
-		new LoadListCommentAsynctask().execute();
+		// reset index to get first item
+		ClientManager.max_Index_LoadedBinhLuan = 0;
+		new LoadListCommentAsynctask()
+				.execute(ClientManager.max_Index_LoadedBinhLuan);
 
 		return view;
 	}
@@ -153,9 +157,7 @@ public class LocationDetailCommentsFragment extends Fragment implements
 
 			new PostCommentAsynctask().execute(commentTxtview.getText()
 					.toString());
-
 			break;
-
 		default:
 			break;
 		}
@@ -240,12 +242,12 @@ public class LocationDetailCommentsFragment extends Fragment implements
 	 */
 
 	public class LoadListCommentAsynctask extends
-			AsyncTask<String, Integer, ResponsedResult> {
+			AsyncTask<Integer, Integer, ResponsedResult> {
 
 		ArrayList<BinhLuan> listBinhLuan;
 
 		@Override
-		protected ResponsedResult doInBackground(String... params) {
+		protected ResponsedResult doInBackground(Integer... params) {
 			// TODO Auto-generated method stub
 			listBinhLuan = new ArrayList<BinhLuan>();
 			ResponsedResult result = null;
@@ -255,7 +257,7 @@ public class LocationDetailCommentsFragment extends Fragment implements
 
 			try {
 				result = ClientManager.RequestToGetListBinhLuan(locationID,
-						listBinhLuan);
+						listBinhLuan, params[0]);
 			} catch (IllegalStateException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
