@@ -46,4 +46,9 @@ public class StringTagJSON {
 
 	public static String TAG_LIKE = "thich";
 
+	// CHITIETDICHVU
+	public static String TAG_TEN = "ten";
+	public static String TAG_GIATIEN = "gia_tien";
+	public static String TAG_CHUTHICH = "chu_thich";
+
 }
