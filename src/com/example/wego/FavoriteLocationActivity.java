@@ -106,5 +106,6 @@ public class FavoriteLocationActivity extends FragmentActivity {
 			}
 		};
 
+		favoriteList.setAdapter(favoriteAdapter);
 	}
 }
