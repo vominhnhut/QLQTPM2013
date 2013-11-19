@@ -109,11 +109,11 @@ public class LocationDetailActivity extends FragmentActivity {
 
 				// Server chua cai dat day du
 
-				// if (diaDiem.isSaved == false) {
-				// new SaveOrUnSaveLocationAsynctask().execute(true);
-				// } else if (diaDiem.isSaved = true) {
-				// new SaveOrUnSaveLocationAsynctask().execute(false);
-				// }
+				if (diaDiem.isSaved == false) {
+					new SaveOrUnSaveLocationAsynctask().execute(true);
+				} else if (diaDiem.isSaved = true) {
+				//	new SaveOrUnSaveLocationAsynctask().execute(false);
+				}
 			}
 		});
 	}
