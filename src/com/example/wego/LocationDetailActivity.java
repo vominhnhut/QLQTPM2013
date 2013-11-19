@@ -298,8 +298,9 @@ public class LocationDetailActivity extends FragmentActivity {
 					// tinh test thu.
 					setLikeButtonState(like);
 					diaDiem.isLiked = like;
-					Toast.makeText(getApplicationContext(), like + " - " +result.content,
-							Toast.LENGTH_LONG).show();
+					Toast.makeText(getApplicationContext(),
+							like + " - " + result.content, Toast.LENGTH_LONG)
+							.show();
 				}
 
 			} else {
@@ -343,16 +344,25 @@ public class LocationDetailActivity extends FragmentActivity {
 		}
 
 		@Override
+		protected void onPreExecute() {
+			// TODO Auto-generated method stub
+			saveBtn.setEnabled(false);
+			super.onPreExecute();
+		}
+
+		@Override
 		protected void onPostExecute(ResponsedResult result) {
 			// TODO Auto-generated method stub
 			super.onPostExecute(result);
+			saveBtn.setEnabled(true);
 
 			if (result != null) {
 				if (result.success) {
-
-					// do something
-
+					setSaveButtonState(save);
+					diaDiem.isSaved = save;
 				} else {
+					setSaveButtonState(save);
+					diaDiem.isSaved = save;
 					Toast.makeText(getApplicationContext(), result.content,
 							Toast.LENGTH_LONG).show();
 				}

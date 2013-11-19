@@ -4,7 +4,6 @@ import com.example.adapter.FavoriteLocationAdapter;
 import com.example.ultils.Constants;
 
 import android.os.Bundle;
-import android.app.Activity;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.widget.ListView;

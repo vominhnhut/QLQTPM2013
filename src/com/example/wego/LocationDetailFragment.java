@@ -146,9 +146,6 @@ public class LocationDetailFragment extends Fragment {
 							LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 									ViewGroup.LayoutParams.MATCH_PARENT,
 									ViewGroup.LayoutParams.WRAP_CONTENT);
-							// view.setPadding(R.dimen.dp3_pading,
-							// R.dimen.dp3_pading,
-							// R.dimen.dp3_pading, R.dimen.dp3_pading);
 							container.addView(view, params);
 						}
 					}
