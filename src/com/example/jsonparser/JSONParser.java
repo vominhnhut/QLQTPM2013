@@ -101,11 +101,6 @@ public class JSONParser {
 		binhluan.thoiGianDang = obj.getString(StringTagJSON.TAG_THOI_GIAN_DANG);
 		binhluan.id = obj.getString(StringTagJSON.TAG_MA_BINH_LUAN);
 
-		if (Integer.parseInt(binhluan.id) > ClientManager.max_Index_LoadedBinhLuan) {
-			ClientManager.max_Index_LoadedBinhLuan = Integer
-					.parseInt(binhluan.id);
-		}
-
 		return binhluan;
 
 	}
