@@ -16,6 +16,7 @@ import com.example.ultils.Constants;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -81,8 +82,13 @@ public class LocationDetailCommentsFragment extends Fragment implements
 				// TODO Auto-generated method stub
 				int lastItem = firstVisibleItem + visibleItemCount;
 				if (lastItem >= totalItemCount && totalItemCount > 0) {
-					// Code here
-					//
+
+					
+					//LOAD TIEP DANH SACH BINH LUAN
+					if (!ClientManager.isStop_LoadListBinhLuan) {
+						new LoadListCommentAsynctask()
+								.execute(ClientManager.next_Index_LoadedBinhLuan++);
+					}
 				}
 			}
 		});
@@ -90,9 +96,10 @@ public class LocationDetailCommentsFragment extends Fragment implements
 		updateCommentList();
 
 		// reset index to get first item
-		ClientManager.max_Index_LoadedBinhLuan = 0;
+		ClientManager.isStop_LoadListBinhLuan = false;
+		ClientManager.next_Index_LoadedBinhLuan = 1;
 		new LoadListCommentAsynctask()
-				.execute(ClientManager.max_Index_LoadedBinhLuan);
+				.execute(ClientManager.next_Index_LoadedBinhLuan++);
 
 		return view;
 	}
@@ -134,7 +141,7 @@ public class LocationDetailCommentsFragment extends Fragment implements
 		commentAdapter.addComment(binhLuan);
 		commentAdapter.notifyDataSetChanged();
 
-		commentListview.smoothScrollToPosition(0);
+		// commentListview.smoothScrollToPosition(0);
 	}
 
 	public void addCommentToTop(BinhLuan binhLuan) {
@@ -153,9 +160,15 @@ public class LocationDetailCommentsFragment extends Fragment implements
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.sned_comment_btn:
-
+			//
 			new PostCommentAsynctask().execute(commentTxtview.getText()
 					.toString());
+
+			// if (!ClientManager.isStop_LoadListBinhLuan) {
+			// new LoadListCommentAsynctask()
+			// .execute(ClientManager.next_Index_LoadedBinhLuan++);
+			// }
+
 			break;
 		default:
 			break;
