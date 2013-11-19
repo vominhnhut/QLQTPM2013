@@ -23,6 +23,7 @@ import android.content.Intent;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -34,6 +35,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AbsListView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupMenu;
+import android.widget.PopupMenu.OnMenuItemClickListener;
 import android.widget.Toast;
 
 public class WeGoMainFragment extends Fragment implements OnItemClickListener {
@@ -74,20 +77,21 @@ public class WeGoMainFragment extends Fragment implements OnItemClickListener {
 					new ArrayList<DiaDiem>()));//
 			mStatusList.setOnItemClickListener(this);
 			mStatusList.setOnScrollListener(new OnScrollListener() {
-				
+
 				@Override
-				public void onScrollStateChanged(AbsListView view, int scrollState) {
+				public void onScrollStateChanged(AbsListView view,
+						int scrollState) {
 					// TODO Auto-generated method stub
-					
+
 				}
-				
+
 				@Override
 				public void onScroll(AbsListView view, int firstVisibleItem,
 						int visibleItemCount, int totalItemCount) {
 					// TODO Auto-generated method stub
 					int lastItem = firstVisibleItem + visibleItemCount;
-					if (lastItem >= totalItemCount && totalItemCount >0) {
-						//Code here
+					if (lastItem >= totalItemCount && totalItemCount > 0) {
+						// Code here
 						//
 					}
 				}
@@ -276,7 +280,41 @@ public class WeGoMainFragment extends Fragment implements OnItemClickListener {
 		if (diaDiemList == null || diaDiemList.size() == 0) {
 			hideListStatus();
 		} else {
-			searchedItemAdapter = new StatusAdapter(getActivity(), diaDiemList);
+			searchedItemAdapter = new StatusAdapter(getActivity(), diaDiemList) {
+
+				@Override
+				public void OnItemMenuClick(int id, View v) {
+					// TODO Auto-generated method stub
+					PopupMenu menu = new PopupMenu(getActivity(), v);
+					menu.inflate(R.menu.search_item_menu);
+					
+					final DiaDiem dd = (DiaDiem) searchedItemAdapter.getItem(id);
+					
+					menu.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+
+						@Override
+						public boolean onMenuItemClick(MenuItem item) {
+							// TODO Auto-generated method stub
+							switch (item.getItemId()) {
+							case R.id.search_item_forcusCam:
+								LatLng coor = new LatLng(dd.latitude, dd.longitude);
+								forcusLocation(coor, true);
+								break;
+							case R.id.search_item_navigate:
+								//Navigate will be here
+								break;
+							default:
+								break;
+							}
+							return false;
+						}
+					});
+					menu.show();
+					super.OnItemMenuClick(id, v);
+				}
+
+			};
+
 			mStatusList.setAdapter(searchedItemAdapter);
 			updateMap();
 		}

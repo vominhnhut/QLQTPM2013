@@ -6,8 +6,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.Object.DiaDiem;
@@ -19,6 +21,7 @@ public class StatusAdapter extends BaseAdapter {
 		public TextView locationName;
 		public TextView locationAddress;
 		public TextView locationRating;
+		public ImageView menuToggle;
 	}
 
 	// private static int N = 5; // hard code
@@ -63,6 +66,18 @@ public class StatusAdapter extends BaseAdapter {
 					.findViewById(R.id.searchLocationAddressTxt);
 			holder.locationRating = (TextView) view
 					.findViewById(R.id.searchLocationRating);
+			holder.menuToggle = (ImageView) view.findViewById(R.id.menuTgl);
+			
+			final int itemId = arg0;
+			final ImageView imgV = holder.menuToggle;
+			holder.menuToggle.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					OnItemMenuClick(itemId, imgV);
+				}
+			});
 
 			arg1 = view;
 			arg1.setTag(holder);
@@ -75,10 +90,13 @@ public class StatusAdapter extends BaseAdapter {
 		if (diaDiem != null) {
 			holder.locationName.setText(diaDiem.ten);
 			holder.locationAddress.setText(diaDiem.diaChi);
-			holder.locationRating.setText((int)diaDiem.diemDanhGia + "");
+			holder.locationRating.setText((int) diaDiem.diemDanhGia + "");
 		}
 
 		return arg1;
 	}
-
+	
+	public void OnItemMenuClick(int id, View v){
+		
+	}
 }

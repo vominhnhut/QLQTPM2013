@@ -69,5 +69,7 @@
     <string name="detail_text">Detail</string>
     <string name="navigate_text">Navigate</string>
     <string name="title_activity_favorite_location">FavoriteLocationActivity</string>
+    <string name="forcus_map_text">Focus location</string>
+    <string name="favoriteList_title">Favorites</string>
 
 </resources>
