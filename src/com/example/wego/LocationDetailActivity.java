@@ -72,7 +72,6 @@ public class LocationDetailActivity extends FragmentActivity {
 		likeBtn = (Button) findViewById(R.id.like_btn);
 		saveBtn = (Button) findViewById(R.id.save_btn);
 
-
 		locationName = (TextView) findViewById(R.id.locationName);
 		locationAddress = (TextView) findViewById(R.id.locationAddress);
 
@@ -89,7 +88,7 @@ public class LocationDetailActivity extends FragmentActivity {
 
 		getDiaDiemFromBundle();
 		new LoadLocationAsynctask().execute();
-		// hoaphat
+
 		likeBtn.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -102,17 +101,19 @@ public class LocationDetailActivity extends FragmentActivity {
 				}
 			}
 		});
-		
+
 		saveBtn.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 
-				if (diaDiem.isSaved== false) {
-					//new LikeOrUnlikeLocationAsynctask().execute(true);
-				} else if (diaDiem.isSaved = true) {
-					//new LikeOrUnlikeLocationAsynctask().execute(false);
-				}
+				// Server chua cai dat day du
+
+				// if (diaDiem.isSaved == false) {
+				// new SaveOrUnSaveLocationAsynctask().execute(true);
+				// } else if (diaDiem.isSaved = true) {
+				// new SaveOrUnSaveLocationAsynctask().execute(false);
+				// }
 			}
 		});
 	}
@@ -186,7 +187,7 @@ public class LocationDetailActivity extends FragmentActivity {
 			saveBtn.setText(R.string.save_text);
 		}
 	}
-	
+
 	public class LoadLocationAsynctask extends
 			AsyncTask<String, Integer, ResponsedResult> {
 
@@ -309,5 +310,58 @@ public class LocationDetailActivity extends FragmentActivity {
 
 			super.onPostExecute(result);
 		}
+	}
+
+	public class SaveOrUnSaveLocationAsynctask extends
+			AsyncTask<Boolean, Integer, ResponsedResult> {
+		boolean save = false;
+
+		@Override
+		protected ResponsedResult doInBackground(Boolean... params) {
+			// TODO Auto-generated method stub
+			ResponsedResult result = null;
+			save = params[0];
+
+			try {
+				result = ClientManager.RequestToAddOrRemoveFavouriteDiaDiem(
+						Constants.LOGINUSER_TOKEN, diaDiem.id, save);
+			} catch (ClientProtocolException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalStateException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			return result;
+		}
+
+		@Override
+		protected void onPostExecute(ResponsedResult result) {
+			// TODO Auto-generated method stub
+			super.onPostExecute(result);
+
+			if (result != null) {
+				if (result.success) {
+
+					// do something
+
+				} else {
+					Toast.makeText(getApplicationContext(), result.content,
+							Toast.LENGTH_LONG).show();
+				}
+			} else {
+				Toast.makeText(getApplicationContext(), "null",
+						Toast.LENGTH_LONG).show();
+			}
+
+		}
+
 	}
 }

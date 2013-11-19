@@ -1,18 +1,27 @@
 package com.example.wego;
 
+import java.io.IOException;
 import java.util.ArrayList;
+
+import org.apache.http.client.ClientProtocolException;
+import org.json.JSONException;
 
 import com.example.Object.ChiTietDichVu;
 import com.example.Object.DiaDiem;
+import com.example.clientmanager.ClientManager;
+import com.example.clientmanager.ResponsedResult;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class LocationDetailFragment extends Fragment {
 
@@ -70,28 +79,7 @@ public class LocationDetailFragment extends Fragment {
 			rating += " " + getString(R.string.like_ext2_string);
 			ratingText.setText(rating);
 
-			this.diaDiem.danhSachDichVu = new ArrayList<ChiTietDichVu>();
-			for (int i = 0; i < 10; i++) {
-				ChiTietDichVu dv = new ChiTietDichVu();
-				dv.ten = "dv " + i;
-				dv.donGia = i * 10000 + "";
-				dv.moTa = "Dumb " + i;
-
-				this.diaDiem.danhSachDichVu.add(dv);
-			}
-			if (this.diaDiem.danhSachDichVu != null
-					&& this.diaDiem.danhSachDichVu.size() > 0) {
-				for (ChiTietDichVu dv : this.diaDiem.danhSachDichVu) {
-					View view = createServiceView(dv);
-					// Add view
-					LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-							ViewGroup.LayoutParams.MATCH_PARENT,
-							ViewGroup.LayoutParams.WRAP_CONTENT);
-//					view.setPadding(R.dimen.dp3_pading, R.dimen.dp3_pading,
-//							R.dimen.dp3_pading, R.dimen.dp3_pading);
-					container.addView(view, params);
-				}
-			}
+			new LoadServicesAsynctask().execute();
 		}
 	}
 
@@ -111,5 +99,67 @@ public class LocationDetailFragment extends Fragment {
 		serviceDetail.setText(dichVu.moTa);
 
 		return v;
+	}
+
+	public class LoadServicesAsynctask extends
+			AsyncTask<Void, Integer, ResponsedResult> {
+
+		ArrayList<ChiTietDichVu> listChiTietDichVu = new ArrayList<ChiTietDichVu>();
+
+		@Override
+		protected ResponsedResult doInBackground(Void... params) {
+
+			ResponsedResult result = null;
+			try {
+
+				result = ClientManager.RequestToGetListChiTietDichVu(
+						diaDiem.id, listChiTietDichVu);
+				Log.e("hoaphat", result.success + "");
+			} catch (ClientProtocolException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return result;
+		}
+
+		@Override
+		protected void onPostExecute(ResponsedResult result) {
+			// TODO Auto-generated method stub
+			super.onPostExecute(result);
+
+			if (result != null) {
+				if (result.success) {
+
+					diaDiem.danhSachDichVu = listChiTietDichVu;
+
+					if (diaDiem.danhSachDichVu != null
+							&& diaDiem.danhSachDichVu.size() > 0) {
+						for (ChiTietDichVu dv : diaDiem.danhSachDichVu) {
+							View view = createServiceView(dv);
+							// Add view
+							LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+									ViewGroup.LayoutParams.MATCH_PARENT,
+									ViewGroup.LayoutParams.WRAP_CONTENT);
+							// view.setPadding(R.dimen.dp3_pading,
+							// R.dimen.dp3_pading,
+							// R.dimen.dp3_pading, R.dimen.dp3_pading);
+							container.addView(view, params);
+						}
+					}
+				} else {
+					Toast.makeText(getActivity().getApplicationContext(),
+							result.content, Toast.LENGTH_LONG).show();
+				}
+			} else {
+				Toast.makeText(getActivity().getApplicationContext(), "null",
+						Toast.LENGTH_LONG).show();
+			}
+		}
 	}
 }

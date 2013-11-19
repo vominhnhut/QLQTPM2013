@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.json.JSONArray;
@@ -15,6 +16,7 @@ import com.example.Object.BinhLuan;
 import com.example.Object.ChiTietDichVu;
 import com.example.Object.DiaDiem;
 import com.example.Object.TaiKhoan;
+import com.example.clientmanager.ClientManager;
 import com.example.ultils.StringTagJSON;
 
 /**
@@ -99,11 +101,27 @@ public class JSONParser {
 		binhluan.thoiGianDang = obj.getString(StringTagJSON.TAG_THOI_GIAN_DANG);
 		binhluan.id = obj.getString(StringTagJSON.TAG_MA_BINH_LUAN);
 
+		if (Integer.parseInt(binhluan.id) > ClientManager.max_Index_LoadedBinhLuan) {
+			ClientManager.max_Index_LoadedBinhLuan = Integer
+					.parseInt(binhluan.id);
+		}
+
 		return binhluan;
 
 	}
 
-	// lay danh sach dia diem tom tat tu jsonarray
+	public static ChiTietDichVu getChiTietDichVuFromJSONObject(JSONObject obj)
+			throws JSONException {
+
+		ChiTietDichVu chiTietDichVu = new ChiTietDichVu();
+
+		chiTietDichVu.ten = obj.getString(StringTagJSON.TAG_TEN);
+		chiTietDichVu.donGia = obj.getString(StringTagJSON.TAG_GIATIEN);
+		chiTietDichVu.moTa = obj.getString(StringTagJSON.TAG_CHUTHICH);
+
+		return chiTietDichVu;
+	}
+
 	public static ArrayList<DiaDiem> getListDiaDiemTomTatFromJSON(
 			JSONArray array) throws JSONException {
 
@@ -134,27 +152,18 @@ public class JSONParser {
 		return listBinhLuan;
 	}
 
-	public static ArrayList<BinhLuan> parseListBinhLuanFromJSON(JSONArray array) {
-
-		ArrayList<BinhLuan> listBinhLuan = new ArrayList<BinhLuan>();
-
-		//
-
-		//
-
-		return listBinhLuan;
-	}
-
-	public static ArrayList<ChiTietDichVu> parseListChiTietDichVuFromJSON(
-			JSONArray array) {
+	public static ArrayList<ChiTietDichVu> getListChiTietDichVuFromJSON(
+			JSONArray array) throws JSONException {
 
 		ArrayList<ChiTietDichVu> listChiTietDichVu = new ArrayList<ChiTietDichVu>();
 
-		//
-
-		//
+		ChiTietDichVu chiTietDichVu = null;
+		for (int i = 0; i < array.length(); i++) {
+			chiTietDichVu = JSONParser.getChiTietDichVuFromJSONObject(array
+					.getJSONObject(i));
+			listChiTietDichVu.add(chiTietDichVu);
+		}
 
 		return listChiTietDichVu;
 	}
-
 }
