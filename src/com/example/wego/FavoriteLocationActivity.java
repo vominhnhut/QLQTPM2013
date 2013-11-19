@@ -1,12 +1,19 @@
 package com.example.wego;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
+import org.json.JSONException;
+
+import com.example.Object.BinhLuan;
 import com.example.Object.DiaDiem;
 import com.example.adapter.StatusAdapter;
+import com.example.clientmanager.ClientManager;
+import com.example.clientmanager.ResponsedResult;
 import com.example.ultils.Constants;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
@@ -16,6 +23,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.PopupMenu;
+import android.widget.Toast;
 import android.widget.PopupMenu.OnMenuItemClickListener;
 
 public class FavoriteLocationActivity extends FragmentActivity {
@@ -29,10 +37,8 @@ public class FavoriteLocationActivity extends FragmentActivity {
 		setContentView(R.layout.activity_favorite_location);
 
 		getActionBar().setTitle(R.string.favoriteList_title);
-		
-		favoriteList = (ListView) findViewById(R.id.favoriteList);
 
-		updateFavoriteAdapter(Constants.getDumbDDList());
+		favoriteList = (ListView) findViewById(R.id.favoriteList);
 
 		favoriteList.setAdapter(favoriteAdapter);
 		favoriteList.setOnItemClickListener(new OnItemClickListener() {
@@ -42,11 +48,13 @@ public class FavoriteLocationActivity extends FragmentActivity {
 					long arg3) {
 				// TODO Auto-generated method stub
 				DiaDiem dd = (DiaDiem) favoriteAdapter.getItem(arg2);
-				if(dd != null){
+				if (dd != null) {
 					toDetailActivity(dd);
 				}
 			}
 		});
+
+		new LoadFavouriteListAsynctask().execute(0);
 	}
 
 	@Override
@@ -63,7 +71,8 @@ public class FavoriteLocationActivity extends FragmentActivity {
 	private void toDetailActivity(DiaDiem diaDiem) {
 		requestFullLocation(diaDiem);
 
-		Intent intent = new Intent(FavoriteLocationActivity.this , LocationDetailActivity.class);
+		Intent intent = new Intent(FavoriteLocationActivity.this,
+				LocationDetailActivity.class);
 		if (diaDiem != null) {
 			Bundle bundle = new Bundle();
 			bundle.putSerializable(Constants.DIADIEM_KEY, diaDiem);
@@ -81,7 +90,7 @@ public class FavoriteLocationActivity extends FragmentActivity {
 				PopupMenu menu = new PopupMenu(FavoriteLocationActivity.this, v);
 				menu.inflate(R.menu.favorite_location);
 
-	//			final DiaDiem dd = (DiaDiem) favoriteAdapter.getItem(id);
+				// final DiaDiem dd = (DiaDiem) favoriteAdapter.getItem(id);
 
 				menu.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 
@@ -108,4 +117,47 @@ public class FavoriteLocationActivity extends FragmentActivity {
 
 		favoriteList.setAdapter(favoriteAdapter);
 	}
+
+	public class LoadFavouriteListAsynctask extends
+			AsyncTask<Integer, Integer, ResponsedResult> {
+		ArrayList<DiaDiem> listDiaDiemYeuThich = new ArrayList<DiaDiem>();
+
+		@Override
+		protected ResponsedResult doInBackground(Integer... params) {
+			// TODO Auto-generated method stub
+			ResponsedResult result = null;
+			try {
+				result = ClientManager.RequestToGetListDiaDiemYeuThich(
+						listDiaDiemYeuThich, 0);
+			} catch (IllegalStateException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return result;
+		}
+
+		@Override
+		protected void onPostExecute(ResponsedResult result) {
+			// TODO Auto-generated method stub
+			super.onPostExecute(result);
+			if (result != null) {
+				if (result.success) {
+					updateFavoriteAdapter(listDiaDiemYeuThich);
+				} else {
+					Toast.makeText(getApplicationContext(), result.content,
+							Toast.LENGTH_SHORT).show();
+				}
+			} else {
+				Toast.makeText(getApplicationContext(),
+						R.string.unknown_exceeption, Toast.LENGTH_SHORT).show();
+			}
+		}
+	}
+
 }
