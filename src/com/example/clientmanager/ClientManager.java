@@ -50,7 +50,8 @@ public class ClientManager {
 	private static final String SERVICESLIST_URL = "http://wegorest.viemde.cloudbees.net/place/details";
 	private static final String FAVOURITELOCATION_URL = "http://wegorest.viemde.cloudbees.net/place/lovedplace";
 
-	public static int max_Index_LoadedBinhLuan = 0;
+	public static int next_Index_LoadedBinhLuan = 0;
+	public static boolean isStop_LoadListBinhLuan = false;
 
 	private static HttpResponse RequestServerByHttpPost(String uri,
 			JSONObject input) throws IllegalStateException, IOException,
@@ -358,8 +359,8 @@ public class ClientManager {
 				"UTF-8");
 
 		listCommentURL = LISTCOMMENT_URL + "?token=" + encodedToken + "&index="
-				+ (index + 1) + "&ma_du_lieu=" + encodedDiaDiemID;
-
+				+ index + "&ma_du_lieu=" + encodedDiaDiemID;
+		
 		Log.e("hoaphat", listCommentURL);
 
 		response = ClientManager.RequestServerByHttpGet(listCommentURL);
@@ -379,6 +380,9 @@ public class ClientManager {
 
 				JSONArray array = responsedJSONObj
 						.getJSONArray(StringTagJSON.TAG_CONTENTString);
+				if (array.length() == 0 || array.length() < 20) {
+					isStop_LoadListBinhLuan = true;
+				}
 				listBinhLuan.addAll(JSONParser.getListBinhLuanFromJSON(array));
 
 			} else {
