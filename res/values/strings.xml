@@ -62,7 +62,12 @@
     <string name="liked_text">Liked</string>
     <string name="save_text">Save it?</string>
     <string name="saved_text">Saved</string>
+    <string name="deleted_text">Delete</string>
 
     <color name="theme_color">#76C9F5</color>
+
+    <string name="detail_text">Detail</string>
+    <string name="navigate_text">Navigate</string>
+    <string name="title_activity_favorite_location">FavoriteLocationActivity</string>
 
 </resources>

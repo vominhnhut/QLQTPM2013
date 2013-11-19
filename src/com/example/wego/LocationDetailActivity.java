@@ -297,7 +297,7 @@ public class LocationDetailActivity extends FragmentActivity {
 					// tinh test thu.
 					setLikeButtonState(like);
 					diaDiem.isLiked = like;
-					Toast.makeText(getApplicationContext(), result.content,
+					Toast.makeText(getApplicationContext(), like + " - " +result.content,
 							Toast.LENGTH_LONG).show();
 				}
 

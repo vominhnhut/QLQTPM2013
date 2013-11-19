@@ -40,8 +40,8 @@ public class MainActivity extends Activity implements
 
 	private static String SEARCH_LIST_TAG = "Search_list";
 
-	public static final int HOME_ITEM_ID = 0;
-	public static final int ACCOUNT_ITEM_ID = 1;
+	public static final int FAVORITE_ITEM_ID = 0;
+	public static final int CHANGE_PASSWORD_ITEM_ID = 1;
 	public static final int LOG_OUT_ITEM_ID = 2;
 	public static final int EXIT_ITEM_ID = 3;
 
@@ -99,7 +99,7 @@ public class MainActivity extends Activity implements
 						WeGoMainFragment.TAG).commit();
 
 		if (savedInstanceState == null) {
-			selectItem(0);
+			//selectItem(0);
 		}
 
 	}
@@ -159,11 +159,12 @@ public class MainActivity extends Activity implements
 
 	private void selectItem(int position) {
 		switch (position) {
-		case HOME_ITEM_ID:
-			mDrawerList.setItemChecked(position, true);
-			mDrawerLayout.closeDrawer(mDrawerList);
+		case FAVORITE_ITEM_ID:
+			Intent fIntent = new Intent(MainActivity.this,
+					FavoriteLocationActivity.class);
+			startActivity(fIntent);
 			break;
-		case ACCOUNT_ITEM_ID:
+		case CHANGE_PASSWORD_ITEM_ID:
 			Intent intent = new Intent(MainActivity.this,
 					ChangePasswordActivity.class);
 			startActivity(intent);
