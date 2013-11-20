@@ -16,7 +16,6 @@ import com.example.ultils.Constants;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -38,6 +37,7 @@ public class LocationDetailCommentsFragment extends Fragment implements
 	private LinearLayout waitView;
 	private CommentListViewAdapter commentAdapter;
 	private static LocationDetailCommentsFragment instanceFragment = null;
+	private boolean isLoading;
 
 	public LocationDetailCommentsFragment() {
 		// TODO Auto-generated constructor stub
@@ -57,6 +57,8 @@ public class LocationDetailCommentsFragment extends Fragment implements
 		View view = inflater.inflate(R.layout.comment_list_fragment, container,
 				false);
 
+		isLoading = false;
+		
 		commentTxtview = (EditText) view.findViewById(R.id.comment_text);
 		postCommentBtn = (Button) view.findViewById(R.id.sned_comment_btn);
 		postCommentBtn.setOnClickListener(this);
@@ -81,9 +83,7 @@ public class LocationDetailCommentsFragment extends Fragment implements
 					int visibleItemCount, int totalItemCount) {
 				// TODO Auto-generated method stub
 				int lastItem = firstVisibleItem + visibleItemCount;
-				if (lastItem >= totalItemCount && totalItemCount > 0) {
-
-					
+				if (lastItem >= totalItemCount && totalItemCount > 0 && isLoading == false) {
 					//LOAD TIEP DANH SACH BINH LUAN
 					if (!ClientManager.isStop_LoadListBinhLuan) {
 						new LoadListCommentAsynctask()
@@ -287,8 +287,9 @@ public class LocationDetailCommentsFragment extends Fragment implements
 		@Override
 		protected void onPreExecute() {
 			// TODO Auto-generated method stub
+			isLoading = true;
 			waitView.setVisibility(View.VISIBLE);
-			commentListview.setVisibility(View.GONE);
+			//commentListview.setVisibility(View.GONE);
 			super.onPreExecute();
 		}
 
@@ -296,7 +297,7 @@ public class LocationDetailCommentsFragment extends Fragment implements
 		protected void onPostExecute(ResponsedResult result) {
 			// TODO Auto-generated method stub
 			super.onPostExecute(result);
-
+			isLoading = false;
 			if (result != null) {
 				if (result.success) {
 					for (BinhLuan bl : listBinhLuan) {
@@ -313,7 +314,7 @@ public class LocationDetailCommentsFragment extends Fragment implements
 						R.string.unknown_exceeption, Toast.LENGTH_SHORT).show();
 			}
 			waitView.setVisibility(View.GONE);
-			commentListview.setVisibility(View.VISIBLE);
+			//commentListview.setVisibility(View.VISIBLE);
 		}
 	}
 

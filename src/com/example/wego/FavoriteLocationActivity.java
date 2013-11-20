@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import org.json.JSONException;
 
-import com.example.Object.BinhLuan;
 import com.example.Object.DiaDiem;
 import com.example.adapter.StatusAdapter;
 import com.example.clientmanager.ClientManager;
