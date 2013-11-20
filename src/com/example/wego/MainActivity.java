@@ -48,6 +48,7 @@ public class MainActivity extends Activity implements
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
+	private boolean isLoading;
 	// private CharSequence mDrawerTitle;
 	// private CharSequence mTitle;
 
@@ -98,8 +99,9 @@ public class MainActivity extends Activity implements
 				.replace(R.id.content_frame, WeGoMainFragment.instance(),
 						WeGoMainFragment.TAG).commit();
 
+		isLoading = false;
 		if (savedInstanceState == null) {
-			//selectItem(0);
+			// selectItem(0);
 		}
 
 	}
@@ -218,8 +220,9 @@ public class MainActivity extends Activity implements
 	public void search(String key) {
 		// this.searchedDiadiem = Constants.getDumbDDList();
 		// updateSearchList();
-
-		new FindLocationAsynctask().execute(key);
+		if (isLoading == false) {
+			new FindLocationAsynctask().execute(key);
+		}
 	}
 
 	public void updateSearchList() {
@@ -238,6 +241,7 @@ public class MainActivity extends Activity implements
 	@Override
 	public boolean onQueryTextSubmit(String query) {
 		// TODO Auto-generated method stub
+		invalidateOptionsMenu();
 		search(query);
 		hideKeyPad();
 		return false;
@@ -298,6 +302,7 @@ public class MainActivity extends Activity implements
 			// TODO Auto-generated method stub
 			WeGoMainFragment fragment = (WeGoMainFragment) getFragmentManager()
 					.findFragmentByTag(WeGoMainFragment.TAG);
+			isLoading = true;
 			if (fragment != null) {
 				fragment.initViewsBeginSearch();
 			}
@@ -337,6 +342,7 @@ public class MainActivity extends Activity implements
 		@Override
 		protected void onPostExecute(ResponsedResult result) {
 			// TODO Auto-generated method stub
+			isLoading = false;
 			WeGoMainFragment fragment = (WeGoMainFragment) getFragmentManager()
 					.findFragmentByTag(WeGoMainFragment.TAG);
 			if (fragment != null) {

@@ -91,7 +91,8 @@ public class WeGoMainFragment extends Fragment implements OnItemClickListener {
 					// TODO Auto-generated method stub
 					int lastItem = firstVisibleItem + visibleItemCount;
 					if (lastItem >= totalItemCount && totalItemCount > 0) {
-						// Code here
+						// Check dk
+						//MainActivity mainActivity = (MainActivity) getActivity();
 						//
 					}
 				}
