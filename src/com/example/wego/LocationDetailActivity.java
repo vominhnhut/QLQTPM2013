@@ -112,7 +112,7 @@ public class LocationDetailActivity extends FragmentActivity {
 				if (diaDiem.isSaved == false) {
 					new SaveOrUnSaveLocationAsynctask().execute(true);
 				} else if (diaDiem.isSaved = true) {
-				//	new SaveOrUnSaveLocationAsynctask().execute(false);
+					//new SaveOrUnSaveLocationAsynctask().execute(false);
 				}
 			}
 		});

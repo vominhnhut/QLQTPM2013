@@ -58,9 +58,9 @@
     <string name="unknown_exceeption">Unknown error</string>
     <string name="say_something_text">Leave your comment</string>
     <string name="posted_test">Posted</string>
-    <string name="like_text">Like it?</string>
+    <string name="like_text">Like</string>
     <string name="liked_text">Liked</string>
-    <string name="save_text">Save it?</string>
+    <string name="save_text">Save</string>
     <string name="saved_text">Saved</string>
     <string name="deleted_text">Delete</string>
 

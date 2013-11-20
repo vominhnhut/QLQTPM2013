@@ -37,6 +37,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.PopupMenu.OnMenuItemClickListener;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 public class WeGoMainFragment extends Fragment implements OnItemClickListener {
@@ -44,6 +45,7 @@ public class WeGoMainFragment extends Fragment implements OnItemClickListener {
 
 	private ListView mStatusList;
 	private LinearLayout mSearchWaitView;
+	private ProgressBar loadMorePrg;
 	public boolean isShow = true;
 	private GoogleMap map;
 	private StatusAdapter searchedItemAdapter;
@@ -92,7 +94,9 @@ public class WeGoMainFragment extends Fragment implements OnItemClickListener {
 					int lastItem = firstVisibleItem + visibleItemCount;
 					if (lastItem >= totalItemCount && totalItemCount > 0) {
 						// Check dk
-						//MainActivity mainActivity = (MainActivity) getActivity();
+						MainActivity mainActivity = (MainActivity) getActivity();
+						mainActivity.search(mainActivity.searchKey, false);
+						// mainActivity.search(mainActivity.searchKey);
 						//
 					}
 				}
@@ -133,6 +137,8 @@ public class WeGoMainFragment extends Fragment implements OnItemClickListener {
 		mSearchWaitView = (LinearLayout) view
 				.findViewById(R.id.search_wait_view);
 
+		loadMorePrg = (ProgressBar) view.findViewById(R.id.loadmorePrg);
+		
 		zoomToLocation(10, false);
 		forcusCurrentLocation(true);
 		return view;
@@ -226,6 +232,12 @@ public class WeGoMainFragment extends Fragment implements OnItemClickListener {
 		}
 	}
 
+	public void showListStatusIfHidden() {
+		if (isShow == false) {
+			showListStatus();
+		}
+	}
+
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 		// TODO Auto-generated method stub
@@ -276,11 +288,14 @@ public class WeGoMainFragment extends Fragment implements OnItemClickListener {
 		map.animateCamera(camUpdate);
 	}
 
-	public void updateSearchList(ArrayList<DiaDiem> diaDiemList) {
+	public void updateSearchList(Boolean isNewSearch,
+			ArrayList<DiaDiem> diaDiemList) {
 		map.clear();
+		hashTable.clear();
+
 		if (diaDiemList == null || diaDiemList.size() == 0) {
 			hideListStatus();
-		} else {
+		} else if (searchedItemAdapter == null || isNewSearch) {
 			searchedItemAdapter = new StatusAdapter(getActivity(), diaDiemList) {
 
 				@Override
@@ -288,9 +303,10 @@ public class WeGoMainFragment extends Fragment implements OnItemClickListener {
 					// TODO Auto-generated method stub
 					PopupMenu menu = new PopupMenu(getActivity(), v);
 					menu.inflate(R.menu.search_item_menu);
-					
-					final DiaDiem dd = (DiaDiem) searchedItemAdapter.getItem(id);
-					
+
+					final DiaDiem dd = (DiaDiem) searchedItemAdapter
+							.getItem(id);
+
 					menu.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 
 						@Override
@@ -298,11 +314,12 @@ public class WeGoMainFragment extends Fragment implements OnItemClickListener {
 							// TODO Auto-generated method stub
 							switch (item.getItemId()) {
 							case R.id.search_item_forcusCam:
-								LatLng coor = new LatLng(dd.latitude, dd.longitude);
+								LatLng coor = new LatLng(dd.latitude,
+										dd.longitude);
 								forcusLocation(coor, true);
 								break;
 							case R.id.search_item_navigate:
-								//Navigate will be here
+								// Navigate will be here
 								break;
 							default:
 								break;
@@ -318,12 +335,19 @@ public class WeGoMainFragment extends Fragment implements OnItemClickListener {
 
 			mStatusList.setAdapter(searchedItemAdapter);
 			updateMap();
+		} else {
+			for (DiaDiem diaDiem : diaDiemList) {
+				searchedItemAdapter.addItem(diaDiem);
+			}
+			searchedItemAdapter.notifyDataSetChanged();
+			updateMap();
 		}
 	}
 
 	private void updateMap() {
 		addMapPin();
-		showListStatus();
+		// showListStatus();
+		showListStatusIfHidden();
 		forcusSearchItems();
 	}
 
@@ -354,15 +378,25 @@ public class WeGoMainFragment extends Fragment implements OnItemClickListener {
 		}
 	}
 
-	public void initViewsBeginSearch() {
-		hideListStatusIfShown();
-		mSearchWaitView.setVisibility(View.VISIBLE);
+	public void initViewsBeginSearch(boolean isNewSearch) {
+		if (isNewSearch) {
+			hideListStatusIfShown();
+			mSearchWaitView.setVisibility(View.VISIBLE);
+		} else {
+			loadMorePrg.setVisibility(View.VISIBLE);
+		}
 	}
 
-	public void initViewsBeginSearchFinish() {
-		if (searchedItemAdapter != null && searchedItemAdapter.getCount() > 0) {
-			showListStatus();
+	public void initViewsBeginSearchFinish(boolean isNewSearch) {
+		if (isNewSearch) {
+			if (searchedItemAdapter != null
+					&& searchedItemAdapter.getCount() > 0) {
+				// showListStatus();
+				showListStatusIfHidden();
+			}
+			mSearchWaitView.setVisibility(View.GONE);
+		}else {
+			loadMorePrg.setVisibility(View.GONE);
 		}
-		mSearchWaitView.setVisibility(View.GONE);
 	}
 }

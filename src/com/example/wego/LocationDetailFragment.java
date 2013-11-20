@@ -154,7 +154,7 @@ public class LocationDetailFragment extends Fragment {
 							result.content, Toast.LENGTH_LONG).show();
 				}
 			} else {
-				Toast.makeText(getActivity().getApplicationContext(), "null",
+				Toast.makeText(getActivity().getApplicationContext(), "null detail request",
 						Toast.LENGTH_LONG).show();
 			}
 		}

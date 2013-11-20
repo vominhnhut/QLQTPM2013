@@ -49,6 +49,8 @@ public class MainActivity extends Activity implements
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
 	private boolean isLoading;
+	public String searchKey;
+	private boolean isNewSearch;
 	// private CharSequence mDrawerTitle;
 	// private CharSequence mTitle;
 
@@ -73,7 +75,7 @@ public class MainActivity extends Activity implements
 
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
-		getActionBar().setTitle("");
+		//getActionBar().setTitle("");
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setHomeButtonEnabled(true);
 
@@ -217,18 +219,25 @@ public class MainActivity extends Activity implements
 		return this.searchedDiadiem;
 	}
 
-	public void search(String key) {
+	public void search(String key, boolean isNewSearch) {
 		// this.searchedDiadiem = Constants.getDumbDDList();
 		// updateSearchList();
-		if (isLoading == false) {
-			new FindLocationAsynctask().execute(key);
+		if (key != null && isLoading == false) {
+			this.isNewSearch = isNewSearch;
+			
+			Object[] params = new Object[2];
+			params[0] = key;
+			//param 2 là index cần load tiếp
+			
+			
+			new FindLocationAsynctask().execute(params);
 		}
 	}
 
-	public void updateSearchList() {
+	public void updateSearchList(boolean isNewSearch) {
 		WeGoMainFragment fragment = getMaGoMainFragment();
 		if (fragment != null) {
-			fragment.updateSearchList(searchedDiadiem);
+			fragment.updateSearchList(isNewSearch,searchedDiadiem);
 		}
 	}
 
@@ -241,8 +250,10 @@ public class MainActivity extends Activity implements
 	@Override
 	public boolean onQueryTextSubmit(String query) {
 		// TODO Auto-generated method stub
+		searchKey = query;
+		
 		invalidateOptionsMenu();
-		search(query);
+		search(searchKey, true);
 		hideKeyPad();
 		return false;
 	}
@@ -262,7 +273,7 @@ public class MainActivity extends Activity implements
 
 	public void transferToLoginScreen() {
 		this.searchedDiadiem = new ArrayList<DiaDiem>();
-		updateSearchList();
+		updateSearchList(true);
 		if (Constants.LOGGED_IN == false) {
 			Intent intent = new Intent(MainActivity.this, LogInActivity.class);
 			startActivity(intent);
@@ -281,7 +292,7 @@ public class MainActivity extends Activity implements
 		// TODO Auto-generated method stub
 		this.searchedDiadiem = (ArrayList<DiaDiem>) savedInstanceState
 				.getSerializable(SEARCH_LIST_TAG);
-		updateSearchList();
+		updateSearchList(true);
 		super.onRestoreInstanceState(savedInstanceState);
 	}
 
@@ -295,7 +306,7 @@ public class MainActivity extends Activity implements
 	}
 
 	public class FindLocationAsynctask extends
-			AsyncTask<String, Integer, ResponsedResult> {
+			AsyncTask<Object, Integer, ResponsedResult> {
 
 		@Override
 		protected void onPreExecute() {
@@ -304,16 +315,18 @@ public class MainActivity extends Activity implements
 					.findFragmentByTag(WeGoMainFragment.TAG);
 			isLoading = true;
 			if (fragment != null) {
-				fragment.initViewsBeginSearch();
+				fragment.initViewsBeginSearch(isNewSearch);
 			}
 			super.onPreExecute();
 		}
 
 		@Override
-		protected ResponsedResult doInBackground(String... params) {
+		protected ResponsedResult doInBackground(Object... params) {
 			// TODO Auto-generated method stub
 			ResponsedResult result = null;
-			String key = params[0];
+			String key = (String) params[0];
+			//Lấy param 1 nếu cần
+			
 			try {
 
 				// searchedDiadiem.clear();
@@ -346,10 +359,10 @@ public class MainActivity extends Activity implements
 			WeGoMainFragment fragment = (WeGoMainFragment) getFragmentManager()
 					.findFragmentByTag(WeGoMainFragment.TAG);
 			if (fragment != null) {
-				fragment.initViewsBeginSearchFinish();
+				fragment.initViewsBeginSearchFinish(isNewSearch);
 			}
 			if (result != null && result.success && searchedDiadiem.size() > 0) {
-				updateSearchList();
+				updateSearchList(isNewSearch);
 			} else {
 				AlertDialog dialog = DialogGenerator.createAlertDialog(
 						MainActivity.this, result.content);

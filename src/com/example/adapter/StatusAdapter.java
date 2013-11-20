@@ -67,7 +67,7 @@ public class StatusAdapter extends BaseAdapter {
 			holder.locationRating = (TextView) view
 					.findViewById(R.id.searchLocationRating);
 			holder.menuToggle = (ImageView) view.findViewById(R.id.menuTgl);
-			
+
 			final int itemId = arg0;
 			final ImageView imgV = holder.menuToggle;
 			holder.menuToggle.setOnClickListener(new OnClickListener() {
@@ -95,8 +95,12 @@ public class StatusAdapter extends BaseAdapter {
 
 		return arg1;
 	}
-	
-	public void OnItemMenuClick(int id, View v){
-		
+
+	public void OnItemMenuClick(int id, View v) {
+
+	}
+
+	public void addItem(DiaDiem diaDiem) {
+		this.diaDiemList.add(diaDiem);
 	}
 }
