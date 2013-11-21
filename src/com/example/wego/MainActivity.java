@@ -334,8 +334,12 @@ public class MainActivity extends Activity implements
 				result = ClientManager.RequestToGetFindDiaDiemByKeywords(key,
 						temp);
 				if (temp != null && temp.size() > 0) {
-					searchedDiadiem.clear();
-					searchedDiadiem = temp;
+					if (isNewSearch == false) {
+						searchedDiadiem.clear();
+						searchedDiadiem = temp;
+					} else {
+						searchedDiadiem.addAll(temp);
+					}
 				}
 
 			} catch (IllegalStateException e) {
