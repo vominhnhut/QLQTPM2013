@@ -12,6 +12,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.util.Log;
+
 import com.example.Object.BinhLuan;
 import com.example.Object.ChiTietDichVu;
 import com.example.Object.DiaDiem;
@@ -75,6 +77,10 @@ public class JSONParser {
 		diadiem.diemDanhGia = obj.getInt(StringTagJSON.TAG_SO_LUOT_THICH);
 		diadiem.latitude = obj.getDouble(StringTagJSON.TAG_VI_DO);
 		diadiem.longitude = obj.getDouble(StringTagJSON.TAG_KINH_DO);
+		diadiem.moTa = obj.getString(StringTagJSON.TAG_CHU_THICH);
+		if (diadiem.moTa.equalsIgnoreCase("null")) {
+			diadiem.moTa = "Không có";
+		}
 
 		// dia chi
 		String so_nha = obj.getString(StringTagJSON.TAG_SO_NHA);
@@ -84,8 +90,9 @@ public class JSONParser {
 		String ten_tinh_thanh = obj.getString(StringTagJSON.TAG_TEN_TINH_THANH);
 		//
 
-		diadiem.diaChi = so_nha + " " + ten_duong + ", " + ten_phuong + ", "
-				+ ten_quan_huyen + ", " + ten_tinh_thanh + ".";
+		diadiem.diaChi = "Số " + so_nha + ", đường " + ten_duong + ", phường "
+				+ ten_phuong + ", quận " + ten_quan_huyen + ", "
+				+ ten_tinh_thanh + ".";
 
 		return diadiem;
 
@@ -113,6 +120,9 @@ public class JSONParser {
 		chiTietDichVu.ten = obj.getString(StringTagJSON.TAG_TEN);
 		chiTietDichVu.donGia = obj.getString(StringTagJSON.TAG_GIATIEN);
 		chiTietDichVu.moTa = obj.getString(StringTagJSON.TAG_CHUTHICH);
+		if (chiTietDichVu.moTa.equalsIgnoreCase("null")) {
+			chiTietDichVu.moTa = "";
+		}
 
 		return chiTietDichVu;
 	}

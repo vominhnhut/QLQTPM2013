@@ -35,7 +35,7 @@ public class ChangePasswordActivity extends Activity implements OnClickListener 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_change_password);
-		
+
 		changePassView = (LinearLayout) findViewById(R.id.change_pass_view);
 		waitView = (LinearLayout) findViewById(R.id.chg_wait_view);
 
@@ -47,7 +47,7 @@ public class ChangePasswordActivity extends Activity implements OnClickListener 
 
 		btnOk.setOnClickListener(this);
 		btnCancel.setOnClickListener(this);
-		
+
 		getActionBar().hide();
 	}
 
@@ -128,14 +128,12 @@ public class ChangePasswordActivity extends Activity implements OnClickListener 
 		@Override
 		protected ResponsedResult doInBackground(String... params) {
 			// TODO Auto-generated method stub
+			ResponsedResult result = null;
 			try {
-				ResponsedResult result = ClientManager.RequestToChangePassword(
+				result = ClientManager.RequestToChangePassword(
 						Constants.LOGINUSER_TOKEN, edtOldPass.getText()
 								.toString(), edtNewPass.getText().toString());
-
-				if (result != null) {
-					return result;
-				}
+				
 			} catch (IllegalStateException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -147,7 +145,7 @@ public class ChangePasswordActivity extends Activity implements OnClickListener 
 				e.printStackTrace();
 			}
 
-			return null;
+			return result;
 		}
 
 	}

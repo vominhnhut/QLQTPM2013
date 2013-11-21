@@ -26,6 +26,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -75,7 +76,7 @@ public class MainActivity extends Activity implements
 
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
-		//getActionBar().setTitle("");
+		// getActionBar().setTitle("");
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setHomeButtonEnabled(true);
 
@@ -224,20 +225,22 @@ public class MainActivity extends Activity implements
 		// updateSearchList();
 		if (key != null && isLoading == false) {
 			this.isNewSearch = isNewSearch;
-			
-			Object[] params = new Object[2];
-			params[0] = key;
-			//param 2 là index cần load tiếp
-			
-			
-			new FindLocationAsynctask().execute(params);
+			if (isNewSearch) {
+				ClientManager.max_Index_LoadedDiaDiem = 0;
+				ClientManager.isStop_LoadListDiaDiem = false;
+			}
+			if (!ClientManager.isStop_LoadListDiaDiem) {
+				new FindLocationAsynctask().execute(key,
+						ClientManager.max_Index_LoadedDiaDiem);
+			}
 		}
+
 	}
 
 	public void updateSearchList(boolean isNewSearch) {
 		WeGoMainFragment fragment = getMaGoMainFragment();
 		if (fragment != null) {
-			fragment.updateSearchList(isNewSearch,searchedDiadiem);
+			fragment.updateSearchList(isNewSearch, searchedDiadiem);
 		}
 	}
 
@@ -251,7 +254,7 @@ public class MainActivity extends Activity implements
 	public boolean onQueryTextSubmit(String query) {
 		// TODO Auto-generated method stub
 		searchKey = query;
-		
+
 		invalidateOptionsMenu();
 		search(searchKey, true);
 		hideKeyPad();
@@ -325,14 +328,17 @@ public class MainActivity extends Activity implements
 			// TODO Auto-generated method stub
 			ResponsedResult result = null;
 			String key = (String) params[0];
-			//Lấy param 1 nếu cần
-			
+			int index = (Integer) params[1];
+			// Lấy param 1 nếu cần
+
 			try {
 
 				// searchedDiadiem.clear();
 				ArrayList<DiaDiem> temp = new ArrayList<DiaDiem>();
 				result = ClientManager.RequestToGetFindDiaDiemByKeywords(key,
-						temp);
+						temp, index);
+				ClientManager.max_Index_LoadedDiaDiem = ClientManager
+						.GetMaxIndexDiaDiem(temp);
 				if (temp != null && temp.size() > 0) {
 					if (isNewSearch == false) {
 						searchedDiadiem.clear();

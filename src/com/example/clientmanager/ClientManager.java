@@ -52,6 +52,8 @@ public class ClientManager {
 
 	public static int next_Index_LoadedBinhLuan = 0;
 	public static boolean isStop_LoadListBinhLuan = false;
+	public static int max_Index_LoadedDiaDiem = 0;
+	public static boolean isStop_LoadListDiaDiem = false;
 
 	private static HttpResponse RequestServerByHttpPost(String uri,
 			JSONObject input) throws IllegalStateException, IOException,
@@ -256,10 +258,12 @@ public class ClientManager {
 		tokenEncoded = URLEncoder.encode(token, "UTF-8");
 
 		changePasswordURL = CHANGEPASSWORD_URL + "?" + "token=" + tokenEncoded;
-
+		Log.e("hoaphat", changePasswordURL.toString());
 		JSONObject inputObj = new JSONObject();
 		inputObj.put(StringTagJSON.TAG_MAT_KHAU_CU, oldPass);
 		inputObj.put(StringTagJSON.TAG_MAT_KHAU_MOI, newPass);
+
+		Log.e("hoaphat", inputObj.toString());
 		// request server
 		response = ClientManager.RequestServerByHttpPost(changePasswordURL,
 				inputObj);
@@ -271,16 +275,16 @@ public class ClientManager {
 			responsedJSONObj = JSONParser
 					.getJSONObjectFromHttpResponse(response);
 
+			Log.e("hoaphat", responsedJSONObj.toString());
+
 			boolean success = responsedJSONObj
 					.getBoolean(StringTagJSON.TAG_SUCCESS);
-			String content = responsedJSONObj
-					.getString(StringTagJSON.TAG_REASON);
 
 			if (success) {
 				result.success = true;
 			} else {
 				result.success = false;
-				result.content = content;
+				result.content = "Fail to change password";
 			}
 
 		} else {
@@ -289,6 +293,7 @@ public class ClientManager {
 			result.content = "Problem with connecting server";
 		}
 
+		Log.e("hoaphat", result.success + "");
 		return result;
 	}
 
@@ -360,7 +365,7 @@ public class ClientManager {
 
 		listCommentURL = LISTCOMMENT_URL + "?token=" + encodedToken + "&index="
 				+ index + "&ma_du_lieu=" + encodedDiaDiemID;
-		
+
 		Log.e("hoaphat", listCommentURL);
 
 		response = ClientManager.RequestServerByHttpGet(listCommentURL);
@@ -458,7 +463,7 @@ public class ClientManager {
 	}
 
 	public static ResponsedResult RequestToGetFindDiaDiemByKeywords(
-			String keywords, ArrayList<DiaDiem> listDiaDiem)
+			String keywords, ArrayList<DiaDiem> listDiaDiem, int index)
 			throws IllegalStateException, IOException, JSONException {
 
 		ResponsedResult result;
@@ -472,8 +477,9 @@ public class ClientManager {
 				"UTF-8");
 		String encodedQuery = URLEncoder.encode(keywords, "UTF-8");
 
-		findLocation = FINDLOCATION_URL + "?token=" + encodedToken + "&index=0"
-				+ "&query=" + encodedQuery;
+		findLocation = FINDLOCATION_URL + "?token=" + encodedToken + "&index="
+				+ index + "&query=" + encodedQuery;
+		Log.e("hoaphat", findLocation.toString());
 
 		response = ClientManager.RequestServerByHttpGet(findLocation);
 
@@ -492,9 +498,12 @@ public class ClientManager {
 
 				JSONArray array = responsedJSONObj
 						.getJSONArray(StringTagJSON.TAG_CONTENTString);
-
 				listDiaDiem.addAll(JSONParser
 						.getListDiaDiemTomTatFromJSON(array));
+
+				if (array.length() < 20) {
+					ClientManager.isStop_LoadListDiaDiem = true;
+				}
 
 			} else {
 				result.success = false;
@@ -634,8 +643,6 @@ public class ClientManager {
 		JSONObject inputObj = new JSONObject();
 		inputObj.put(StringTagJSON.TAG_MA_DU_LIEU, diadiemID);
 
-		// save
-
 		// request server
 		response = ClientManager.RequestServerByHttpPost(likeOrUnlikeURL,
 				inputObj);
@@ -727,10 +734,87 @@ public class ClientManager {
 
 	}
 
+	public static ResponsedResult RequestToGetSaveOrNotSaveDiaDiem(
+			String token, String diadiemID) throws ClientProtocolException,
+			IOException, IllegalStateException, JSONException {
+
+		String likeOrUnlikeURL;
+		String tokenEncoded;
+		ResponsedResult result;
+		JSONObject responsedJSONObj;
+		HttpResponse response;
+		int statusCode;
+
+		result = new ResponsedResult();
+
+		tokenEncoded = URLEncoder.encode(token, "UTF-8");
+
+		likeOrUnlikeURL = FAVOURITELOCATION_URL + "?token=" + tokenEncoded
+				+ "&ma_du_lieu=" + diadiemID;
+
+		Log.e("hoaphat", likeOrUnlikeURL.toString());
+
+		// request server
+		response = ClientManager.RequestServerByHttpGet(likeOrUnlikeURL);
+
+		statusCode = response.getStatusLine().getStatusCode();
+
+		if (statusCode == 200) {
+
+			responsedJSONObj = JSONParser
+					.getJSONObjectFromHttpResponse(response);
+			Log.e("hoaphat", responsedJSONObj.toString());
+			boolean success = responsedJSONObj
+					.getBoolean(StringTagJSON.TAG_SUCCESS);
+
+			if (success) {
+				result.success = true;
+
+				JSONObject obj = responsedJSONObj
+						.getJSONObject(StringTagJSON.TAG_CONTENTString);
+
+				boolean liked = obj.getBoolean(StringTagJSON.TAG_LIKE);
+
+				if (liked) {
+					result.content2 = Boolean.TRUE;
+				} else {
+					result.content2 = Boolean.FALSE;
+				}
+
+			} else {
+				result.success = false;
+				result.content = "Fail get saved";
+			}
+
+		} else {
+
+			result.success = false;
+			result.content = "Problem with connecting server";
+		}
+
+		return result;
+
+	}
+
 	public static DiaDiem RequestToGetDiaDiemChiTiet(String diadiemID) {
 		DiaDiem diadiem = new DiaDiem();
 
 		return diadiem;
 	}
 
+	// ############
+
+	public static int GetMaxIndexDiaDiem(ArrayList<DiaDiem> list) {
+
+		int index = 0;
+
+		for (DiaDiem dd : list) {
+			int id = Integer.parseInt(dd.id);
+			if (id > index) {
+				index = id;
+			}
+		}
+
+		return index;
+	}
 }
