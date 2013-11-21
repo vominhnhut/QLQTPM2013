@@ -26,7 +26,6 @@ import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -329,7 +328,6 @@ public class MainActivity extends Activity implements
 			ResponsedResult result = null;
 			String key = (String) params[0];
 			int index = (Integer) params[1];
-			// Lấy param 1 nếu cần
 
 			try {
 
@@ -340,12 +338,14 @@ public class MainActivity extends Activity implements
 				ClientManager.max_Index_LoadedDiaDiem = ClientManager
 						.GetMaxIndexDiaDiem(temp);
 				if (temp != null && temp.size() > 0) {
-					if (isNewSearch == false) {
-						searchedDiadiem.clear();
-						searchedDiadiem = temp;
-					} else {
-						searchedDiadiem.addAll(temp);
-					}
+//					searchedDiadiem.clear();
+					searchedDiadiem = temp;
+//					if (isNewSearch == true) {
+//						searchedDiadiem.clear();
+//						searchedDiadiem = temp;
+//					} else {
+//						searchedDiadiem.addAll(temp);
+//					}
 				}
 
 			} catch (IllegalStateException e) {

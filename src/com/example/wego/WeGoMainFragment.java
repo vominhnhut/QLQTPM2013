@@ -22,6 +22,7 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -138,7 +139,7 @@ public class WeGoMainFragment extends Fragment implements OnItemClickListener {
 				.findViewById(R.id.search_wait_view);
 
 		loadMorePrg = (ProgressBar) view.findViewById(R.id.loadmorePrg);
-		
+
 		zoomToLocation(10, false);
 		forcusCurrentLocation(true);
 		return view;
@@ -339,9 +340,12 @@ public class WeGoMainFragment extends Fragment implements OnItemClickListener {
 			for (DiaDiem diaDiem : diaDiemList) {
 				searchedItemAdapter.addItem(diaDiem);
 			}
+			Log.e("TAG 1", isNewSearch + " " + diaDiemList.size() + " "
+					+ searchedItemAdapter.getCount());
 			searchedItemAdapter.notifyDataSetChanged();
 			updateMap();
 		}
+	
 	}
 
 	private void updateMap() {
@@ -395,7 +399,7 @@ public class WeGoMainFragment extends Fragment implements OnItemClickListener {
 				showListStatusIfHidden();
 			}
 			mSearchWaitView.setVisibility(View.GONE);
-		}else {
+		} else {
 			loadMorePrg.setVisibility(View.GONE);
 		}
 	}

@@ -102,5 +102,6 @@ public class StatusAdapter extends BaseAdapter {
 
 	public void addItem(DiaDiem diaDiem) {
 		this.diaDiemList.add(diaDiem);
+		this.notifyDataSetChanged();
 	}
 }
