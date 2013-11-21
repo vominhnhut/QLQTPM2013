@@ -112,7 +112,7 @@ public class LocationDetailActivity extends FragmentActivity {
 				if (diaDiem.isSaved == false) {
 					new SaveOrUnSaveLocationAsynctask().execute(true);
 				} else if (diaDiem.isSaved = true) {
-					//new SaveOrUnSaveLocationAsynctask().execute(false);
+					// new SaveOrUnSaveLocationAsynctask().execute(false);
 				}
 			}
 		});
@@ -190,6 +190,8 @@ public class LocationDetailActivity extends FragmentActivity {
 
 	public class LoadLocationAsynctask extends
 			AsyncTask<String, Integer, ResponsedResult> {
+		ResponsedResult resultLike = null;
+		ResponsedResult resultFavourite = null;
 
 		@Override
 		protected void onPreExecute() {
@@ -200,11 +202,13 @@ public class LocationDetailActivity extends FragmentActivity {
 		@Override
 		protected ResponsedResult doInBackground(String... params) {
 			// TODO Auto-generated method stub
-			ResponsedResult result = null;
 
 			try {
-				result = ClientManager.RequestToGetLikeOrNotLikeDiaDiem(
+				resultLike = ClientManager.RequestToGetLikeOrNotLikeDiaDiem(
 						Constants.LOGINUSER_TOKEN, diaDiem.id);
+				resultFavourite = ClientManager
+						.RequestToGetSaveOrNotSaveDiaDiem(
+								Constants.LOGINUSER_TOKEN, diaDiem.id);
 			} catch (ClientProtocolException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -219,26 +223,42 @@ public class LocationDetailActivity extends FragmentActivity {
 				e.printStackTrace();
 			}
 
-			return result;
+			return null;
 		}
 
 		@Override
 		protected void onPostExecute(ResponsedResult result) {
 			// TODO Auto-generated method stub
 			likeBtn.setEnabled(true);
+			saveBtn.setEnabled(true);
 
-			if (result != null) {
-				if (result.success) {
-					boolean liked = (Boolean) result.content2;
+			if (resultLike != null) {
+				if (resultLike.success) {
+					boolean liked = (Boolean) resultLike.content2;
 					diaDiem.isLiked = liked;
 					setLikeButtonState(liked);
 				} else {
 					Toast.makeText(getApplicationContext(),
-							"result" + result.content, Toast.LENGTH_LONG)
-							.show();
+							"Get liked: " + resultLike.content,
+							Toast.LENGTH_LONG).show();
 				}
 			} else {
-				Toast.makeText(getApplicationContext(), "null",
+				Toast.makeText(getApplicationContext(), "Get liked: null",
+						Toast.LENGTH_LONG).show();
+			}
+
+			if (resultFavourite != null) {
+				if (resultFavourite.success) {
+					boolean saved = (Boolean) resultFavourite.content2;
+					diaDiem.isSaved = saved;
+					setSaveButtonState(saved);
+				} else {
+					Toast.makeText(getApplicationContext(),
+							"Get saved: " + resultFavourite.content,
+							Toast.LENGTH_LONG).show();
+				}
+			} else {
+				Toast.makeText(getApplicationContext(), "Get saved: null",
 						Toast.LENGTH_LONG).show();
 			}
 
