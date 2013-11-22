@@ -107,12 +107,10 @@ public class LocationDetailActivity extends FragmentActivity {
 			@Override
 			public void onClick(View v) {
 
-				// Server chua cai dat day du
-
 				if (diaDiem.isSaved == false) {
-					new SaveOrUnSaveLocationAsynctask().execute(true);
+					new SaveLocationAsynctask().execute();
 				} else if (diaDiem.isSaved = true) {
-					// new SaveOrUnSaveLocationAsynctask().execute(false);
+					new UnSaveLocationAsynctask().execute();
 				}
 			}
 		});
@@ -333,19 +331,17 @@ public class LocationDetailActivity extends FragmentActivity {
 		}
 	}
 
-	public class SaveOrUnSaveLocationAsynctask extends
+	public class SaveLocationAsynctask extends
 			AsyncTask<Boolean, Integer, ResponsedResult> {
-		boolean save = false;
 
 		@Override
 		protected ResponsedResult doInBackground(Boolean... params) {
 			// TODO Auto-generated method stub
-			ResponsedResult result = null;
-			save = params[0];
 
+			ResponsedResult result = null;
 			try {
-				result = ClientManager.RequestToAddOrRemoveFavouriteDiaDiem(
-						Constants.LOGINUSER_TOKEN, diaDiem.id, save);
+				result = ClientManager.RequestToAddFavouriteDiaDiem(
+						Constants.LOGINUSER_TOKEN, diaDiem.id);
 			} catch (ClientProtocolException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -378,11 +374,64 @@ public class LocationDetailActivity extends FragmentActivity {
 
 			if (result != null) {
 				if (result.success) {
-					setSaveButtonState(save);
-					diaDiem.isSaved = save;
+					setSaveButtonState(true);
+					diaDiem.isSaved = true;
 				} else {
-					setSaveButtonState(save);
-					diaDiem.isSaved = save;
+					Toast.makeText(getApplicationContext(), result.content,
+							Toast.LENGTH_LONG).show();
+				}
+			} else {
+				Toast.makeText(getApplicationContext(), "null",
+						Toast.LENGTH_LONG).show();
+			}
+		}
+
+	}
+
+	public class UnSaveLocationAsynctask extends
+			AsyncTask<Boolean, Integer, ResponsedResult> {
+
+		@Override
+		protected ResponsedResult doInBackground(Boolean... params) {
+			// TODO Auto-generated method stub
+			ResponsedResult result = null;
+			try {
+				result = ClientManager.RequestToRemoveFavouriteDiaDiem(
+						Constants.LOGINUSER_TOKEN, diaDiem.id);
+			} catch (ClientProtocolException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalStateException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return result;
+		}
+
+		@Override
+		protected void onPreExecute() {
+			// TODO Auto-generated method stub
+			saveBtn.setEnabled(false);
+			super.onPreExecute();
+		}
+
+		@Override
+		protected void onPostExecute(ResponsedResult result) {
+			// TODO Auto-generated method stub
+			super.onPostExecute(result);
+			saveBtn.setEnabled(true);
+
+			if (result != null) {
+				if (result.success) {
+					setSaveButtonState(false);
+					diaDiem.isSaved = false;
+				} else {
 					Toast.makeText(getApplicationContext(), result.content,
 							Toast.LENGTH_LONG).show();
 				}
