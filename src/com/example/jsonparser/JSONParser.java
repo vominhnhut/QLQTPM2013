@@ -12,13 +12,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.util.Log;
-
 import com.example.Object.BinhLuan;
 import com.example.Object.ChiTietDichVu;
 import com.example.Object.DiaDiem;
 import com.example.Object.TaiKhoan;
-import com.example.clientmanager.ClientManager;
 import com.example.ultils.StringTagJSON;
 
 /**
@@ -79,7 +76,7 @@ public class JSONParser {
 		diadiem.longitude = obj.getDouble(StringTagJSON.TAG_KINH_DO);
 		diadiem.moTa = obj.getString(StringTagJSON.TAG_CHU_THICH);
 		if (diadiem.moTa.equalsIgnoreCase("null")) {
-			diadiem.moTa = "Không có";
+			diadiem.moTa = "Không có mô tả";
 		}
 
 		// dia chi
