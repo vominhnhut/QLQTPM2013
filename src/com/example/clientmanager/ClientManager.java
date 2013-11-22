@@ -54,6 +54,8 @@ public class ClientManager {
 	public static boolean isStop_LoadListBinhLuan = false;
 	public static int max_Index_LoadedDiaDiem = 0;
 	public static boolean isStop_LoadListDiaDiem = false;
+	public static int next_Index_LoadedDiaDiemYeuThich = 1;
+	public static boolean isStop_LoadedDiaDiemYeuThich = false;
 
 	private static HttpResponse RequestServerByHttpPost(String uri,
 			JSONObject input) throws IllegalStateException, IOException,
@@ -422,8 +424,6 @@ public class ClientManager {
 		serviceListURL = SERVICESLIST_URL + "?token=" + encodedToken
 				+ "&ma_du_lieu=" + encodedDiaDiemID;
 
-		Log.e("hoaphat", serviceListURL.toString());
-
 		response = ClientManager.RequestServerByHttpGet(serviceListURL);
 
 		statusCode = response.getStatusLine().getStatusCode();
@@ -432,8 +432,6 @@ public class ClientManager {
 
 			responsedJSONObj = JSONParser
 					.getJSONObjectFromHttpResponse(response);
-
-			Log.e("hoaphat", responsedJSONObj.toString());
 
 			boolean success = responsedJSONObj
 					.getBoolean(StringTagJSON.TAG_SUCCESS);
@@ -444,7 +442,6 @@ public class ClientManager {
 				JSONArray array = responsedJSONObj
 						.getJSONArray(StringTagJSON.TAG_CONTENTString);
 
-				Log.e("hoaphat", array.length() + "");
 				listChiTietDichVu.addAll(JSONParser
 						.getListChiTietDichVuFromJSON(array));
 
@@ -479,7 +476,6 @@ public class ClientManager {
 
 		findLocation = FINDLOCATION_URL + "?token=" + encodedToken + "&index="
 				+ index + "&query=" + encodedQuery;
-		Log.e("hoaphat", findLocation.toString());
 
 		response = ClientManager.RequestServerByHttpGet(findLocation);
 
@@ -534,7 +530,7 @@ public class ClientManager {
 				"UTF-8");
 
 		findLocation = FAVOURITELOCATION_URL + "?token=" + encodedToken
-				+ "&index=0";
+				+ "&index=" + index;
 
 		response = ClientManager.RequestServerByHttpGet(findLocation);
 
@@ -553,6 +549,10 @@ public class ClientManager {
 
 				JSONArray array = responsedJSONObj
 						.getJSONArray(StringTagJSON.TAG_CONTENTString);
+
+				if (array.length() < 20) {
+					ClientManager.isStop_LoadedDiaDiemYeuThich = true;
+				}
 
 				listDiaDiem.addAll(JSONParser
 						.getListDiaDiemTomTatFromJSON(array));
@@ -623,9 +623,9 @@ public class ClientManager {
 
 	}
 
-	public static ResponsedResult RequestToAddOrRemoveFavouriteDiaDiem(
-			String token, String diadiemID, boolean save) throws JSONException,
-			IllegalStateException, IOException {
+	public static ResponsedResult RequestToAddFavouriteDiaDiem(String token,
+			String diadiemID) throws JSONException, IllegalStateException,
+			IOException {
 
 		String likeOrUnlikeURL;
 		String tokenEncoded;
@@ -662,6 +662,54 @@ public class ClientManager {
 			} else {
 				result.success = false;
 				result.content = "Fail to add favourite location.";
+			}
+
+		} else {
+
+			result.success = false;
+			result.content = "Problem with connecting server";
+		}
+
+		return result;
+
+	}
+
+	public static ResponsedResult RequestToRemoveFavouriteDiaDiem(String token,
+			String diadiemID) throws JSONException, IllegalStateException,
+			IOException {
+
+		String likeOrUnlikeURL;
+		String tokenEncoded;
+		ResponsedResult result;
+		JSONObject responsedJSONObj;
+		HttpResponse response;
+		int statusCode;
+
+		result = new ResponsedResult();
+
+		tokenEncoded = URLEncoder.encode(token, "UTF-8");
+
+		likeOrUnlikeURL = FAVOURITELOCATION_URL + "?token=" + tokenEncoded
+				+ "&ma_du_lieu=" + diadiemID;
+
+		// request server
+		response = ClientManager.RequestServerByHttpDelete(likeOrUnlikeURL);
+
+		statusCode = response.getStatusLine().getStatusCode();
+
+		if (statusCode == 200) {
+
+			responsedJSONObj = JSONParser
+					.getJSONObjectFromHttpResponse(response);
+
+			boolean success = responsedJSONObj
+					.getBoolean(StringTagJSON.TAG_SUCCESS);
+
+			if (success) {
+				result.success = true;
+			} else {
+				result.success = false;
+				result.content = "Fail to remove favourite location.";
 			}
 
 		} else {
@@ -750,7 +798,7 @@ public class ClientManager {
 		tokenEncoded = URLEncoder.encode(token, "UTF-8");
 
 		likeOrUnlikeURL = FAVOURITELOCATION_URL + "?token=" + tokenEncoded
-				+ "&ma_du_lieu=" + diadiemID;
+				+ "&index=1" + "&ma_du_lieu=" + diadiemID;
 
 		Log.e("hoaphat", likeOrUnlikeURL.toString());
 
@@ -770,17 +818,14 @@ public class ClientManager {
 			if (success) {
 				result.success = true;
 
-				JSONObject obj = responsedJSONObj
-						.getJSONObject(StringTagJSON.TAG_CONTENTString);
+				JSONArray obj = responsedJSONObj
+						.getJSONArray(StringTagJSON.TAG_CONTENTString);
 
-				boolean liked = obj.getBoolean(StringTagJSON.TAG_LIKE);
-
-				if (liked) {
+				if (obj.length() > 0) {
 					result.content2 = Boolean.TRUE;
 				} else {
 					result.content2 = Boolean.FALSE;
 				}
-
 			} else {
 				result.success = false;
 				result.content = "Fail get saved";
