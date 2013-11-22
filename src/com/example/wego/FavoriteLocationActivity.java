@@ -52,8 +52,10 @@ public class FavoriteLocationActivity extends FragmentActivity {
 				}
 			}
 		});
-
-		new LoadFavouriteListAsynctask().execute(0);
+		ClientManager.isStop_LoadedDiaDiemYeuThich = false;
+		ClientManager.next_Index_LoadedDiaDiemYeuThich = 1;
+		new LoadFavouriteListAsynctask()
+				.execute(ClientManager.next_Index_LoadedDiaDiemYeuThich++);
 	}
 
 	@Override
@@ -89,7 +91,7 @@ public class FavoriteLocationActivity extends FragmentActivity {
 				PopupMenu menu = new PopupMenu(FavoriteLocationActivity.this, v);
 				menu.inflate(R.menu.favorite_location);
 
-				// final DiaDiem dd = (DiaDiem) favoriteAdapter.getItem(id);
+				final DiaDiem dd = (DiaDiem) favoriteAdapter.getItem(id);
 
 				menu.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 
@@ -98,10 +100,18 @@ public class FavoriteLocationActivity extends FragmentActivity {
 						// TODO Auto-generated method stub
 						switch (item.getItemId()) {
 						case R.id.fav_item_navigate:
+							
+							//
+							//
+							if (!ClientManager.isStop_LoadedDiaDiemYeuThich) {
+								new LoadFavouriteListAsynctask()
+										.execute(ClientManager.next_Index_LoadedDiaDiemYeuThich++);
+							}
+							//
 							//
 							break;
 						case R.id.fav_item_delete:
-							//
+							new UnSaveFavouriteDiaDiem().execute(dd.id);
 							break;
 						default:
 							break;
@@ -125,9 +135,10 @@ public class FavoriteLocationActivity extends FragmentActivity {
 		protected ResponsedResult doInBackground(Integer... params) {
 			// TODO Auto-generated method stub
 			ResponsedResult result = null;
+			int index = params[0];
 			try {
 				result = ClientManager.RequestToGetListDiaDiemYeuThich(
-						listDiaDiemYeuThich, 0);
+						listDiaDiemYeuThich, index);
 			} catch (IllegalStateException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -156,6 +167,33 @@ public class FavoriteLocationActivity extends FragmentActivity {
 				Toast.makeText(getApplicationContext(),
 						R.string.unknown_exceeption, Toast.LENGTH_SHORT).show();
 			}
+		}
+	}
+
+	public class UnSaveFavouriteDiaDiem extends
+			AsyncTask<String, Integer, ResponsedResult> {
+		@Override
+		protected ResponsedResult doInBackground(String... params) {
+			// TODO Auto-generated method stub
+			ResponsedResult result = null;
+			String diaDiemID = params[0];
+
+			try {
+				result = ClientManager.RequestToRemoveFavouriteDiaDiem(
+						Constants.LOGINUSER_TOKEN, diaDiemID);
+			} catch (IllegalStateException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			return result;
+
 		}
 	}
 
