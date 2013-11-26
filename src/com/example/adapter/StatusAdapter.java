@@ -50,6 +50,15 @@ public class StatusAdapter extends BaseAdapter {
 		return 0;
 	}
 
+	public Object getItemById(String id){
+		for (DiaDiem diadiem : diaDiemList) {
+			if(diadiem.id.equals(id)){
+				return diadiem;
+			}
+		}
+		return null;
+	}
+	
 	@Override
 	public View getView(int arg0, View arg1, ViewGroup arg2) {
 		// không giử hodler
@@ -103,5 +112,11 @@ public class StatusAdapter extends BaseAdapter {
 	public void addItem(DiaDiem diaDiem) {
 		this.diaDiemList.add(diaDiem);
 		this.notifyDataSetChanged();
+	}
+	
+	public void removeItem(String itemId){
+		DiaDiem dd = (DiaDiem) getItemById(itemId);
+		this.diaDiemList.remove(dd);
+		notifyDataSetChanged();
 	}
 }

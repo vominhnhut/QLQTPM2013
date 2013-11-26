@@ -240,8 +240,8 @@ public class LocationDetailCommentsFragment extends Fragment implements
 		@Override
 		protected void onPreExecute() {
 			// TODO Auto-generated method stub
-			waitView.setVisibility(View.VISIBLE);
-			commentListview.setVisibility(View.GONE);
+//			waitView.setVisibility(View.VISIBLE);
+//			commentListview.setVisibility(View.GONE);
 
 			super.onPreExecute();
 		}

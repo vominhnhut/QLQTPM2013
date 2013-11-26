@@ -6,10 +6,58 @@
     android:orientation="vertical"
     tools:context=".FavoriteLocationActivity" >
 
-    <ListView
-        android:id="@+id/favoriteList"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-    </ListView>
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:id="@+id/fav_wait_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#CC7f7f7f"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:visibility="gone" >
+
+            <ProgressBar
+                android:id="@+id/progressBar1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/service_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/please_wait"
+                android:textColor="#ffffff" />
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/favoriteList"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="3" >
+        </ListView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/favorite_scroll_wait_view"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="15"
+        android:background="#ffffff"
+        android:gravity="center"
+        android:visibility="gone" >
+
+        <ProgressBar
+            android:id="@+id/progressBar11"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/rounded_corner_rect" />
+    </LinearLayout>
 
 </LinearLayout>

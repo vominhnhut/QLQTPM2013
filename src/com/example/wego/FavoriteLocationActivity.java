@@ -18,8 +18,11 @@ import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AbsListView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
@@ -29,6 +32,9 @@ public class FavoriteLocationActivity extends FragmentActivity {
 
 	ListView favoriteList;
 	StatusAdapter favoriteAdapter;
+	LinearLayout scroll_wait_view;
+	LinearLayout remove_wait_view;
+	boolean isLoading = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +42,9 @@ public class FavoriteLocationActivity extends FragmentActivity {
 		setContentView(R.layout.activity_favorite_location);
 
 		getActionBar().setTitle(R.string.favoriteList_title);
+
+		scroll_wait_view = (LinearLayout) findViewById(R.id.favorite_scroll_wait_view);
+		remove_wait_view = (LinearLayout) findViewById(R.id.fav_wait_view);
 
 		favoriteList = (ListView) findViewById(R.id.favoriteList);
 
@@ -52,6 +61,31 @@ public class FavoriteLocationActivity extends FragmentActivity {
 				}
 			}
 		});
+		favoriteList.setOnScrollListener(new OnScrollListener() {
+
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem,
+					int visibleItemCount, int totalItemCount) {
+				// TODO Auto-generated method stub
+				int lastItem = firstVisibleItem + visibleItemCount;
+				if (lastItem >= totalItemCount && totalItemCount > 0
+						&& isLoading == false) {
+					// LOAD TIEP DANH SACH Yeu thich
+					if (!ClientManager.isStop_LoadedDiaDiemYeuThich) {
+						new LoadFavouriteListAsynctask()
+								.execute(ClientManager.next_Index_LoadedDiaDiemYeuThich++);
+
+					}
+				}
+			}
+		});
+
 		ClientManager.isStop_LoadedDiaDiemYeuThich = false;
 		ClientManager.next_Index_LoadedDiaDiemYeuThich = 1;
 		new LoadFavouriteListAsynctask()
@@ -100,13 +134,10 @@ public class FavoriteLocationActivity extends FragmentActivity {
 						// TODO Auto-generated method stub
 						switch (item.getItemId()) {
 						case R.id.fav_item_navigate:
-							
+
 							//
 							//
-							if (!ClientManager.isStop_LoadedDiaDiemYeuThich) {
-								new LoadFavouriteListAsynctask()
-										.execute(ClientManager.next_Index_LoadedDiaDiemYeuThich++);
-							}
+
 							//
 							//
 							break;
@@ -152,10 +183,24 @@ public class FavoriteLocationActivity extends FragmentActivity {
 			return result;
 		}
 
+		
+		
+		@Override
+		protected void onPreExecute() {
+			// TODO Auto-generated method stub
+			scroll_wait_view.setVisibility(View.VISIBLE);
+			isLoading = true;
+			super.onPreExecute();
+		}
+
+
+
 		@Override
 		protected void onPostExecute(ResponsedResult result) {
 			// TODO Auto-generated method stub
 			super.onPostExecute(result);
+			scroll_wait_view.setVisibility(View.GONE);
+			isLoading = false;
 			if (result != null) {
 				if (result.success) {
 					updateFavoriteAdapter(listDiaDiemYeuThich);
@@ -192,9 +237,43 @@ public class FavoriteLocationActivity extends FragmentActivity {
 				e.printStackTrace();
 			}
 
+			if (result != null) {
+				result.tag = diaDiemID;
+			}
+
 			return result;
 
 		}
+
+		
+		
+		@Override
+		protected void onPreExecute() {
+			// TODO Auto-generated method stub
+			remove_wait_view.setVisibility(View.VISIBLE);
+
+			super.onPreExecute();
+		}
+
+
+
+		@Override
+		protected void onPostExecute(ResponsedResult result) {
+			// TODO Auto-generated method stub
+			remove_wait_view.setVisibility(View.GONE);
+			if (result != null) {
+				if (result.success == true) {
+					favoriteAdapter.removeItem((String) result.tag);
+				} else {
+					Toast.makeText(getApplicationContext(),
+							R.string.fail_to_remove_fav, Toast.LENGTH_SHORT)
+							.show();
+				}
+			}
+
+			super.onPostExecute(result);
+		}
+
 	}
 
 }
