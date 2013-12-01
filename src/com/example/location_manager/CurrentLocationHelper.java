@@ -2,10 +2,13 @@ package com.example.location_manager;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 
 public class CurrentLocationHelper {
@@ -64,4 +67,14 @@ public class CurrentLocationHelper {
 		return new LatLng(location.getLatitude(), location.getLongitude());
 	}
 
+	public static void transferToNavigation(LatLng saddr, LatLng daddr,
+			Activity callerActivity) {
+		String navigationUrl = "http://maps.google.com/maps?saddr="
+				+ saddr.latitude + "," + saddr.longitude + "&daddr="
+				+ daddr.latitude + "," + daddr.longitude;
+
+		Intent navIntent = new Intent(Intent.ACTION_VIEW,
+				Uri.parse(navigationUrl));
+		callerActivity.startActivity(navIntent);
+	}
 }

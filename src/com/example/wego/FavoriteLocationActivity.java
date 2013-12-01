@@ -9,9 +9,12 @@ import com.example.Object.DiaDiem;
 import com.example.adapter.StatusAdapter;
 import com.example.clientmanager.ClientManager;
 import com.example.clientmanager.ResponsedResult;
+import com.example.location_manager.CurrentLocationHelper;
 import com.example.ultils.Constants;
+import com.google.android.gms.maps.model.LatLng;
 
 import android.content.Intent;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -134,12 +137,15 @@ public class FavoriteLocationActivity extends FragmentActivity {
 						// TODO Auto-generated method stub
 						switch (item.getItemId()) {
 						case R.id.fav_item_navigate:
+							LatLng sAddr = CurrentLocationHelper
+									.getCurrentLocationLatLng(
+											getApplicationContext(),
+											LocationManager.NETWORK_PROVIDER);
+							LatLng dAddr = dd.getLatLng();
 
-							//
-							//
+							CurrentLocationHelper.transferToNavigation(sAddr,
+									dAddr, FavoriteLocationActivity.this);
 
-							//
-							//
 							break;
 						case R.id.fav_item_delete:
 							new UnSaveFavouriteDiaDiem().execute(dd.id);
@@ -183,8 +189,6 @@ public class FavoriteLocationActivity extends FragmentActivity {
 			return result;
 		}
 
-		
-		
 		@Override
 		protected void onPreExecute() {
 			// TODO Auto-generated method stub
@@ -192,8 +196,6 @@ public class FavoriteLocationActivity extends FragmentActivity {
 			isLoading = true;
 			super.onPreExecute();
 		}
-
-
 
 		@Override
 		protected void onPostExecute(ResponsedResult result) {
@@ -245,8 +247,6 @@ public class FavoriteLocationActivity extends FragmentActivity {
 
 		}
 
-		
-		
 		@Override
 		protected void onPreExecute() {
 			// TODO Auto-generated method stub
@@ -254,8 +254,6 @@ public class FavoriteLocationActivity extends FragmentActivity {
 
 			super.onPreExecute();
 		}
-
-
 
 		@Override
 		protected void onPostExecute(ResponsedResult result) {

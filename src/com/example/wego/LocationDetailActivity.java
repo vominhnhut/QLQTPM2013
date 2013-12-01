@@ -11,14 +11,18 @@ import com.example.Object.DiaDiem;
 import com.example.adapter.LocationDetailPagerAdapter;
 import com.example.clientmanager.ClientManager;
 import com.example.clientmanager.ResponsedResult;
+import com.example.location_manager.CurrentLocationHelper;
 import com.example.ultils.Constants;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import android.graphics.Color;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -67,6 +71,21 @@ public class LocationDetailActivity extends FragmentActivity {
 				.findFragmentById(R.id.miniMap)).getMap();
 		map.getUiSettings().setZoomControlsEnabled(false);
 		map.getUiSettings().setZoomGesturesEnabled(false);
+		map.setOnMapClickListener(new OnMapClickListener() {
+			
+			@Override
+			public void onMapClick(LatLng point) {
+				// TODO Auto-generated method stub
+				LatLng sAddr = CurrentLocationHelper
+						.getCurrentLocationLatLng(
+								getApplicationContext(),
+								LocationManager.NETWORK_PROVIDER);
+				LatLng dAddr = diaDiem.getLatLng();
+
+				CurrentLocationHelper.transferToNavigation(sAddr,
+						dAddr, LocationDetailActivity.this);
+			}
+		});
 		// map.getUiSettings().setScrollGesturesEnabled(false);
 
 		likeBtn = (Button) findViewById(R.id.like_btn);

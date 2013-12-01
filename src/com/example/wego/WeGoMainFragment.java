@@ -321,6 +321,16 @@ public class WeGoMainFragment extends Fragment implements OnItemClickListener {
 								break;
 							case R.id.search_item_navigate:
 								// Navigate will be here
+								LatLng sAddr = CurrentLocationHelper
+										.getCurrentLocationLatLng(
+												getActivity(),
+												LocationManager.NETWORK_PROVIDER);
+								LatLng dAddr = dd.getLatLng();
+
+								CurrentLocationHelper.transferToNavigation(
+										sAddr, dAddr,
+										getActivity());
+
 								break;
 							default:
 								break;
@@ -345,7 +355,7 @@ public class WeGoMainFragment extends Fragment implements OnItemClickListener {
 			searchedItemAdapter.notifyDataSetChanged();
 			updateMap();
 		}
-	
+
 	}
 
 	private void updateMap() {
