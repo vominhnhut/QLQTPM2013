@@ -1,5 +1,6 @@
 package com.example.location_manager;
 
+import com.example.wego.R;
 import com.google.android.gms.maps.model.LatLng;
 
 import android.app.Activity;
@@ -10,6 +11,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.widget.Toast;
 
 public class CurrentLocationHelper {
 
@@ -69,12 +71,17 @@ public class CurrentLocationHelper {
 
 	public static void transferToNavigation(LatLng saddr, LatLng daddr,
 			Activity callerActivity) {
-		String navigationUrl = "http://maps.google.com/maps?saddr="
-				+ saddr.latitude + "," + saddr.longitude + "&daddr="
-				+ daddr.latitude + "," + daddr.longitude;
+		if (saddr != null && daddr != null && callerActivity != null) {
+			String navigationUrl = "http://maps.google.com/maps?saddr="
+					+ saddr.latitude + "," + saddr.longitude + "&daddr="
+					+ daddr.latitude + "," + daddr.longitude;
 
-		Intent navIntent = new Intent(Intent.ACTION_VIEW,
-				Uri.parse(navigationUrl));
-		callerActivity.startActivity(navIntent);
+			Intent navIntent = new Intent(Intent.ACTION_VIEW,
+					Uri.parse(navigationUrl));
+			callerActivity.startActivity(navIntent);
+		} else {
+			Toast.makeText(callerActivity, R.string.fail_to_navigate,
+					Toast.LENGTH_SHORT).show();
+		}
 	}
 }

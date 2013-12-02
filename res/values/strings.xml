@@ -72,5 +72,5 @@
     <string name="forcus_map_text">Focus location</string>
     <string name="favoriteList_title">Favorites</string>
     <string name="fail_to_remove_fav">Error when removing favorite location</string>
-    
+    <string name="fail_to_navigate">Failed to navigate.</string>
 </resources>
