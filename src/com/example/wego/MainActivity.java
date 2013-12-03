@@ -237,10 +237,10 @@ public class MainActivity extends Activity implements
 
 	}
 
-	public boolean isSearchTaskRunning(){
+	public boolean isSearchTaskRunning() {
 		return this.isLoading;
 	}
-	
+
 	public void updateSearchList(boolean isNewSearch) {
 		WeGoMainFragment fragment = getMaGoMainFragment();
 		if (fragment != null) {
@@ -321,9 +321,9 @@ public class MainActivity extends Activity implements
 			WeGoMainFragment fragment = (WeGoMainFragment) getFragmentManager()
 					.findFragmentByTag(WeGoMainFragment.TAG);
 			isLoading = true;
-//			if(searchView != null){
-//				searchView.setVisibility(View.INVISIBLE);
-//			}
+			// if(searchView != null){
+			// searchView.setVisibility(View.INVISIBLE);
+			// }
 			if (fragment != null) {
 				fragment.initViewsBeginSearch(isNewSearch);
 			}
@@ -346,14 +346,14 @@ public class MainActivity extends Activity implements
 				ClientManager.max_Index_LoadedDiaDiem = ClientManager
 						.GetMaxIndexDiaDiem(temp);
 				if (temp != null && temp.size() > 0) {
-//					searchedDiadiem.clear();
+					// searchedDiadiem.clear();
 					searchedDiadiem = temp;
-//					if (isNewSearch == true) {
-//						searchedDiadiem.clear();
-//						searchedDiadiem = temp;
-//					} else {
-//						searchedDiadiem.addAll(temp);
-//					}
+					// if (isNewSearch == true) {
+					// searchedDiadiem.clear();
+					// searchedDiadiem = temp;
+					// } else {
+					// searchedDiadiem.addAll(temp);
+					// }
 				}
 
 			} catch (IllegalStateException e) {
@@ -374,17 +374,20 @@ public class MainActivity extends Activity implements
 		protected void onPostExecute(ResponsedResult result) {
 			// TODO Auto-generated method stub
 			isLoading = false;
-//			if(searchView != null){
-//				searchView.setVisibility(View.VISIBLE);
-//			}
+			// if(searchView != null){
+			// searchView.setVisibility(View.VISIBLE);
+			// }
 			WeGoMainFragment fragment = (WeGoMainFragment) getFragmentManager()
 					.findFragmentByTag(WeGoMainFragment.TAG);
 			if (fragment != null) {
 				fragment.initViewsBeginSearchFinish(isNewSearch);
 			}
 			if (result != null && result.success && searchedDiadiem.size() > 0) {
+				if (fragment != null) {
+					fragment.searchKey = searchKey;
+				}
 				updateSearchList(isNewSearch);
-			} else if(isNewSearch == true){
+			} else if (isNewSearch == true) {
 				AlertDialog dialog = DialogGenerator.createAlertDialog(
 						MainActivity.this, result.content);
 				dialog.show();

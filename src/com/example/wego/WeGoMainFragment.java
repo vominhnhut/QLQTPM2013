@@ -51,6 +51,7 @@ public class WeGoMainFragment extends Fragment implements OnItemClickListener {
 	private GoogleMap map;
 	private StatusAdapter searchedItemAdapter;
 	private boolean stopLoad = false;
+	public String searchKey;
 	// private LinearLayout mapLayout;
 	private Hashtable<Marker, DiaDiem> hashTable;
 
@@ -100,7 +101,7 @@ public class WeGoMainFragment extends Fragment implements OnItemClickListener {
 						if (mainActivity != null
 								&& mainActivity.isSearchTaskRunning() == false
 								&& stopLoad == false) {
-							mainActivity.search(mainActivity.searchKey, false);
+							mainActivity.search(searchKey, false);
 						}
 						// mainActivity.search(mainActivity.searchKey);
 						//
