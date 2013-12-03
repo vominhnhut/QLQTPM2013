@@ -58,7 +58,7 @@ public class LocationDetailCommentsFragment extends Fragment implements
 				false);
 
 		isLoading = false;
-		
+
 		commentTxtview = (EditText) view.findViewById(R.id.comment_text);
 		postCommentBtn = (Button) view.findViewById(R.id.sned_comment_btn);
 		postCommentBtn.setOnClickListener(this);
@@ -83,8 +83,9 @@ public class LocationDetailCommentsFragment extends Fragment implements
 					int visibleItemCount, int totalItemCount) {
 				// TODO Auto-generated method stub
 				int lastItem = firstVisibleItem + visibleItemCount;
-				if (lastItem >= totalItemCount && totalItemCount > 0 && isLoading == false) {
-					//LOAD TIEP DANH SACH BINH LUAN
+				if (lastItem >= totalItemCount && totalItemCount > 0
+						&& isLoading == false) {
+					// LOAD TIEP DANH SACH BINH LUAN
 					if (!ClientManager.isStop_LoadListBinhLuan) {
 						new LoadListCommentAsynctask()
 								.execute(ClientManager.next_Index_LoadedBinhLuan++);
@@ -240,8 +241,8 @@ public class LocationDetailCommentsFragment extends Fragment implements
 		@Override
 		protected void onPreExecute() {
 			// TODO Auto-generated method stub
-//			waitView.setVisibility(View.VISIBLE);
-//			commentListview.setVisibility(View.GONE);
+			// waitView.setVisibility(View.VISIBLE);
+			// commentListview.setVisibility(View.GONE);
 
 			super.onPreExecute();
 		}
@@ -264,23 +265,24 @@ public class LocationDetailCommentsFragment extends Fragment implements
 			listBinhLuan = new ArrayList<BinhLuan>();
 			ResponsedResult result = null;
 
-			String locationID = ((LocationDetailActivity) getActivity())
-					.getDiaDiem().id;
+			if ((LocationDetailActivity) getActivity() != null) {
+				String locationID = ((LocationDetailActivity) getActivity())
+						.getDiaDiem().id;
 
-			try {
-				result = ClientManager.RequestToGetListBinhLuan(locationID,
-						listBinhLuan, params[0]);
-			} catch (IllegalStateException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				try {
+					result = ClientManager.RequestToGetListBinhLuan(locationID,
+							listBinhLuan, params[0]);
+				} catch (IllegalStateException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
-
 			return result;
 		}
 
@@ -289,7 +291,7 @@ public class LocationDetailCommentsFragment extends Fragment implements
 			// TODO Auto-generated method stub
 			isLoading = true;
 			waitView.setVisibility(View.VISIBLE);
-			//commentListview.setVisibility(View.GONE);
+			// commentListview.setVisibility(View.GONE);
 			super.onPreExecute();
 		}
 
@@ -306,15 +308,20 @@ public class LocationDetailCommentsFragment extends Fragment implements
 					}
 					updateCommentListOfParent();
 				} else {
-					Toast.makeText(getActivity().getApplicationContext(),
-							result.content, Toast.LENGTH_SHORT).show();
+					if (getActivity() != null) {
+						Toast.makeText(getActivity().getApplicationContext(),
+								result.content, Toast.LENGTH_SHORT).show();
+					}
 				}
 			} else {
-				Toast.makeText(getActivity().getApplicationContext(),
-						R.string.unknown_exceeption, Toast.LENGTH_SHORT).show();
+				if (getActivity() != null) {
+					Toast.makeText(getActivity().getApplicationContext(),
+							R.string.unknown_exceeption, Toast.LENGTH_SHORT)
+							.show();
+				}
 			}
 			waitView.setVisibility(View.GONE);
-			//commentListview.setVisibility(View.VISIBLE);
+			// commentListview.setVisibility(View.VISIBLE);
 		}
 	}
 

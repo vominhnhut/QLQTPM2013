@@ -141,6 +141,13 @@ public class FavoriteLocationActivity extends FragmentActivity {
 									.getCurrentLocationLatLng(
 											getApplicationContext(),
 											LocationManager.NETWORK_PROVIDER);
+							if(sAddr == null){
+								sAddr = CurrentLocationHelper
+										.getCurrentLocationLatLng(
+												getApplicationContext(),
+												LocationManager.GPS_PROVIDER);
+							}
+							
 							LatLng dAddr = dd.getLatLng();
 
 							CurrentLocationHelper.transferToNavigation(sAddr,

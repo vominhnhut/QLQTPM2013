@@ -80,6 +80,13 @@ public class LocationDetailActivity extends FragmentActivity {
 						.getCurrentLocationLatLng(
 								getApplicationContext(),
 								LocationManager.NETWORK_PROVIDER);
+				if(sAddr == null){
+					sAddr = CurrentLocationHelper
+							.getCurrentLocationLatLng(
+									getApplicationContext(),
+									LocationManager.GPS_PROVIDER);
+				}
+				
 				LatLng dAddr = diaDiem.getLatLng();
 
 				CurrentLocationHelper.transferToNavigation(sAddr,
@@ -279,6 +286,8 @@ public class LocationDetailActivity extends FragmentActivity {
 						Toast.LENGTH_LONG).show();
 			}
 
+			LocationDetailFragment.instance().updateDiaDiem();
+			
 			super.onPostExecute(result);
 		}
 	}
@@ -330,6 +339,12 @@ public class LocationDetailActivity extends FragmentActivity {
 				if (result.success) {
 					setLikeButtonState(like);
 					diaDiem.isLiked = like;
+					if(like == false){
+						diaDiem.diemDanhGia --;
+					} else {
+						diaDiem.diemDanhGia ++;
+					}
+					LocationDetailFragment.instance().updateDiaDiem();
 				} else {
 					// like thanh cong nhung sv tra ve success false. code mang
 					// tinh test thu.

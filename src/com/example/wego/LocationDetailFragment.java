@@ -59,12 +59,14 @@ public class LocationDetailFragment extends Fragment {
 		return view;
 	}
 
-	private void updateDiaDiem() {
+	public void updateDiaDiem() {
 		LocationDetailActivity parent = (LocationDetailActivity) getActivity();
-		DiaDiem dd = parent.getDiaDiem();
-		this.diaDiem = dd;
+		if (parent != null) {
+			DiaDiem dd = parent.getDiaDiem();
+			this.diaDiem = dd;
 
-		setView();
+			setView();
+		}
 	}
 
 	private void setView() {
@@ -76,7 +78,9 @@ public class LocationDetailFragment extends Fragment {
 				rating += (int) this.diaDiem.diemDanhGia + " "
 						+ getString(R.string.like_ext1_string);
 			}
-			rating += " " + getString(R.string.like_ext2_string);
+			if (this.diaDiem.isLiked == false) {
+				rating += " " + getString(R.string.like_ext2_string);
+			}
 			ratingText.setText(rating);
 
 			new LoadServicesAsynctask().execute();
@@ -154,8 +158,8 @@ public class LocationDetailFragment extends Fragment {
 							result.content, Toast.LENGTH_LONG).show();
 				}
 			} else {
-				Toast.makeText(getActivity().getApplicationContext(), "null detail request",
-						Toast.LENGTH_LONG).show();
+				Toast.makeText(getActivity().getApplicationContext(),
+						"null detail request", Toast.LENGTH_LONG).show();
 			}
 		}
 	}

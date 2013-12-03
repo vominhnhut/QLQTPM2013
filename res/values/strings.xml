@@ -31,8 +31,8 @@
     <string name="search_hint">Search location</string>
     <string name="no_search_item_text">Nothing to show! Search location first!</string>
     <string name="search_action">Search</string>
-    <string name="like_ext1_string">people like and</string>
-    <string name="like_ext2_string">1 may like this</string>
+    <string name="like_ext1_string">people like </string>
+    <string name="like_ext2_string">and 1 may like this</string>
     <string name="title_activity_log_in">LogInActivity</string>
     <string name="user_name_text">Username</string>
     <string name="password_text">Password</string>

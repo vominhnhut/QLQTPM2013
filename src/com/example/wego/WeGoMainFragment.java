@@ -50,6 +50,7 @@ public class WeGoMainFragment extends Fragment implements OnItemClickListener {
 	public boolean isShow = true;
 	private GoogleMap map;
 	private StatusAdapter searchedItemAdapter;
+	private boolean stopLoad = false;
 	// private LinearLayout mapLayout;
 	private Hashtable<Marker, DiaDiem> hashTable;
 
@@ -96,7 +97,11 @@ public class WeGoMainFragment extends Fragment implements OnItemClickListener {
 					if (lastItem >= totalItemCount && totalItemCount > 0) {
 						// Check dk
 						MainActivity mainActivity = (MainActivity) getActivity();
-						mainActivity.search(mainActivity.searchKey, false);
+						if (mainActivity != null
+								&& mainActivity.isSearchTaskRunning() == false
+								&& stopLoad == false) {
+							mainActivity.search(mainActivity.searchKey, false);
+						}
 						// mainActivity.search(mainActivity.searchKey);
 						//
 					}
@@ -325,11 +330,16 @@ public class WeGoMainFragment extends Fragment implements OnItemClickListener {
 										.getCurrentLocationLatLng(
 												getActivity(),
 												LocationManager.NETWORK_PROVIDER);
+								if(sAddr == null){
+									sAddr = CurrentLocationHelper
+											.getCurrentLocationLatLng(
+													getActivity(),
+													LocationManager.GPS_PROVIDER);
+								}
 								LatLng dAddr = dd.getLatLng();
 
 								CurrentLocationHelper.transferToNavigation(
-										sAddr, dAddr,
-										getActivity());
+										sAddr, dAddr, getActivity());
 
 								break;
 							default:
@@ -396,6 +406,7 @@ public class WeGoMainFragment extends Fragment implements OnItemClickListener {
 		if (isNewSearch) {
 			hideListStatusIfShown();
 			mSearchWaitView.setVisibility(View.VISIBLE);
+			stopLoad = true;
 		} else {
 			loadMorePrg.setVisibility(View.VISIBLE);
 		}
@@ -408,6 +419,7 @@ public class WeGoMainFragment extends Fragment implements OnItemClickListener {
 				// showListStatus();
 				showListStatusIfHidden();
 			}
+			this.stopLoad = false;
 			mSearchWaitView.setVisibility(View.GONE);
 		} else {
 			loadMorePrg.setVisibility(View.GONE);

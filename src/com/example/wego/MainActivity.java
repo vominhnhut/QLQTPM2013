@@ -51,6 +51,7 @@ public class MainActivity extends Activity implements
 	private boolean isLoading;
 	public String searchKey;
 	private boolean isNewSearch;
+	private SearchView searchView;
 	// private CharSequence mDrawerTitle;
 	// private CharSequence mTitle;
 
@@ -128,7 +129,7 @@ public class MainActivity extends Activity implements
 
 		// Associate searchable configuration with the SearchView
 		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-		SearchView searchView = (SearchView) menu.findItem(R.id.action_search)
+		searchView = (SearchView) menu.findItem(R.id.action_search)
 				.getActionView();
 		searchView.setSearchableInfo(searchManager
 				.getSearchableInfo(getComponentName()));
@@ -236,6 +237,10 @@ public class MainActivity extends Activity implements
 
 	}
 
+	public boolean isSearchTaskRunning(){
+		return this.isLoading;
+	}
+	
 	public void updateSearchList(boolean isNewSearch) {
 		WeGoMainFragment fragment = getMaGoMainFragment();
 		if (fragment != null) {
@@ -316,6 +321,9 @@ public class MainActivity extends Activity implements
 			WeGoMainFragment fragment = (WeGoMainFragment) getFragmentManager()
 					.findFragmentByTag(WeGoMainFragment.TAG);
 			isLoading = true;
+//			if(searchView != null){
+//				searchView.setVisibility(View.INVISIBLE);
+//			}
 			if (fragment != null) {
 				fragment.initViewsBeginSearch(isNewSearch);
 			}
@@ -366,6 +374,9 @@ public class MainActivity extends Activity implements
 		protected void onPostExecute(ResponsedResult result) {
 			// TODO Auto-generated method stub
 			isLoading = false;
+//			if(searchView != null){
+//				searchView.setVisibility(View.VISIBLE);
+//			}
 			WeGoMainFragment fragment = (WeGoMainFragment) getFragmentManager()
 					.findFragmentByTag(WeGoMainFragment.TAG);
 			if (fragment != null) {
@@ -373,7 +384,7 @@ public class MainActivity extends Activity implements
 			}
 			if (result != null && result.success && searchedDiadiem.size() > 0) {
 				updateSearchList(isNewSearch);
-			} else {
+			} else if(isNewSearch == true){
 				AlertDialog dialog = DialogGenerator.createAlertDialog(
 						MainActivity.this, result.content);
 				dialog.show();
